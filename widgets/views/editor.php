@@ -12,13 +12,13 @@ $headerBackgroundColor = '';
 
 if ($documentType === Module::DOCUMENT_TYPE_SPREADSHEET) {
     $headerBackgroundColor = '#8CA946';
-    $headerTitle = 'Spreadsheet Editor';
+    $headerTitle => Yii::t('OnlyofficeModule.base', 'Spreadsheet Editor');
 } elseif ($documentType === Module::DOCUMENT_TYPE_TEXT) {
     $headerBackgroundColor = '#5A7DC9';
-    $headerTitle = 'Document Editor';
+    $headerTitle => Yii::t('OnlyofficeModule.base', 'Document Editor');
 } elseif ($documentType === Module::DOCUMENT_TYPE_PRESENTATION) {
     $headerBackgroundColor = '#DD682B';
-    $headerTitle = 'Presentation Editor';
+    $headerTitle => Yii::t('OnlyofficeModule.base', 'Presentation Editor');
 }
 ?>
 
