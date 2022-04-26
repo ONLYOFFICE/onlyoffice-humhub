@@ -133,6 +133,7 @@ class Module extends \humhub\components\Module
     {
         return $this->settings->get('demoServer');
     }
+
     public function isDemoServerEnabled() {
         if(boolval($this->getDemoServer())) {
             $trial = $this->getTrial();
@@ -144,23 +145,32 @@ class Module extends \humhub\components\Module
 
     public function getChat()
     {
-        return $this->settings->get('chat');
+        return boolval($this->settings->get('chat'));
     }
+
     public function getCompactHeader()
     {
-        return $this->settings->get('compactHeader');
+        return boolval($this->settings->get('compactHeader'));
     }
+
     public function getFeedback()
     {
-        return $this->settings->get('feedback');
+        return boolval($this->settings->get('feedback'));
     }
+
     public function getHelp()
     {
-        return $this->settings->get('help');
+        return boolval($this->settings->get('help'));
     }
+
     public function getCompactToolbar()
     {
-        return $this->settings->get('compactToolbar');
+        return boolval($this->settings->get('compactToolbar'));
+    }
+
+    public function getForceSave()
+    {
+        return boolval($this->settings->get('forceSave'));
     }
 
     public function getServerApiUrl(): string

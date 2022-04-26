@@ -168,12 +168,12 @@ class EditorWidget extends JsWidget
                     'name' => ($user) ? Html::encode($user->displayname) : 'Anonymous User',
                 ],
                 'customization' => [
-                    //'forcesave' => true,
-                    'chat' => boolval($module->getChat()),
-                    'compactHeader' => boolval($module->getCompactHeader()),
-                    'feedback' => boolval($module->getFeedback()),
-                    'help' => boolval($module->getHelp()),
-                    'compactToolbar' => boolval($module->getCompactToolbar()),
+                    'forcesave' => $module->getForceSave(),
+                    'chat' => $module->getChat(),
+                    'compactHeader' => $module->getCompactHeader(),
+                    'feedback' => $module->getFeedback(),
+                    'help' => $module->getHelp(),
+                    'compactToolbar' => $module->getCompactToolbar(),
                 ]
             ]
         ];

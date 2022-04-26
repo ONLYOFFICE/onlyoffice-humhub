@@ -164,19 +164,18 @@ class BackendController extends Controller
                             $this->file->getStore()->setContent($newData);
                         }
 
-                        if ($status != 'ForceSave') {
-                            $newAttr = [
-                                'onlyoffice_key' => new \yii\db\Expression('NULL'),
-                                'updated_at' => date("Y-m-d H:i:s"),
-                                'size' => strlen($newData),
-                            ];
-                            if (!empty($user)) $newAttr['updated_by'] = $user->getId();
+                        $newAttr = [
+                            'updated_at' => date("Y-m-d H:i:s"),
+                            'size' => strlen($newData),
+                        ];
 
-                            $this->file->updateAttributes($newAttr);
-                            //Yii::warning('Dosaved', 'onlyoffice');
-                        } else {
-                            //Yii::warning('ForceSaved', 'onlyoffice');
+                        if ($status != 'ForceSave') {
+                            $newAttr['onlyoffice_key'] = new \yii\db\Expression('NULL');
                         }
+
+                        if (!empty($user)) $newAttr['updated_by'] = $user->getId();
+                        $this->file->updateAttributes($newAttr);
+
                     } else {
                         throw new \Exception('Could not save onlyoffice document: ' . $data["url"]);
                     }
