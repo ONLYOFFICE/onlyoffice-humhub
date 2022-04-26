@@ -64,7 +64,7 @@ class Module extends \humhub\components\Module
      * @var string[] allowed for editing extensions
      */
     public $editableExtensions = ['xlsx', 'ppsx', 'pptx', 'docx', 'docxf', 'oform' ];
-    public $convertableExtensions = ['doc','odt','xls','ods','ppt','odp','txt','csv'];
+    public $convertableExtensions = ['doc','odt','xls','ods','ppt','odp','txt','csv', 'docxf'];
 
     
     public $convertsTo = [
@@ -76,6 +76,7 @@ class Module extends \humhub\components\Module
         'csv' => 'xlsx',
         'ppt' => 'pptx',
         'odp' => 'pptx',
+        'docxf' => 'oform'
     ];
     
     public $demoparam = [
@@ -271,7 +272,7 @@ class Module extends \humhub\components\Module
         }
     }
 
-    public function fileToConversion($file, $ts, $toExt = null, $async = true)
+    public function getDownloadUrl($file)
     {
         $key = $this->generateDocumentKey($file);
 
@@ -283,17 +284,12 @@ class Module extends \humhub\components\Module
 
         $docHash = $this->generateHash($key, $userGuid);
 
-        $fromExt = strtolower(FileHelper::getExtension($file));
-
         $downloadUrl = Url::to(['/onlyoffice/backend/download', 'doc' => $docHash], true);
         if (!empty($this->getStorageUrl())) {
             $downloadUrl = $this->getStorageUrl() . Url::to(['/onlyoffice/backend/download', 'doc' => $docHash], false);
         }
 
-        if(is_null($toExt))
-            $toExt = $this->convertsTo[$fromExt];
-
-        return $this->convertService($downloadUrl, $fromExt, $toExt, $key . $ts, $async);
+        return $downloadUrl;
     }
 
     public function convertService($documentUrl, $fromExt, $toExt, $key, $async = true): array

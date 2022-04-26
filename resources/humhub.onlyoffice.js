@@ -44,13 +44,25 @@ humhub.module('onlyoffice', function (module, require, $) {
 
     };
 
-
     Editor.prototype.share = function (evt) {
         m = modal.get('#onlyoffice-share-modal');
         m.load(evt.url);
         m.show();
     }
 
+    Editor.prototype.convert = function (evt) {
+        var that = this;
+        $.ajax({
+            type: "POST",
+            url: that.options.downloadPost,
+            success: function (data) {
+                if (data == null) {
+                    return;
+                }
+                location.href = data;
+            }
+        });
+    }
 
     Editor.prototype.close = function (evt) {
 

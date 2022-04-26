@@ -11,6 +11,8 @@ use Yii;
 use yii\web\HttpException;
 use humhub\modules\onlyoffice\components\BaseFileController;
 use \humhub\components\Module;
+use humhub\modules\file\libs\FileHelper;
+use humhub\modules\file\models\File;
 
 class ConvertController extends BaseFileController
 {
@@ -38,9 +40,7 @@ class ConvertController extends BaseFileController
 
     public function actionConvert($guid, $ts, $newName)
     {
-        Yii::$app->response->format = 'json';
-
-        $result = $this->module->fileToConversion($this->file, $ts);
+        $result = $this->conversion($this->file->onlyoffice_key . $ts, true);
 
         if (isset($result['endConvert']) && $result['endConvert']) {
             $this->saveFileReplace($result['fileUrl'], $newName);
@@ -49,7 +49,31 @@ class ConvertController extends BaseFileController
         return $result;
     }
 
-    private function saveFileReplace($url, $newName) {
+    public function actionDownload()
+    {
+        $result = $this->conversion($this->file->onlyoffice_key . time(), false);
+
+        if (isset($result['endConvert']) && $result['endConvert']) {
+            $file = $this->saveNewFile($result['fileUrl'], $result['fileType']);
+            $downloadUrl = $this->module->getDownloadUrl($file);
+            return $downloadUrl;
+        }
+    }
+
+    private function conversion($key, $async)
+    {
+        Yii::$app->response->format = 'json';
+
+        $fromExt = strtolower(FileHelper::getExtension($this->file));
+        $toExt = $this->module->convertsTo[$fromExt];
+
+        $downloadUrl = $this->module->getDownloadUrl($this->file);
+        $result = $this->module->convertService($downloadUrl, $fromExt, $toExt, $key, $async);
+        return $result;
+    }
+
+    private function saveFileReplace($url, $newName)
+    {
         $content = $this->module->request($url)->getContent();
 
         $this->file->store->setContent($content);
@@ -58,5 +82,19 @@ class ConvertController extends BaseFileController
             'size' => strlen($content),
             'file_name' => $newName
         ]);
+    }
+
+    private function saveNewFile($url, $newExt)
+    {
+        $newName = substr($this->file->fileName, 0, strpos($this->file->fileName, '.') + 1) . $newExt;
+        $content = $this->module->request($url)->getContent();
+
+        $file = new File();
+        $file->file_name = $newName;
+        $file->size = mb_strlen($content, '8bit');
+        $file->mime_type = $this->module->mimes['oform'];
+        $file->save();
+        $file->getStore()->setContent($content);
+        return $file;
     }
 }

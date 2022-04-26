@@ -29,6 +29,9 @@ if ($documentType === Module::DOCUMENT_TYPE_SPREADSHEET) {
         <?php if ($mode === Module::OPEN_MODE_EDIT && !Yii::$app->user->isGuest): ?>
             <?= humhub\libs\Html::a(Yii::t('OnlyofficeModule.base', 'Share'), '#', ['class' => 'btn btn btn-default', 'data-action-click' => 'share', 'data-action-block' => 'sync', 'data-action-url' => Url::to(['/onlyoffice/share', 'guid' => $file->guid, 'mode' => $mode])]); ?>
         <?php endif; ?>
+        <?php if (pathinfo($file->file_name, PATHINFO_EXTENSION) === 'docxf'): ?>
+            <?= humhub\libs\Html::a(Yii::t('OnlyofficeModule.base', 'Create form'), '#', ['class' => 'btn btn btn-default', 'data-action-click' => 'convert']); ?>
+        <?php endif; ?>
         <?= humhub\libs\Html::a(Yii::t('OnlyofficeModule.base', 'Close'), '#', ['class' => 'btn btn btn-default', 'data-ui-loader' => '', 'data-action-click' => 'close', 'data-action-block' => 'manual']); ?>
     </div>
 </div>

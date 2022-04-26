@@ -97,7 +97,8 @@ class EditorWidget extends JsWidget
             'edit-mode' => $this->mode,
             'file-info-url' => Url::to(['/onlyoffice/open/get-info', 'guid' => $this->file->guid]),
             'module-configured' => (empty($module->getServerUrl()) ? '0' : '1'),
-            'api' => $api
+            'api' => $api,
+            'download-post' => Url::to(['/onlyoffice/convert/download', 'guid' => $this->file->guid]),
         ];
     }
 
