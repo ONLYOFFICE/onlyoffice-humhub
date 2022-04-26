@@ -54,9 +54,10 @@ class ConvertController extends BaseFileController
         $result = $this->conversion($this->file->onlyoffice_key . time(), false);
 
         if (isset($result['endConvert']) && $result['endConvert']) {
-            $file = $this->saveNewFile($result['fileUrl'], $result['fileType']);
-            $downloadUrl = $this->module->getDownloadUrl($file);
-            return $downloadUrl;
+            return Yii::$app->response->redirect($result['fileUrl']);
+            // $file = $this->saveNewFile($result['fileUrl'], $result['fileType']);
+            // $downloadUrl = $this->module->getDownloadUrl($file);
+            // return Yii::$app->response->redirect($downloadUrl);
         }
     }
 

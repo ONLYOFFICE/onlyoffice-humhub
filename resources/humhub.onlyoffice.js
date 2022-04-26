@@ -55,11 +55,10 @@ humhub.module('onlyoffice', function (module, require, $) {
         $.ajax({
             type: "POST",
             url: that.options.downloadPost,
-            success: function (data) {
-                if (data == null) {
+            success: function (url) {
+                if (url == null) {
                     return;
                 }
-                location.href = data;
             }
         });
     }

@@ -19,13 +19,23 @@ class ConvertFileHandler extends BaseFileHandler
      */
     public function getLinkAttributes()
     {
-        return [
+        $attributes = [
             'label' => Yii::t('OnlyofficeModule.base', 'Convert document'),
             'data-action-url' => Url::to(['/onlyoffice/convert', 'guid' => $this->file->guid]),
             'data-action-click' => 'ui.modal.load',
             'data-modal-id' => 'onlyoffice-modal',
             'data-modal-close' => ''
         ];
+
+        if (pathinfo($this->file->file_name, PATHINFO_EXTENSION) === 'docxf') {
+            $attributes = [
+                'label' => Yii::t('OnlyofficeModule.base', 'Fill in form in ONLYOFFICE'),
+                'href' => Url::to(['/onlyoffice/convert/download', 'guid' => $this->file->guid]),
+                'target' => "_blank"
+            ];
+        }
+
+        return $attributes;
     }
 
 }
