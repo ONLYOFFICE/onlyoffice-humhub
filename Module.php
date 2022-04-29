@@ -548,7 +548,7 @@ class Module extends \humhub\components\Module
             case 6:
                 $errorMessage = "Invalid token";
                 break;
-            case 0:
+            case 0:case 4:
                 return;
             default:
                 $errorMessage = "ErrorCode = " . $errorCode;

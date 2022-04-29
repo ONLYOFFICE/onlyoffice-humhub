@@ -51,7 +51,13 @@ class ConvertController extends BaseFileController
 
     public function actionDownload()
     {
-        $result = $this->conversion($this->file->onlyoffice_key . time(), false);
+        $key = $this->module->generateDocumentKey($this->file);
+        $forcesave = $this->module->commandService(['c' => 'forcesave', 'key' => $key]);
+        if($forcesave['error'] !== 0 && $forcesave['error'] !== 4) {
+            throw new HttpException('400', 'Could not force save this file');
+        }
+
+        $result = $this->conversion($key . time(), false);
 
         if (isset($result['endConvert']) && $result['endConvert']) {
             return Yii::$app->response->redirect($result['fileUrl']);
