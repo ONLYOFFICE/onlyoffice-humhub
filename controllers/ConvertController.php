@@ -60,10 +60,9 @@ class ConvertController extends BaseFileController
         $result = $this->conversion($key . time(), false);
 
         if (isset($result['endConvert']) && $result['endConvert']) {
-            return Yii::$app->response->redirect($result['fileUrl']);
-            // $file = $this->saveNewFile($result['fileUrl'], $result['fileType']);
-            // $downloadUrl = $this->module->getDownloadUrl($file);
-            // return Yii::$app->response->redirect($downloadUrl);
+            $newName = substr($this->file->fileName, 0, strpos($this->file->fileName, '.') + 1) . $result['fileType'];
+            $url = preg_replace('/filename=.*/', 'filename=' . $newName, $result['fileUrl']);
+            return Yii::$app->response->redirect($url);
         }
     }
 
@@ -89,19 +88,5 @@ class ConvertController extends BaseFileController
             'size' => strlen($content),
             'file_name' => $newName
         ]);
-    }
-
-    private function saveNewFile($url, $newExt)
-    {
-        $newName = substr($this->file->fileName, 0, strpos($this->file->fileName, '.') + 1) . $newExt;
-        $content = $this->module->request($url)->getContent();
-
-        $file = new File();
-        $file->file_name = $newName;
-        $file->size = mb_strlen($content, '8bit');
-        $file->mime_type = $this->module->mimes['oform'];
-        $file->save();
-        $file->getStore()->setContent($content);
-        return $file;
     }
 }
