@@ -20,7 +20,6 @@ use humhub\modules\user\models\User;
 use humhub\components\Controller;
 use \humhub\components\Module;
 use humhub\modules\file\libs\FileHelper;
-use \Firebase\JWT\JWT;
 
 class BackendController extends Controller
 {
@@ -80,23 +79,6 @@ class BackendController extends Controller
      */
     public function actionDownload()
     {
-        if ($this->module->isJwtEnabled()) {
-            $header = Yii::$app->request->headers->get($this->module->getHeader());
-            if (!empty($header)) {
-                $token = substr($header, strlen('Bearer '));
-            }
-
-            if (empty($token)) {
-                throw new HttpException(403, 'Expected JWT');
-            }
-
-            try {
-                $ds = JWT::decode($token, $this->module->getJwtSecret(), array('HS256'));
-            } catch (\Exception $ex) {
-                throw new HttpException(403, 'Invalid JWT signature');
-            }
-        }
-
         return Yii::$app->response->sendFile($this->file->store->get(), $this->file->file_name);
     }
 
@@ -105,23 +87,6 @@ class BackendController extends Controller
      */
     public function actionEmptyFile()
     {
-        if ($this->module->isJwtEnabled()) {
-            $header = Yii::$app->request->headers->get($this->module->getHeader());
-            if (!empty($header)) {
-                $token = substr($header, strlen('Bearer '));
-            }
-
-            if (empty($token)) {
-                throw new HttpException(403, 'Expected JWT');
-            }
-
-            try {
-                $ds = JWT::decode($token, $this->module->getJwtSecret(), array('HS256'));
-            } catch (\Exception $ex) {
-                throw new HttpException(403, 'Invalid JWT signature');
-            }
-        }
-
         return Yii::$app->response->sendFile($this->module->getAssetPath() . '/templates/en-US/new.docx');
     }
 
@@ -146,29 +111,6 @@ class BackendController extends Controller
         $data = json_decode($body_stream, TRUE); //json_decode - PHP 5 >= 5.2.0
         if ($data === NULL) {
             throw new HttpException(400, 'Could not parse json');
-        }
-
-        if ($this->module->isJwtEnabled()) {
-            $token = null;
-            if (!empty($data["token"])) {
-                $token = $data["token"];
-            } else {
-                $header = Yii::$app->request->headers->get($this->module->getHeader());
-                if (!empty($header)) {
-                    $token = substr($header, strlen('Bearer '));
-                }
-            }
-
-            if (empty($token)) {
-                throw new HttpException(403, 'Expected JWT');
-            }
-
-            try {
-                $ds = JWT::decode($token, $this->module->getJwtSecret(), array('HS256'));
-                $data = isset($ds->payload) ? (array)$ds->payload : (array)$ds;
-            } catch (\Exception $ex) {
-                throw new HttpException(403, 'Invalid JWT signature');
-            }
         }
 
         //Yii::warning('Tracking request for file ' . $this->file->guid . ' - data: ' . print_r($data, 1), 'onlyoffice');
