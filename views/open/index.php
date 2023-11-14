@@ -5,6 +5,8 @@
  *  http://www.onlyoffice.com
  */
 
+use humhub\libs\Html;
+
 ?>
 <div class="modal-dialog animated fadeIn" style="width:96%">
     <div class="modal-content onlyofficeModal" style="background-color:transparent;">
@@ -17,7 +19,7 @@
         ?>
     </div>
 </div>
-<script>
+<script <?= Html::nonce() ?>>
     window.onload = function (evt) {
         setSize();
     }
