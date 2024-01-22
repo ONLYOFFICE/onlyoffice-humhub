@@ -1,5 +1,9 @@
 # Change Log
 
+##
+## Added
+- sr-Cyrl-RS, ar-SA and sr-Latn-RS empty file templates
+
 ## 3.1.0
 ## Changed
 - HumHub 1.15 compatibility
