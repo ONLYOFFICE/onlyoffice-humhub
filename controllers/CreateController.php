@@ -26,7 +26,7 @@ class CreateController extends \humhub\components\Controller
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             [ControllerAccess::RULE_PERMISSION => [CanUseOnlyOffice::class]],
