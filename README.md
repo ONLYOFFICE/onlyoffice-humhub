@@ -1,4 +1,4 @@
-# HumHub ONLYOFFICE integration plugin
+# ONLYOFFICE module for HumHub
 
 This plugin enables users to edit office documents from [HumHub](https://www.humhub.com/) using ONLYOFFICE Docs packaged as Document Server - [Community or Enterprise Edition](#onlyoffice-docs-editions).
 
@@ -28,11 +28,11 @@ To install Enterprise Edition, follow instructions [here](https://helpcenter.onl
 
 Community Edition vs Enterprise Edition comparison can be found [here](#onlyoffice-docs-editions).
 
-## Installing HumHub ONLYOFFICE integration plugin
+## Installing ONLYOFFICE module for HumHub
 
 Either install it from [HumHub Marketplace](https://marketplace.humhub.com/module/onlyoffice) or simply clone the repository inside one of the folder specified by `moduleAutoloadPaths` parameter. Please see [HumHub Documentation](https://docs.humhub.org/docs/develop/environment#module-loader-path) for more information.
 
-## Configuring HumHub CONLYOFFICE integration plugin
+## Configuring ONLYOFFICE module for HumHub
 
 Navigate to `Administration` -> `Modules` find the plugin under Installed tab and click `Configure`.
 
