@@ -1,5 +1,9 @@
 # Change Log
 
+##
+## Added
+- support hwp, hwpx, pages, numbers, key formats
+
 ## 3.2.0
 ## Added
 - default empty templates
