@@ -48,16 +48,16 @@ $modal = \humhub\widgets\ModalDialog::begin([
         text-decoration: none;
     }    
     .try-editor.document {
-        background-image: url("<?= $this->context->module->getPublishedUrl('/file_docx.png'); ?>");
+        background-image: url("<?= $this->context->module->getPublishedUrl('/file_docx.svg'); ?>");
     }
     .try-editor.spreadsheet {
-        background-image: url("<?= $this->context->module->getPublishedUrl('/file_xlsx.png'); ?>");
+        background-image: url("<?= $this->context->module->getPublishedUrl('/file_xlsx.svg'); ?>");
     }
     .try-editor.presentation {
-        background-image: url("<?= $this->context->module->getPublishedUrl('/file_pptx.png'); ?>");
+        background-image: url("<?= $this->context->module->getPublishedUrl('/file_pptx.svg'); ?>");
     }
     .try-editor.form-template {
-        background-image: url("<?= $this->context->module->getPublishedUrl('/file_docxf.png'); ?>");
+        background-image: url("<?= $this->context->module->getPublishedUrl('/file_pdf.svg'); ?>");
     }
 </style>
 <div class="modal-body">
