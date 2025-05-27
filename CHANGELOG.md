@@ -4,6 +4,9 @@
 ## Added
 - support hwp, hwpx, pages, numbers, key formats
 
+## Changed
+- URL for requests to Conversion API
+
 ## 3.2.0
 ## Added
 - default empty templates
