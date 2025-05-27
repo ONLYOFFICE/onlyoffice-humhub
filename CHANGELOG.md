@@ -3,6 +3,7 @@
 ##
 ## Added
 - support hwp, hwpx, pages, numbers, key formats
+- shardKey param to url for requests to Docs API and Conversion API
 
 ## Changed
 - URL for requests to Conversion API
