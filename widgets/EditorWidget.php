@@ -96,7 +96,8 @@ class EditorWidget extends JsWidget
         $api = [
             'sendNotifyUrl' => Url::to(['/onlyoffice/api/send-notify'], true),
             'makeAnchorUrl' => Url::to(['/onlyoffice/api/make-anchor'], true),
-            'saveasUrl' => Url::to(['/onlyoffice/api/saveas'], true)
+            'saveasUrl' => Url::to(['/onlyoffice/api/saveas'], true),
+            'serverApiUrl' => $module->getServerApiUrl()
         ];
 
         if (!Yii::$app->user->isGuest) {

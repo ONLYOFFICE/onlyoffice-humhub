@@ -74,6 +74,28 @@ humhub.module('onlyoffice', function (module, require, $) {
     }
 
     Editor.prototype.initEditor = function () {
+        var that = this;
+        var shardKey = '';
+
+        if (this.options?.config?.document?.key) {
+            shardKey = '?shardKey=' + encodeURIComponent(this.options.config.document.key);
+        }
+        var scriptSrc = this.options.api.serverApiUrl + shardKey;
+
+        if (!window.DocsAPI && !document.getElementById('onlyoffice-docsapi-script')) {
+            var script = document.createElement('script');
+            script.id = 'onlyoffice-docsapi-script';
+            script.src = scriptSrc;
+            script.onload = function () {
+                that.initEditor();
+            };
+            script.onerror = function () {
+                module.log.error('Could not onlyoffice document editor.', true);
+            };
+            document.head.appendChild(script);
+            return;
+        }
+
         if (!window.DocsAPI) {
             ooJSLoadRetries++;
             if (ooJSLoadRetries < 100) {
