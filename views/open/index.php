@@ -23,6 +23,11 @@ use yii\web\View;
 </div>
 
 <?php
+    if (!empty($serverApiUrl)) {
+        $this->registerJsFile($serverApiUrl, [
+            'position' => \yii\web\View::POS_HEAD,
+        ]);
+    }
     View::registerJs('
         window.onload = function (evt) {
             setSize();
