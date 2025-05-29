@@ -3,6 +3,7 @@
 ##
 ## Added
 - support hwp, hwpx, pages, numbers, key formats
+- toolbar no tabs settings
 
 ## Changed
 - URL for requests to Conversion API
