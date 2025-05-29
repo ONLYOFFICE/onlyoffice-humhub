@@ -27,6 +27,7 @@ class ConfigureForm extends \yii\base\Model
     public $feedback;
     public $help;
     public $compactToolbar;
+    public $toolbarNoTabs;
     public $customLabel;
     public $forceSave;
 
@@ -53,6 +54,7 @@ class ConfigureForm extends \yii\base\Model
             ['feedback', 'boolean'],
             ['help', 'boolean'],
             ['compactToolbar', 'boolean'],
+            ['toolbarNoTabs', 'boolean'],
             ['forceSave', 'boolean'],
             ['forceEditTypes', 'string'],
         ];
@@ -109,6 +111,10 @@ class ConfigureForm extends \yii\base\Model
                 'Display Help menu button'
             ),
             'compactToolbar' => Yii::t(
+                'OnlyofficeModule.base',
+                'Display the toolbar more compact'
+            ),
+            'toolbarNoTabs' => Yii::t(
                 'OnlyofficeModule.base',
                 'Display monochrome toolbar header'
             ),
@@ -176,6 +182,7 @@ class ConfigureForm extends \yii\base\Model
         $this->feedback = (bool)Yii::$app->getModule('onlyoffice')->settings->get('feedback');
         $this->help = (bool)Yii::$app->getModule('onlyoffice')->settings->get('help');
         $this->compactToolbar = (bool)Yii::$app->getModule('onlyoffice')->settings->get('compactToolbar');
+        $this->toolbarNoTabs = (bool)Yii::$app->getModule('onlyoffice')->settings->get('toolbarNoTabs');
         $this->forceSave = (bool)Yii::$app->getModule('onlyoffice')->settings->get('forceSave');
         $this->forceEditTypes = $this->deserializeForceEditTypes();
 
@@ -199,6 +206,7 @@ class ConfigureForm extends \yii\base\Model
         Yii::$app->getModule('onlyoffice')->settings->set('feedback', $this->feedback);
         Yii::$app->getModule('onlyoffice')->settings->set('help', $this->help);
         Yii::$app->getModule('onlyoffice')->settings->set('compactToolbar', $this->compactToolbar);
+        Yii::$app->getModule('onlyoffice')->settings->set('toolbarNoTabs', $this->toolbarNoTabs);
         Yii::$app->getModule('onlyoffice')->settings->set('forceSave', $this->forceSave);
         Yii::$app->getModule('onlyoffice')->settings->set("forceEditTypes", $this->serializeForceEditTypes());
 

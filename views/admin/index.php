@@ -96,6 +96,7 @@ use yii\web\View;
             <?= $form->field($model, 'feedback')->checkbox(); ?>
             <?= $form->field($model, 'help')->checkbox(); ?>
             <?= $form->field($model, 'compactToolbar')->checkbox(); ?>
+            <?= $form->field($model, 'toolbarNoTabs')->checkbox(); ?>
         </div>
 
         <div id="forceEditTypes" class="form-group">
@@ -186,6 +187,7 @@ use yii\web\View;
                 var feedback = $("#configureform-feedback").prop("checked") ? 1 : 0;
                 var help = $("#configureform-help").prop("checked") ? 1 : 0;
                 var compactToolbar = $("#configureform-compacttoolbar").prop("checked") ? 1 : 0;
+                var toolbarNoTabs = $("#configureform-toolbarnotabs").prop("checked") ? 1 : 0;
 
                 var forceEditTypes = {};
                 var forceEditTypesNodes = $("#forceEditTypes").find("input[type=checkbox]");
@@ -213,6 +215,7 @@ use yii\web\View;
                             feedback: feedback,
                             help: help,
                             compactToolbar: compactToolbar,
+                            toolbarNoTabs: toolbarNoTabs,
                             forceEditTypes: forceEditTypes
                         }
                     },

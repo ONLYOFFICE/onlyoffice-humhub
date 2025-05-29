@@ -206,6 +206,7 @@ class EditorWidget extends JsWidget
                     'feedback' => $module->getFeedback(),
                     'help' => $module->getHelp(),
                     'compactToolbar' => $module->getCompactToolbar(),
+                    'toolbarNoTabs' => $module->getToolbarNoTabs(),
                 ]
             ]
         ];

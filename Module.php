@@ -243,6 +243,11 @@ class Module extends \humhub\components\Module
         return boolval($this->settings->get('compactToolbar'));
     }
 
+    public function getToolbarNoTabs()
+    {
+        return boolval($this->settings->get('toolbarNoTabs'));
+    }
+
     public function getForceSave()
     {
         return boolval($this->settings->get('forceSave'));
