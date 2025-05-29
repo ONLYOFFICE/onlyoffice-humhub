@@ -71,4 +71,5 @@ return [
     'Keep intermediate versions when editing (forcesave)' => 'Хранить промежуточные версии при редактировании (принудительное сохранение)',
     'Authorization header' => 'Заголовок авторизации',
     'Leave blank to use default header' => 'Оставьте пустым, чтобы использовать заголовок по умолчанию',
+    'Display the toolbar more compact' => 'Отображать панель инструментов более компактно',
 ];
