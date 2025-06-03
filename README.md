@@ -38,11 +38,11 @@ Navigate to `Administration` -> `Modules` find the plugin under Installed tab an
 
 Starting from version 7.2, JWT is enabled by default and the secret key is generated automatically to restrict the access to ONLYOFFICE Docs and for security reasons and data integrity. 
 Specify your own **JWT Secret** on the HumHub configuration page. 
-In the ONLYOFFICE Docs [config file](https://api.onlyoffice.com/editors/signature/), specify the same secret key and enable the validation.
+In the ONLYOFFICE Docs [config file](https://api.onlyoffice.com/docs/docs-api/additional-api/signature/), specify the same secret key and enable the validation.
 
 ## How it works
 
-The ONLYOFFICE integration follows the API documented [here](https://api.onlyoffice.com/editors/basic):
+The ONLYOFFICE integration follows the API documented [here](https://api.onlyoffice.com/docs/docs-api/get-started/basic-concepts/):
 
 * When creating a new file, the user will be provided with Document, Spreadsheet or Presentation options in the `Create document` menu.
 
@@ -71,7 +71,7 @@ The ONLYOFFICE integration follows the API documented [here](https://api.onlyoff
 
 * When all users and client browsers are done with editing, they close the editing window.
 
-* After [10 seconds](https://api.onlyoffice.com/editors/save#savedelay) of inactivity, ONLYOFFICE Document Server sends a POST to the _callbackUrl_ letting HumHub know that the clients have finished editing the document and closed it.
+* After [10 seconds](https://api.onlyoffice.com/docs/docs-api/get-started/how-it-works/saving-file/#save-delay) of inactivity, ONLYOFFICE Document Server sends a POST to the _callbackUrl_ letting HumHub know that the clients have finished editing the document and closed it.
 
 * HumHub downloads the new version of the document, replacing the old one.
 
