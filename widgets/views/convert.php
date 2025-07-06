@@ -5,33 +5,31 @@
  *  http://www.onlyoffice.com
  */
 
-use humhub\libs\Html;
-use humhub\widgets\ModalDialog;
+use humhub\helpers\Html;
+use humhub\modules\onlyoffice\assets\Assets;
+use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 
-\humhub\modules\onlyoffice\assets\Assets::register($this);
+Assets::register($this);
 ?>
 
-<?php $modal = ModalDialog::begin(['header' => Yii::t('OnlyofficeModule.base', '<strong>Convert</strong> document')]) ?>
-<?= Html::beginTag('div', $options) ?>
+<?php Modal::beginDialog([
+    'title' => Yii::t('OnlyofficeModule.base', '<strong>Convert</strong> document'),
+    'footer' => ModalButton::cancel(Yii::t('base', 'Close')),
+]) ?>
 
-<div class="modal-body">
-    <span>
-        <?= Yii::t(
-            'OnlyofficeModule.base',
-            'Converting <strong>{oldFileName}</strong> to <strong>{newFileName}</strong>..',
-            ['oldFileName' => $file->fileName, 'newFileName' => $newName]
-        ); ?>
-    </span>
-    <br/>
-    <span id="oConvertMessage"></span>
+    <?= Html::beginTag('div', $options) ?>
 
-</div>
+        <span>
+            <?= Yii::t(
+                'OnlyofficeModule.base',
+                'Converting <strong>{oldFileName}</strong> to <strong>{newFileName}</strong>..',
+                ['oldFileName' => $file->fileName, 'newFileName' => $newName]
+            ); ?>
+        </span>
+        <br/>
+        <span id="oConvertMessage"></span>
 
-<div class="modal-footer">
-    <a href="#" data-modal-close class="btn btn-primary" data-action-click="close" data-ui-loader>
-        <?= Yii::t('OnlyofficeModule.base', 'Close'); ?>
-    </a>
-</div>
+    <?= Html::endTag('div'); ?>
 
-<?= Html::endTag('div'); ?>
-<?php ModalDialog::end(); ?>
+<?php Modal::endDialog() ?>

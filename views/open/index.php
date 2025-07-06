@@ -1,38 +1,31 @@
 <?php
-
 /**
  *  Copyright (c) Ascensio System SIA 2024. All rights reserved.
  *  http://www.onlyoffice.com
  */
 
-use yii\web\View;
+use humhub\components\View;
+use humhub\modules\file\models\File;
+use humhub\modules\onlyoffice\widgets\EditorWidget;
+use humhub\widgets\modal\Modal;
 
+/**
+ * @var $file File
+ * @var $this View
+ */
+
+// Force modal full height
+$this->registerCss('#onlyoffice-modal .modal-content {height: calc(100vh - 90px); background-color:transparent; box-shadow: none;}');
 ?>
 
-<div class="modal-dialog animated fadeIn" style="width:96%">
-    <div class="modal-content onlyofficeModal" style="background-color:transparent;">
-        <?=
-        \humhub\modules\onlyoffice\widgets\EditorWidget::widget([
-            'file' => $file,
-            'mode' => $mode,
-            'restrict' => $restrict,
-            'anchor' => $anchor
-        ]);
-        ?>
-    </div>
-</div>
-
-<?php
-    View::registerJs('
-        window.onload = function (evt) {
-            setSize();
-        };
-        window.onresize = function (evt) {
-            setSize();
-        };
-        setSize();
-
-        function setSize() {
-            $(".onlyofficeModal").css("height", window.innerHeight - 110 + "px");
-        }
-    '); ?>
+<?php Modal::beginDialog([
+    'size' => Modal::SIZE_EXTRA_LARGE,
+    'closeButton' => false,
+]) ?>
+    <?= EditorWidget::widget([
+        'file' => $file,
+        'mode' => $mode,
+        'restrict' => $restrict,
+        'anchor' => $anchor,
+    ]) ?>
+<?php Modal::endDialog() ?>
