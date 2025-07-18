@@ -1,5 +1,9 @@
 # Change Log
 
+##
+## Changed
+- Migration to Bootstrap 5 for HumHub 1.18
+
 ## 3.2.0
 ## Added
 - default empty templates
