@@ -14,6 +14,11 @@ use humhub\widgets\modal\Modal;
  * @var $this View
  */
 
+if (!empty($serverApiUrl)) {
+    $this->registerJsFile($serverApiUrl, [
+        'position' => \yii\web\View::POS_HEAD,
+    ]);
+}
 // Force modal full height
 $this->registerCss('#onlyoffice-modal .modal-content {height: calc(100vh - 90px); background-color:transparent; box-shadow: none;}');
 ?>

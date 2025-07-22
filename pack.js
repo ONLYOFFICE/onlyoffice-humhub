@@ -5,8 +5,8 @@ var readme = fs.readFileSync("README.md").toString();
 var regex = /^([#]+) (.*)/gm;
 
 var mappings = {
-    "README.md": ["# HumHub ONLYOFFICE integration plugin", "## Features"],
-    "INSTALLATION.md": ["## Installing ONLYOFFICE Docs", "## Installing HumHub ONLYOFFICE integration plugin", "## Configuring HumHub CONLYOFFICE integration plugin"],
+    "README.md": ["# ONLYOFFICE module for HumHub", "## Features"],
+    "INSTALLATION.md": ["## Installing ONLYOFFICE Docs", "## Installing ONLYOFFICE module for HumHub", "## Configuring ONLYOFFICE module for HumHub"],
     "DEVELOPER.md": ["## How it works"],
     "MANUAL.md": []
 }

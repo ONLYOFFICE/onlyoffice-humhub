@@ -1,7 +1,15 @@
 # Change Log
 
 ##
+## Added
+- diagram documentType for vsdx, vssx, vstx, vsdm, vssm, vstm
+- view odg, md
+- edit xlsb
+- support hwp, hwpx, pages, numbers, key formats
+- shardKey param to url for requests to Docs API and Conversion API
+
 ## Changed
+- URL for requests to Conversion API
 - Migration to Bootstrap 5 for HumHub 1.18
 
 ## 3.2.0

@@ -100,14 +100,17 @@ use yii\web\View;
 
         <div id="forceEditTypes" class="mb-3">
             <?= Html::activeLabel($model, 'editLabel', ['class' => 'control-label']); ?>
-            <br/>
-            <?php foreach ($forceEditExt as $key => $ext) {
-                echo $form->field(
-                    $model,
-                    'forceEditTypes[' . $ext . ']',
-                    ['options' => ['class' => 'checkbox-inline']]
-                )->checkbox(['label' => $ext]);
-            } ?>
+            <div class="row">
+                <?php foreach ($forceEditExt as $key => $ext) {
+                    echo '<div class="col-md-2 col-sm-3 col-xs-4">';
+                    echo $form->field(
+                        $model,
+                        'forceEditTypes[' . $ext . ']',
+                        ['options' => ['class' => 'checkbox']]
+                    )->checkbox(['label' => $ext]);
+                    echo '</div>';
+                } ?>
+            </div>
         </div>
 
         <div class="mb-3">

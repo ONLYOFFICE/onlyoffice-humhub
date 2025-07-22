@@ -30,7 +30,6 @@ class Assets extends AssetBundle
     {
 
         $this->js = [
-            Yii::$app->getModule('onlyoffice')->getServerApiUrl(),
             'humhub.onlyoffice.js'
         ];
 

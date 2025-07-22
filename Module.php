@@ -397,7 +397,7 @@ class Module extends \humhub\components\Module
 
     public function convertService($documentUrl, $fromExt, $toExt, $key, $async = true): array
     {
-        $url = $this->getInternalServerUrl() . '/ConvertService.ashx';
+        $url = $this->getInternalServerUrl() . '/converter' . '?shardKey=' . $key;
 
         $user = Yii::$app->user->getIdentity();
         $lang = ($user) && !empty($user->language) ? $user->language : Yii::$app->language;
@@ -631,7 +631,9 @@ class Module extends \humhub\components\Module
         "ar" => "ar-SA",
         "az" => "az-Latn-AZ",
         "bg" => "bg-BG",
+        "ca" => "ca-ES",
         "cs" => "cs-CZ",
+        "da" => "da-DK",
         "de" => "de-DE",
         "el" => "el-GR",
         "en_GB" => "en-GB",
@@ -640,6 +642,8 @@ class Module extends \humhub\components\Module
         "eu" => "eu-ES",
         "fi" => "fi-FI",
         "fr" => "fr-FR",
+        "hu" => "hu-HU",
+        "id" => "id-ID",
         "it" => "it-IT",
         "ja" => "ja-JP",
         "he" => "he-IL",
@@ -650,7 +654,9 @@ class Module extends \humhub\components\Module
         "pl" => "pl-PL",
         "pt_BR" => "pt-BR",
         "pt" => "pt-PT",
+        "ro" => "ro-RO",
         "ru" => "ru-RU",
+        "sq" => "sq-AL",
         "sk" => "sk-SK",
         "sl" => "sl-SI",
         "sr" => "sr-Cyrl-RS",
