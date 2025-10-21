@@ -70,4 +70,5 @@ return [
     'Keep intermediate versions when editing (forcesave)' => 'Zwischenversionen bei der Bearbeitung aufbewahren (force save)',
     'Authorization header' => 'Authorization-Header',
     'Leave blank to use default header' => 'Leer lassen, um die standardmäßige Kopfzeile zu verwenden',
+	'Please select a document type.' => 'Bitte wähle einen Dokumenttyp aus.',
 ];
