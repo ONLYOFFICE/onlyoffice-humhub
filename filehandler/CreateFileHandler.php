@@ -13,9 +13,9 @@
 
 namespace humhub\modules\onlyoffice\filehandler;
 
+use humhub\modules\file\handler\BaseFileHandler;
 use Yii;
 use yii\helpers\Url;
-use humhub\modules\file\handler\BaseFileHandler;
 
 /**
  * Description of ViewHandler
@@ -34,12 +34,12 @@ class CreateFileHandler extends BaseFileHandler
             'label' => Yii::t(
                 'OnlyofficeModule.base',
                 '<img style="height: 14px; margin-right: 5px;" src="' . $baseUrl .
-                '"/>Create document <small>(Text, Spreadsheet, Presentation, PDF form)</small>'
+                '"/>Create document <small>(Text, Spreadsheet, Presentation, PDF form)</small>',
             ),
             'data-action-url' => Url::to(['/onlyoffice/create']),
             'data-action-click' => 'ui.modal.load',
             'data-modal-id' => 'onlyoffice-modal',
-            'data-modal-close' => ''
+            'data-modal-close' => '',
         ];
     }
 }
