@@ -39,6 +39,7 @@ return [
     '<strong>ONLYOFFICE Docs</strong> invalid JWT token.' => '<strong>ONLYOFFICE Docs</strong> ungültiges JWT-Token.',
     'Convert document' => 'Dokument konvertieren',
     'Converting <strong>{oldFileName}</strong> to <strong>{newFileName}</strong>..' => 'Konvertieren <strong>{oldFileName}</strong> zu <strong>{newFileName}</strong>..',
+    'Create file <small>(Text, Spreadsheet, Presentation, PDF form)</small>' => 'Datei erstellen <small>(Text, Tabellenkalkulation, Präsentation, PDF-Formular)</small>',
     'Done!' => 'Fertig!',
     'Edit document' => 'Dokument bearbeiten',
     'Error:' => 'Fehler:',
@@ -69,4 +70,5 @@ return [
     'Keep intermediate versions when editing (forcesave)' => 'Zwischenversionen bei der Bearbeitung aufbewahren (force save)',
     'Authorization header' => 'Authorization-Header',
     'Leave blank to use default header' => 'Leer lassen, um die standardmäßige Kopfzeile zu verwenden',
+    'Please select a document type.' => 'Bitte wählen Sie einen Dokumenttyp aus.',
 ];
