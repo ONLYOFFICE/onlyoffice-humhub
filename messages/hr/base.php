@@ -38,7 +38,6 @@ return [
     '<strong>ONLYOFFICE Docs</strong> invalid JWT token.' => '<strong>ONLYOFFICE Docs</strong> nevažeći JWT token',
     'Convert document' => 'Pretvori dokument',
     'Converting <strong>{oldFileName}</strong> to <strong>{newFileName}</strong>..' => 'Pretvaranje <strong>{oldFileName}</strong> u <strong>{newFileName}</strong>..',
-    'Create document <small>(Text, Spreadsheet, Presentation)</small>' => 'Kreiraj dokument <small>(Tekst, Proračunska tablica, Prezentacija)</small>',
     'Done!' => 'Gotovo!',
     'Edit document' => 'Uredi dokument',
     'Error:' => 'Greška:',

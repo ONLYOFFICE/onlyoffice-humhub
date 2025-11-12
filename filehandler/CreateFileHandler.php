@@ -34,7 +34,7 @@ class CreateFileHandler extends BaseFileHandler
             'label' => Yii::t(
                 'OnlyofficeModule.base',
                 '<img style="height: 14px; margin-right: 5px;" src="' . $baseUrl .
-                '"/>Create document <small>(Text, Spreadsheet, Presentation, PDF form)</small>',
+                '"/>Create file <small>(Text, Spreadsheet, Presentation, PDF form)</small>',
             ),
             'data-action-url' => Url::to(['/onlyoffice/create']),
             'data-action-click' => 'ui.modal.load',

@@ -39,7 +39,6 @@ return [
     '<strong>ONLYOFFICE - Docs</strong> module configuration' => '<strong>ONLYOFFICE - Docs</strong>模块配置',
     'Convert document' => '转换文件',
     'Converting <strong>{oldFileName}</strong> to <strong>{newFileName}</strong>..' => '正在将 <strong>{oldFileName}</strong> 转换成 <strong>{newFileName}</strong>..',
-    'Create document <small>(Text, Spreadsheet, Presentation)</small>' => '创建文件</small>（文本文档、电子表格、演示文稿）</small>',
     'Done!' => '完成了！',
     'Edit document' => '编辑文件',
     'Error:' => '错误：',

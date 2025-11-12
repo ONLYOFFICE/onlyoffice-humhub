@@ -39,7 +39,6 @@ return [
     '<strong>ONLYOFFICE Docs</strong> invalid JWT token.' => '<strong>ONLYOFFICE Docs</strong> érvénytelen JWT  jelkép.',
     'Convert document' => 'Dokumentum konvertálása',
     'Converting <strong>{oldFileName}</strong> to <strong>{newFileName}</strong>..' => '<strong>{oldFileName}</strong> konvertálása <strong>{newFileName}</strong>-re..',
-    'Create document <small>(Text, Spreadsheet, Presentation)</small>' => 'Dokumentum készítése <small>(Szöveg,  Táblázatkezelő, Prezentáció)</small>',
     'Done!' => 'Kész!',
     'Edit document' => 'Dokumentum szerkesztése',
     'Error:' => 'Hiba:',

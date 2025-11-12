@@ -34,7 +34,6 @@ return [
     '<strong>ONLYOFFICE Docs</strong> invalid JWT token.' => '<strong>ONLYOFFICE Docs</strong> mã JWT không hợp lệ.',
     'Convert document' => 'Chuyển đổi tài liệu',
     'Converting <strong>{oldFileName}</strong> to <strong>{newFileName}</strong>..' => 'Chuyển đổi <strong>{oldFileName}</strong> thành <strong>{newFileName}</strong>..',
-    'Create document <small>(Text, Spreadsheet, Presentation)</small>' => 'Tạo tài liệu <small>(Văn bản, Bảng tính, Thuyết trình)</small>',
     'Done!' => 'Hoàn tất!',
     'Edit document' => 'Chỉnh sửa Tài liệu',
     'Error:' => 'Lỗi:',

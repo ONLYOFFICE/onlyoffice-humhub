@@ -39,7 +39,6 @@ return [
     '<strong>ONLYOFFICE Docs</strong> invalid JWT token.' => '<strong>ONLYOFFICE Docs</strong> virheellinen JWT-tunnus.',
     'Convert document' => 'Muunna tiedosto',
     'Converting <strong>{oldFileName}</strong> to <strong>{newFileName}</strong>..' => 'Muunnetaan <strong>{oldFileName}</strong> tiedostoksi <strong>{newFileName}</strong>..',
-    'Create document <small>(Text, Spreadsheet, Presentation)</small>' => 'Tee tiedosto <small>(Teksti, Laskutaulukko, Esitys)</small>',
     'Done!' => 'Tehty!',
     'Edit document' => 'Muokkaa tiedostoa',
     'Error:' => 'Virhe:',

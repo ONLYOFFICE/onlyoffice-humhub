@@ -39,7 +39,6 @@ return [
     '<strong>ONLYOFFICE Docs</strong> invalid JWT token.' => 'Token JWT no válido de <strong>ONLYOFFICE Docs</strong>',
     'Convert document' => 'Convertir documento',
     'Converting <strong>{oldFileName}</strong> to <strong>{newFileName}</strong>..' => 'Convirtiendo <strong>{oldFileName}</strong> en <strong>{newFileName}</strong>..',
-    'Create document <small>(Text, Spreadsheet, Presentation)</small>' => 'Crear documento <small>(Texto, Hoja de Cálculo, Presentación)</small>',
     'Done!' => '¡Hecho!',
     'Edit document' => 'Editar documento',
     'Error:' => 'Error:',

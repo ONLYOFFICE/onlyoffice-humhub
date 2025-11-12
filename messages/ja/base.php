@@ -39,7 +39,6 @@ return [
     '<strong>ONLYOFFICE - Docs</strong> module configuration' => '<strong>ONLYOFFICE - Docs</strong>のモジュール構成',
     'Convert document' => '文書を変換する',
     'Converting <strong>{oldFileName}</strong> to <strong>{newFileName}</strong>..' => '<strong>{oldFileName}</strong> を<strong>{newFileName}</strong>に変換する',
-    'Create document <small>(Text, Spreadsheet, Presentation)</small>' => '文書を作成する<small>（テキスト・スプレッドシート・プレゼンテーション）</small>',
     'Done!' => '完遂した！',
     'Edit document' => '文書を編集する',
     'Error:' => 'エラー',

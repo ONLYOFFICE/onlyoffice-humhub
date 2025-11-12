@@ -39,7 +39,7 @@ return [
     '<strong>ONLYOFFICE Docs</strong> invalid JWT token.' => 'Недопустимый JWT-токен <strong>ONLYOFFICE Docs</strong>.',
     'Convert document' => 'Конвертировать документ',
     'Converting <strong>{oldFileName}</strong> to <strong>{newFileName}</strong>..' => 'Конвертация <strong>{oldFileName}</strong> в <strong>{newFileName}</strong>..',
-    'Create document <small>(Text, Spreadsheet, Presentation, PDF form)</small>' => 'Создать документ <small>(Текстовый, Таблица, Презентация, PDF форму)</small>',
+    'Create file <small>(Text, Spreadsheet, Presentation, PDF form)</small>' => 'Создать файл <small>(Текстовый, Таблица, Презентация, PDF форму)</small>',
     'Done!' => 'Готово!',
     'Edit document' => 'Редактировать документ',
     'Error:' => 'Ошибка:',
