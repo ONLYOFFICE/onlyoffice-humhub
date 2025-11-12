@@ -32,7 +32,10 @@ $modal = \humhub\widgets\ModalDialog::begin([
 
 <div class="modal-footer">
     <?= Html::submitButton(
-        'Save',
+        Yii::t(
+            'OnlyofficeModule.base',
+            'Save'
+            ),
         ['data-action-click' => 'onlyoffice.createSubmit',
             'data-ui-loader' => '',
             'class' => 'btn btn-primary'

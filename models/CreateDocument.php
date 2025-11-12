@@ -43,6 +43,7 @@ class CreateDocument extends Model
     public function attributeLabels()
     {
         return [
+            'fileName' => Yii::t('OnlyofficeModule.base', 'File Name'),
             'openFlag' => Yii::t('OnlyofficeModule.base', 'Open the new document in the next step')
         ];
     }
