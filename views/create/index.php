@@ -57,7 +57,7 @@ use yii\helpers\Url;
             background-image: url("<?= $this->context->module->getPublishedUrl('/file_pptx.svg'); ?>");
         }
         .try-editor.form-template {
-            background-image: url("<?= $this->context->module->getPublishedUrl('/file_docxf.svg'); ?>");
+            background-image: url("<?= $this->context->module->getPublishedUrl('/file_pdf.svg'); ?>");
         }
     </style>
 
