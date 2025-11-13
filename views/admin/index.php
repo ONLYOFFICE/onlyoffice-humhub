@@ -116,7 +116,7 @@ use yii\web\View;
         <div class="form-group">
             <?= Html::Button(
                 Yii::t(
-                    'base',
+                    'OnlyofficeModule.base',
                     'Submit'
                 ),
                 ['id' => 'saveBtn', 'class' => 'btn btn-primary', 'data-ui-loader' => '']
