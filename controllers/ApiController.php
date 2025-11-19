@@ -15,6 +15,7 @@ namespace humhub\modules\onlyoffice\controllers;
 
 use Yii;
 use Exception;
+use humhub\components\access\ControllerAccess;
 use yii\helpers\Url;
 use humhub\components\Controller;
 use humhub\components\Module;
@@ -34,6 +35,16 @@ class ApiController extends Controller
      * @var Module
      */
     public $module;
+
+    /**
+     * @inheritdoc
+     */
+    protected function getAccessRules()
+    {
+        return [
+            [ControllerAccess::RULE_LOGGED_IN_ONLY => ['users-for-mentions']],
+        ];
+    }
 
     /**
      * @inheritdoc
