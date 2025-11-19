@@ -33,7 +33,7 @@ return [
     'Link with enabled write access' => 'ファイル書き込みアクセス権のリンク',
     'Open the new document in the next step' => '次に、新しい文書を開いてください',
     'You can simply share this document using a direct link. The user does not need an valid user account on the platform.' => '直接リンクを使用して文書共有できます。受信側はプラットホームで有効なユーザーアカウントを持っている必要ではありません。',
-    'e.g. http://documentserver' => '例えば、http://documentserver',
+    'e.g. {link}' => '例えば、{link}',
     '<strong>Convert</strong> document' => '文書を<strong>変換する</strong>',
     '<strong>ONLYOFFICE Docs</strong> invalid JWT token.' => '<strong>ONLYOFFICE Docs</strong>　無効なJWTトークン',
     '<strong>ONLYOFFICE - Docs</strong> module configuration' => '<strong>ONLYOFFICE - Docs</strong>のモジュール構成',
