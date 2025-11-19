@@ -34,7 +34,7 @@ return [
     'Link with enabled write access' => 'Link para acesso com permissão de edição',
     'Open the new document in the next step' => 'Abrir o novo documento no próximo passo',
     'You can simply share this document using a direct link. The user does not need an valid user account on the platform.' => 'Você pode simplesmente compartilhar esse documento usando um link direto. O usuário não precisa de uma conta válida na plataforma.',
-    'e.g. http://documentserver' => 'e.g. http://documentserver',
+    'e.g. {link}' => 'e.g. {link}',
     '<strong>Convert</strong> document' => '<strong>Converter</strong> documento',
     '<strong>ONLYOFFICE Docs</strong> invalid JWT token.' => '<strong>ONLYOFFICE Docs</strong> token JWT inválido.',
     'Convert document' => 'Converter documento',

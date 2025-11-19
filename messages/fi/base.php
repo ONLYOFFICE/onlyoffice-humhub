@@ -34,7 +34,7 @@ return [
     'Link with enabled write access' => 'Linkki jolla voi muokata oikeus',
     'Open the new document in the next step' => 'Avaa tiedosto heti',
     'You can simply share this document using a direct link. The user does not need an valid user account on the platform.' => 'Voit jakaa tämän tiedoston tällä linkillä. Käyttäjän ei tarvitse olla palvelun jäsen.',
-    'e.g. http://documentserver' => 'esim. http://documentserver',
+    'e.g. {link}' => 'esim. {link}',
     '<strong>Convert</strong> document' => '<strong>Muunna</strong> tiedosto',
     '<strong>ONLYOFFICE Docs</strong> invalid JWT token.' => '<strong>ONLYOFFICE Docs</strong> virheellinen JWT-tunnus.',
     'Convert document' => 'Muunna tiedosto',
