@@ -63,9 +63,9 @@ $modal = \humhub\widgets\ModalDialog::begin([
 <div class="modal-body">
     <br />
     <span class="try-descr"><?= Yii::t(
-                'OnlyofficeModule.base',
-                'Please select a document type.'
-            ); ?></span>
+        'OnlyofficeModule.base',
+        'Please select a document type.'
+    ); ?></span>
     <br />
     <ul class="try-editor-list">
         <li>
@@ -74,7 +74,10 @@ $modal = \humhub\widgets\ModalDialog::begin([
                     'document',
                     'extension' => 'docx'
                 ]); ?>">
-                Document
+                <?= Yii::t(
+                    'OnlyofficeModule.base',
+                    'Document'
+                ); ?>
             </a>
         </li>
         <li>
@@ -83,7 +86,10 @@ $modal = \humhub\widgets\ModalDialog::begin([
                     'document',
                     'extension' => 'xlsx'
                 ]); ?>">
-                Spreadsheet
+                <?= Yii::t(
+                    'OnlyofficeModule.base',
+                    'Spreadsheet'
+                ); ?>
             </a>
         </li>
         <li>
@@ -92,7 +98,10 @@ $modal = \humhub\widgets\ModalDialog::begin([
                     'document',
                     'extension' => 'pptx'
                 ]); ?>">
-                Presentation
+                <?= Yii::t(
+                    'OnlyofficeModule.base',
+                    'Presentation'
+                ); ?>
             </a>
         </li>
         <li>
@@ -101,7 +110,10 @@ $modal = \humhub\widgets\ModalDialog::begin([
                     'document',
                     'extension' => 'pdf'
                 ]); ?>">
-                PDF form
+                <?= Yii::t(
+                    'OnlyofficeModule.base',
+                    'PDF form'
+                ); ?>
             </a>
         </li>
     </ul>

@@ -34,7 +34,7 @@ return [
     'Link with enabled write access' => 'Hivatkozás íráshoz',
     'Open the new document in the next step' => 'A következő lépésben nyissa meg a dokumentumot',
     'You can simply share this document using a direct link. The user does not need an valid user account on the platform.' => 'Egyszerűen megoszthatod ezt a dokumentumot közvetlen hivatkozás használatával. A felhasználónak nem kell érvényes felhasználói fiókkal rendelkeznie a platformon.',
-    'e.g. http://documentserver' => 'pl. http://documentserver',
+    'e.g. {link}' => 'pl. {link}',
     '<strong>Convert</strong> document' => 'Dokumentum <strong>konvertálása</strong>',
     '<strong>ONLYOFFICE Docs</strong> invalid JWT token.' => '<strong>ONLYOFFICE Docs</strong> érvénytelen JWT  jelkép.',
     'Convert document' => 'Dokumentum konvertálása',
