@@ -63,9 +63,9 @@ $modal = \humhub\widgets\ModalDialog::begin([
 <div class="modal-body">
     <br />
     <span class="try-descr"><?= Yii::t(
-                'OnlyofficeModule.base',
-                'Please select a document type.'
-            ); ?></span>
+        'OnlyofficeModule.base',
+        'Please select a document type.'
+    ); ?></span>
     <br />
     <ul class="try-editor-list">
         <li>
