@@ -25,6 +25,8 @@ use humhub\modules\onlyoffice\notifications\Mention as Notify;
 use humhub\modules\onlyoffice\models\Mention;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\content\permissions\ManageContent;
+use yii\base\DynamicModel;
+use yii\web\HttpException;
 
 class ApiController extends Controller
 {
@@ -78,26 +80,36 @@ class ApiController extends Controller
 
     public function actionUsersForMentions()
     {
-        $usersForMentions = [];
-        $curUser = Yii::$app->user->getIdentity();
-        $users = User::find()->all();
+        $model = DynamicModel::validateData(
+            [
+                'key' => Yii::$app->request->post('key', ''),
+                'offset' => Yii::$app->request->post('offset', 0),
+                'limit' => Yii::$app->request->post('limit', 100),
+                'search' => Yii::$app->request->post('search', ''),
+            ],
+            [
+                ['key', 'required'],
+                [['key', 'search'], 'string', 'max' => 255],
+                [['offset', 'limit'], 'integer', 'min' => 0],
+            ]
+        );
 
-        foreach ($users as $user) {
-            if (
-                $user->id != $curUser->id &&
-                $user->profile->firstname != null &&
-                $user->profile->lastname != null &&
-                $user->email != null
-            ) {
-                array_push($usersForMentions, [
-                    "name" => $user->profile->firstname . " " . $user->profile->lastname,
-                    "email" => $user->email
-                ]);
-            }
+        if ($model->hasErrors()) {
+            throw new HttpException(400);
+        }
+
+        $offset = (int) $model->offset;
+        $limit = (int) $model->limit;
+        $search = strtolower(trim($model->search));
+
+        $file = File::findOne(['onlyoffice_key' => $model->key]);
+
+        if ($file === null || !$file->canDelete()) {
+            throw new HttpException(403);
         }
 
         return $this->asJson([
-            'usersForMentions' => $usersForMentions
+            'users' => $this->getUsersForMentions($file, $offset, $limit, $search)
         ]);
     }
 
@@ -182,5 +194,41 @@ class ApiController extends Controller
         return $this->asJson([
             'file' => FileHelper::getFileInfos($file)
         ]);
+    }
+
+    private function getUsersForMentions($file, $offset = 0, $limit = 100, $search = '')
+    {
+        $curUser = Yii::$app->user->getIdentity();
+        $users = [];
+
+        $userQuery = User::find()
+            ->andWhere(['not', ['email' => $curUser->email]])
+            ->available()
+            ->search($search)
+            ->orderBy(['id' => SORT_DESC]);
+
+        $filteredOffset = 0;
+        foreach ($userQuery->batch(1000) as $userBatch) {
+            $filteredUsers = array_filter($userBatch, fn(User $user) => $file->canRead($user));
+            $filteredCount = count($filteredUsers);
+            if ($filteredOffset + $filteredCount > $offset) {
+                $users = array_merge($users, array_slice($filteredUsers, $offset - $filteredOffset));
+            } else {
+                $filteredOffset += $filteredCount;
+            }
+            if (count($users) >= $limit) {
+                break;
+            }
+        }
+
+        $users = array_map(
+            fn(User $user) => [
+                "name" => $user->profile->firstname . " " . $user->profile->lastname,
+                "email" => $user->email
+            ],
+            array_slice($users, 0, $limit),
+        );
+
+        return $users;
     }
 }
