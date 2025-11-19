@@ -136,7 +136,8 @@ class ConfigureForm extends \yii\base\Model
         return [
             'serverUrl' => Yii::t(
                 'OnlyofficeModule.base',
-                'e.g. http://documentserver'
+                'e.g. {link}',
+                ['link' => 'http://documentserver'],
             ),
             'jwtSecret' => Yii::t(
                 'OnlyofficeModule.base',
@@ -148,11 +149,13 @@ class ConfigureForm extends \yii\base\Model
             ),
             'internalServerUrl' => Yii::t(
                 'OnlyofficeModule.base',
-                'e.g. http://documentserver'
+                'e.g. {link}',
+                ['link' => 'http://documentserver'],
             ),
             'storageUrl' => Yii::t(
                 'OnlyofficeModule.base',
-                'e.g. http://storage'
+                'e.g. {link}',
+                ['link' => 'http://storage'],
             ),
             'demoServer' => Yii::t(
                 'OnlyofficeModule.base',

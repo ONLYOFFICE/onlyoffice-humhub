@@ -33,7 +33,7 @@ return [
     'Link with enabled write access' => '启用写入权限的链接',
     'Open the new document in the next step' => '在下一步骤中打开新的文件',
     'You can simply share this document using a direct link. The user does not need an valid user account on the platform.' => '您可以使用直接链接来分享这份文件。用户不需要在该平台上有一个有效的用户账户。',
-    'e.g. http://documentserver' => '例如 http://documentserver',
+    'e.g. {link}' => '例如 {link}',
     '<strong>Convert</strong> document' => '<strong>转换</strong>文件',
     '<strong>ONLYOFFICE Docs</strong> invalid JWT token.' => '<strong>ONLYOFFICE Docs</strong>无效的JWT令牌。',
     '<strong>ONLYOFFICE - Docs</strong> module configuration' => '<strong>ONLYOFFICE - Docs</strong>模块配置',
