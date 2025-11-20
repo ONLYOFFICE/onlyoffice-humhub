@@ -114,7 +114,13 @@ use yii\web\View;
         </div>
 
         <div class="mb-3">
-            <?= Html::Button('Submit', ['id' => 'saveBtn', 'class' => 'btn btn-primary', 'data-ui-loader' => '']) ?>
+            <?= Html::Button(
+                Yii::t(
+                    'OnlyofficeModule.base',
+                    'Submit'
+                ),
+                ['id' => 'saveBtn', 'class' => 'btn btn-primary', 'data-ui-loader' => ''],
+            ) ?>
         </div>
         <?php ActiveForm::end(); ?>
     </div>

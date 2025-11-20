@@ -99,7 +99,7 @@ class EditorWidget extends JsWidget
             'saveasUrl' => Url::to(['/onlyoffice/api/saveas'], true)
         ];
 
-        if (!Yii::$app->user->isGuest) {
+        if (!Yii::$app->user->isGuest && !empty($this->file->object_model)) {
             $api['usersForMentionsUrl'] = Url::to(['/onlyoffice/api/users-for-mentions'], true);
         }
 

@@ -15,7 +15,7 @@ Assets::register($this);
 <?php $form = Modal::beginFormDialog([
     'title' => Yii::t('OnlyofficeModule.base', '<strong>Create</strong> document'),
     'footer' => Html::submitButton(
-        'Save',
+        Yii::t('OnlyofficeModule.base', 'Save'),
         ['data-action-click' => 'onlyoffice.createSubmit',
             'data-ui-loader' => '',
             'class' => 'btn btn-primary',

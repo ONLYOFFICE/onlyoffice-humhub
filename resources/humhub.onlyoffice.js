@@ -216,15 +216,27 @@ humhub.module('onlyoffice', function (module, require, $) {
         });
     }
 
-    function onRequestUsers() {
-        client.post(api.usersForMentionsUrl).then((response) => {
-            docEditor.setUsers({
-                "users": response.usersForMentions
+    function onRequestUsers(event) {
+        const c = event && event.data ? event.data.c : null;
+
+        if (c === 'mention') {
+            const requestUsersData = {
+                key: config.document.key,
+                offset: event.data.from,
+                limit: event.data.count,
+                search: event.data.search,
+            };
+            client.post(api.usersForMentionsUrl, {data: requestUsersData, dataType: 'json'}).then((response) => {
+                docEditor.setUsers({
+                    'c': c,
+                    'users': response.users,
+                    'total': 1 + (!event.data.count || response.users.length < event.data.count ? 0 : (event.data.from + event.data.count)),
+                    'isPaginated': true,
+                });
+            }).catch(function(e) {
+                module.log.error(e, true);
             });
-        }).catch(function(e) {
-            module.log.error(e, true);
-        });
-        
+        }        
     }
 
     function onRequestSendNotify(evt) {

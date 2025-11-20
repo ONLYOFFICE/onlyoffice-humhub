@@ -23,7 +23,7 @@ if (class_exists('humhub\assets\ClipboardJsAsset')) {
 
         <?= Yii::t(
             'OnlyofficeModule.base',
-            'You can simply share this document using a direct link.' .
+            'You can simply share this document using a direct link. ' .
                 'The user does not need an valid user account on the platform.'
         ); ?>
         <br/>

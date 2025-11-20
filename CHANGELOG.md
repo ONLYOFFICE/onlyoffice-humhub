@@ -7,10 +7,13 @@
 - edit xlsb
 - support hwp, hwpx, pages, numbers, key formats
 - shardKey param to url for requests to Docs API and Conversion API
+- missing translations
+- pagination for users for mentions, including permission checks
 
 ## Changed
 - URL for requests to Conversion API
 - Migration to Bootstrap 5 for HumHub 1.18
+- fixed file creation in the cfiles folder with insufficient permissions
 
 ## 3.2.0
 ## Added

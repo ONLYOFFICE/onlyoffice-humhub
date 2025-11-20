@@ -250,7 +250,8 @@ class Module extends \humhub\components\Module
 
     public function getforceEditTypes()
     {
-        return explode(",", $this->settings->get('forceEditTypes'));
+        $forceEditTypes = $this->settings->get('forceEditTypes');
+        return $forceEditTypes === null || $forceEditTypes === '' ? [] : explode(',', $forceEditTypes);
     }
 
     public function getServerApiUrl(): string
@@ -514,7 +515,7 @@ class Module extends \humhub\components\Module
      */
     public function isOnlyofficeForm($file)
     {
-        if ($file === null) {
+        if (!$file instanceof File || !$file->store->has()) {
             return false;
         }
         if ($this->getDocumentType($file) !== self::DOCUMENT_TYPE_PDF) {
@@ -524,8 +525,7 @@ class Module extends \humhub\components\Module
         $limitDetect = 300;
         $onlyofficeFormMetaTag = 'ONLYOFFICEFORM';
 
-        $path = $file->getStoredFilePath() . 'file';
-        $content = file_get_contents($path, false, null, 0, $limitDetect);
+        $content = file_get_contents($file->store->get(), false, null, 0, $limitDetect);
 
         $indexFirst = strpos($content, "%\xCD\xCA\xD2\xA9\x0D");
         if ($indexFirst === false) {

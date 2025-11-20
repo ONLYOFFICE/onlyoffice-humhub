@@ -61,7 +61,7 @@ use yii\helpers\Url;
         }
     </style>
 
-    <span class="try-descr">Please select a document type.</span>
+    <span class="try-descr"><?= Yii::t('OnlyofficeModule.base', 'Please select a document type.'); ?></span>
     <br />
     <ul class="try-editor-list">
         <li>
@@ -70,7 +70,10 @@ use yii\helpers\Url;
                     'document',
                     'extension' => 'docx',
                 ]); ?>">
-                Document
+                <?= Yii::t(
+                    'OnlyofficeModule.base',
+                    'Document'
+                ); ?>
             </a>
         </li>
         <li>
@@ -79,7 +82,10 @@ use yii\helpers\Url;
                     'document',
                     'extension' => 'xlsx',
                 ]); ?>">
-                Spreadsheet
+                <?= Yii::t(
+                    'OnlyofficeModule.base',
+                    'Spreadsheet'
+                ); ?>
             </a>
         </li>
         <li>
@@ -88,7 +94,10 @@ use yii\helpers\Url;
                     'document',
                     'extension' => 'pptx',
                 ]); ?>">
-                Presentation
+                <?= Yii::t(
+                    'OnlyofficeModule.base',
+                    'Presentation'
+                ); ?>
             </a>
         </li>
         <li>
@@ -97,7 +106,10 @@ use yii\helpers\Url;
                     'document',
                     'extension' => 'pdf',
                 ]); ?>">
-                PDF form
+                <?= Yii::t(
+                    'OnlyofficeModule.base',
+                    'PDF form'
+                ); ?>
             </a>
         </li>
     </ul>
