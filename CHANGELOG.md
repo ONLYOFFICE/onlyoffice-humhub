@@ -1,6 +1,6 @@
 # Change Log
 
-##
+## 3.3.0
 ## Added
 - diagram documentType for vsdx, vssx, vstx, vsdm, vssm, vstm
 - view odg, md
