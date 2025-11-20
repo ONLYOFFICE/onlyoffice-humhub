@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  Copyright (c) Ascensio System SIA 2024. All rights reserved.
  *  http://www.onlyoffice.com
@@ -20,7 +21,8 @@ if (!empty($serverApiUrl)) {
     ]);
 }
 // Force modal full height
-$this->registerCss('#onlyoffice-modal .modal-content {height: calc(100vh - 90px); background-color:transparent; box-shadow: none;}');
+$this->registerCss('#onlyoffice-modal .modal-content {height: calc(100vh - 90px);'
+    . ' background-color:transparent; box-shadow: none;}');
 ?>
 
 <?php Modal::beginDialog([
@@ -33,4 +35,4 @@ $this->registerCss('#onlyoffice-modal .modal-content {height: calc(100vh - 90px)
         'restrict' => $restrict,
         'anchor' => $anchor,
     ]) ?>
-<?php Modal::endDialog() ?>
+<?php Modal::endDialog();

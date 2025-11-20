@@ -34,4 +34,4 @@ Assets::register($this);
 
     <?= $form->field($model, 'fid')->hiddenInput()->label(false) ?>
 
-<?php Modal::endFormDialog() ?>
+<?php Modal::endFormDialog();
