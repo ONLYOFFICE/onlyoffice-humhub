@@ -156,9 +156,7 @@ class ApiController extends Controller
             throw new Exception("Mention error.");
         }
 
-        return $this->asJson([
-            'file' => $file
-        ]);
+        return $this->asJson([]);
     }
 
     /**
