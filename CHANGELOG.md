@@ -1,6 +1,6 @@
 # Change Log
 
-## 4.0.0
+## 4.0.0-beta
 ## Changed
 - compatible with HumHub 1.18
 
