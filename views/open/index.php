@@ -26,7 +26,7 @@ $this->registerCss('#onlyoffice-modal .modal-content {height: calc(100vh - 90px)
 ?>
 
 <?php Modal::beginDialog([
-    'size' => Modal::SIZE_EXTRA_LARGE,
+    'size' => Modal::SIZE_FULL_SCREEN,
     'closeButton' => false,
 ]) ?>
     <?= EditorWidget::widget([
