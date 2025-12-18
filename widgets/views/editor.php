@@ -54,7 +54,7 @@ if ($documentType === Module::DOCUMENT_TYPE_SPREADSHEET) {
             [
                 'class' => 'btn btn btn-light',
                 'data-ui-loader' => '',
-                'data-bs-dismiss' => 'modal',
+                'data-action-click' => 'close',
             ],
         ) ?>
     </div>
