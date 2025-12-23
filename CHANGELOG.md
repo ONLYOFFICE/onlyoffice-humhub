@@ -1,4 +1,5 @@
 # Change Log
+- display empty jwt warning if jwt secret is disabled
 
 ## 3.3.0
 ## Added
