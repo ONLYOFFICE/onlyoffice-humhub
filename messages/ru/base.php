@@ -78,4 +78,8 @@ return [
     'Save' => '',
     'Submit' => '',
     'File Name' => '',
+    'Welcome to ONLYOFFICE!' => '',
+    'Collaboratively view and edit office documents in real time within HumHub using ONLYOFFICE Docs.' => '',
+    'Learn more' => '',
+    'Suggest a feature' => '',
 ];
