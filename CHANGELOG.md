@@ -1,4 +1,6 @@
 # Change Log
+## Added
+- plugin description and useful links in admin settings
 
 ## 3.3.0
 ## Added
