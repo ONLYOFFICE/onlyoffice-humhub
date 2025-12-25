@@ -32,6 +32,8 @@ class ConfigureForm extends \yii\base\Model
 
     public $forceEditTypes;
 
+    public $openInNewTab;
+
     public $settingError;
     public $instaledVersion;
 
@@ -55,6 +57,7 @@ class ConfigureForm extends \yii\base\Model
             ['compactToolbar', 'boolean'],
             ['forceSave', 'boolean'],
             ['forceEditTypes', 'string'],
+            ['openInNewTab', 'boolean'],
         ];
     }
 
@@ -125,6 +128,14 @@ class ConfigureForm extends \yii\base\Model
                 'Open the file for editing (due to format restrictions, the data might ' .
                 'be lost when saving to the formats from the list below)'
             ),
+            'commonLabel' => Yii::t(
+                'OnlyofficeModule.base',
+                'Common settings'
+            ),
+            'openInNewTab' => Yii::t(
+                'OnlyofficeModule.base',
+                'Open file in the new tab'
+            ),
         ];
     }
 
@@ -181,6 +192,7 @@ class ConfigureForm extends \yii\base\Model
         $this->compactToolbar = (bool)Yii::$app->getModule('onlyoffice')->settings->get('compactToolbar');
         $this->forceSave = (bool)Yii::$app->getModule('onlyoffice')->settings->get('forceSave');
         $this->forceEditTypes = $this->deserializeForceEditTypes();
+        $this->openInNewTab = (bool)Yii::$app->getModule('onlyoffice')->settings->get('openInNewTab');
 
         $this->settingError = Yii::$app->getModule('onlyoffice')->settings->get('settingError');
         $this->instaledVersion = Yii::$app->getModule('onlyoffice')->settings->get('instaledVersion');
@@ -203,6 +215,7 @@ class ConfigureForm extends \yii\base\Model
         Yii::$app->getModule('onlyoffice')->settings->set('help', $this->help);
         Yii::$app->getModule('onlyoffice')->settings->set('compactToolbar', $this->compactToolbar);
         Yii::$app->getModule('onlyoffice')->settings->set('forceSave', $this->forceSave);
+        Yii::$app->getModule('onlyoffice')->settings->set('openInNewTab', $this->openInNewTab);
         Yii::$app->getModule('onlyoffice')->settings->set("forceEditTypes", $this->serializeForceEditTypes());
 
         return true;

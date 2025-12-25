@@ -248,6 +248,11 @@ class Module extends \humhub\components\Module
         return boolval($this->settings->get('forceSave'));
     }
 
+    public function getOpenInNewTab()
+    {
+        return boolval($this->settings->get('openInNewTab'));
+    }
+
     public function getforceEditTypes()
     {
         $forceEditTypes = $this->settings->get('forceEditTypes');
