@@ -200,6 +200,11 @@ use yii\web\View;
         </div>
 
         <div class="form-group">
+            <?= Html::activeLabel($model, 'commonLabel', ['class' => 'control-label']); ?>
+            <?= $form->field($model, 'openInNewTab')->checkbox(); ?>
+        </div>
+
+        <div class="form-group">
             <?= Html::Button(
                 Yii::t(
                     'OnlyofficeModule.base',
@@ -285,6 +290,7 @@ use yii\web\View;
                     var type = $(node).attr("id").replace("configureform-forceedittypes-", "");
                     forceEditTypes[type] = $(node).prop("checked") ? 1 : 0;
                 });
+                var openInNewTab = $("#configureform-openinnewtab").prop("checked") ? 1 : 0;
 
                 $.ajax({
                     url: "' . Url::to(["/onlyoffice/admin/save"]) . '",
@@ -305,7 +311,8 @@ use yii\web\View;
                             feedback: feedback,
                             help: help,
                             compactToolbar: compactToolbar,
-                            forceEditTypes: forceEditTypes
+                            forceEditTypes: forceEditTypes,
+                            openInNewTab
                         }
                     },
                     dataType: "json"
