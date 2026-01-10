@@ -225,6 +225,13 @@ class EditorWidget extends JsWidget
             $config['token'] = $module->jwtEncode($config);
         }
 
+        if ($module->getOpenInNewTab()) {
+            $config['document']['info']['sharingSettings'] = [[
+                'permissions' => 'Full Access',
+                'user' => 'Me',
+            ]];
+        }
+
         return $config;
     }
 }
