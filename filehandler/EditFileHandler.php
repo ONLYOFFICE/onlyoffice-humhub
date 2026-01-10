@@ -30,13 +30,25 @@ class EditFileHandler extends BaseFileHandler
      */
     public function getLinkAttributes()
     {
+        $openInNewTab = Yii::$app->getModule('onlyoffice')->getOpenInNewTab();
+        $label = Yii::t('OnlyofficeModule.base', 'Edit document');
+        $url = Url::to([
+            '/onlyoffice/open',
+            'guid' => $this->file->guid,
+            'mode' => Module::OPEN_MODE_EDIT
+        ]);
+
+        if ($openInNewTab) {
+            return [
+                'label' => $label,
+                'href' => $url,
+                'target' => '_blank',
+            ];
+        }
+
         $attributes = [
-            'label' => Yii::t('OnlyofficeModule.base', 'Edit document'),
-            'data-action-url' => Url::to([
-                '/onlyoffice/open',
-                'guid' => $this->file->guid,
-                'mode' => Module::OPEN_MODE_EDIT
-            ]),
+            'label' => $label,
+            'data-action-url' => $url,
             'data-action-click' => 'ui.modal.load',
             'data-modal-id' => 'onlyoffice-modal',
             'data-modal-close' => ''
