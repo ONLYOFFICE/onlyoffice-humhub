@@ -48,7 +48,9 @@ class OpenController extends BaseFileController
             Notification::findOne($_GET['notify'])->getBaseModel()->markAsSeen();
         }
 
-        if (!Yii::$app->request->isAjax || isset($_GET['notify'])) {
+        $openInNewTab = Yii::$app->getModule('onlyoffice')->getOpenInNewTab();
+
+        if (!Yii::$app->request->isAjax && !$openInNewTab || isset($_GET['notify'])) {
             return $this->redirectToModal();
         }
 
@@ -57,13 +59,20 @@ class OpenController extends BaseFileController
         $key = $module->generateDocumentKey($this->file);
         $serverApiUrl .= '?shardKey=' . $key;
 
-        return $this->renderAjax('index', [
-                    'file' => $this->file,
-                    'mode' => $this->mode,
-                    'restrict' => $this->restrict,
-                    'anchor' => $this->anchor,
-                    'serverApiUrl' => $serverApiUrl
-        ]);
+        $params = [
+            'file' => $this->file,
+            'mode' => $this->mode,
+            'restrict' => $this->restrict,
+            'anchor' => $this->anchor,
+            'serverApiUrl' => $serverApiUrl,
+            'openInNewTab' => $openInNewTab,
+        ];
+
+        if ($openInNewTab) {
+            $this->render('index', $params);
+        }
+
+        return $this->renderAjax('index', $params);
     }
 
     /**

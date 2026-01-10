@@ -26,7 +26,10 @@ if ($documentType === Module::DOCUMENT_TYPE_SPREADSHEET) {
 ?>
 
 <?= Html::beginTag('div', $options) ?>
-<div style="height:50px;
+<div style="<?php if ($openInNewTab) :
+    ?>display:none;<?php
+            endif; ?>
+    height:50px;
     border-radius: 8px 8px 0px 0px;
     background-color:<?= $headerBackgroundColor; ?>;
     padding-top:7px;
