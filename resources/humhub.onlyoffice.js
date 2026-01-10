@@ -129,6 +129,7 @@ humhub.module('onlyoffice', function (module, require, $) {
                 module.log.info(infoMsg, true);
             }
         }
+        config.events.onRequestSharingSettings = onRequestSharingSettings;
 
         this.docEditor = new DocsAPI.DocEditor('iframeContainer', config);
 
@@ -275,6 +276,11 @@ humhub.module('onlyoffice', function (module, require, $) {
     function onRequestClose() {
         refreshFileInfo(onRequestCloseObj.that, onRequestCloseObj.evt);
     };
+
+    function onRequestSharingSettings() {
+        const shareLink = document.getElementById('onlyoffice-share-link');
+        shareLink.click();
+    }
 
     function refreshFileInfo(that, evt) {
         client.post({ url: that.options.fileInfoUrl }).then(function (response) {
