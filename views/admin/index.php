@@ -86,7 +86,8 @@ use yii\web\View;
                         'Learn more'
                     ); ?>
                 </a>
-                <a href="https://feedback.onlyoffice.com/forums/966080-your-voice-matters?category_id=519288" target="_blank">
+                <a href="https://feedback.onlyoffice.com/forums/966080-your-voice-matters?category_id=519288" 
+                    target="_blank">
                     <?= Yii::t(
                         'OnlyofficeModule.base',
                         'Suggest a feature'
