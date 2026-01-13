@@ -39,7 +39,9 @@ if ($documentType === Module::DOCUMENT_TYPE_SPREADSHEET) {
             <?= humhub\libs\Html::a(
                 Yii::t('OnlyofficeModule.base', 'Share'),
                 '#',
-                ['class' => 'btn btn btn-default',
+                [
+                    'id' => 'onlyoffice-share-link',
+                    'class' => 'btn btn btn-default',
                     'data-action-click' => 'share',
                     'data-action-block' => 'sync',
                     'data-action-url' => Url::to([
