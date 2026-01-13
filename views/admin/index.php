@@ -63,7 +63,7 @@ use yii\web\View;
             </div>
         <?php endif; ?>
 
-        <?php if (!empty($model->serverUrl) && empty($model->settingError) && !empty($model->jwtSecret)) : ?>
+        <?php if (!empty($model->serverUrl) && empty($model->settingError) && empty($model->jwtSecret)) : ?>
             <div class="alert alert-warning" role="alert">
                 <?= Yii::t(
                     'OnlyofficeModule.base',
