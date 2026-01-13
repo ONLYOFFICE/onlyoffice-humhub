@@ -1,4 +1,6 @@
 # Change Log
+## Changed
+- updated formats icons
 
 ## 3.3.0
 ## Added
