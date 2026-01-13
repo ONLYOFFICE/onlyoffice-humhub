@@ -82,4 +82,5 @@ return [
     'Collaboratively view and edit office documents in real time within HumHub using ONLYOFFICE Docs.' => '',
     'Learn more' => '',
     'Suggest a feature' => '',
+    'Help us improve ONLYOFFICE connector - <a href="{url}" target="_blank">Share feedback</a>' => '',
 ];
