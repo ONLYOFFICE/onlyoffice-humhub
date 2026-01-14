@@ -18,6 +18,8 @@ use yii\db\Expression;
 use humhub\modules\file\handler\FileHandlerCollection;
 use humhub\modules\file\models\File;
 use humhub\modules\onlyoffice\permissions\CanUseOnlyOffice;
+use humhub\modules\cfiles\permissions\ManageFiles;
+use humhub\modules\content\models\ContentContainer;
 
 /**
  * @author luke
@@ -32,6 +34,11 @@ class Events
 
         /* @var $collection FileHandlerCollection */
         $collection = $event->sender;
+
+        $isCfiles = Yii::$app->controller->module && Yii::$app->controller->module->id == 'cfiles';
+        if ($isCfiles && $collection->type === FileHandlerCollection::TYPE_CREATE && !self::checkCFilesPermission()) {
+            return;
+        }
 
         if ($collection->type === FileHandlerCollection::TYPE_CREATE) {
             $collection->register(new filehandler\CreateFileHandler());
@@ -76,5 +83,13 @@ class Events
                 $file->updateAttributes(['onlyoffice_key' => new Expression('NULL')]);
             }
         }
+    }
+
+    private static function checkCFilesPermission(): bool
+    {
+        $guid = Yii::$app->request->get('cguid');
+        $container = ContentContainer::findOne(['guid' => $guid]);
+        $object = $container ? $container->getPolymorphicRelation() : null;
+        return Yii::$app->hasModule('cfiles') && $object && $object->can(ManageFiles::class);
     }
 }
