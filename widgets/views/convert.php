@@ -16,16 +16,16 @@ Assets::register($this);
 <?php Modal::beginDialog([
     'title' => Yii::t('OnlyofficeModule.base', '<strong>Convert</strong> document'),
     'footer' => Html::a(
-            Yii::t('OnlyofficeModule.base', 'Close'),
-            '#',
-            [
+        Yii::t('OnlyofficeModule.base', 'Close'),
+        '#',
+        [
                 'class' => 'btn btn btn-light',
                 'data-ui-loader' => '',
                 'data-action-click' => 'close',
                 'data-modal-close' => '',
                 'data-ui-widget' => 'onlyoffice.Convert',
             ],
-        ),
+    ),
 ]) ?>
 
     <?= Html::beginTag('div', $options) ?>
