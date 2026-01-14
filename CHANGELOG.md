@@ -13,6 +13,7 @@
 ## Changed
 - URL for requests to Conversion API
 - fixed file creation in the cfiles folder with insufficient permissions
+- hide plugin file handlers from users without sufficient permissions in cfiles page
 
 ## 3.2.0
 ## Added
