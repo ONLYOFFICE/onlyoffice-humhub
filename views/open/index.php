@@ -22,7 +22,8 @@ if (!empty($serverApiUrl)) {
 }
 // Force modal full height
 $this->registerCss('#onlyoffice-modal .modal-content {height: calc(100vh - 90px);'
-    . ' background-color:transparent; box-shadow: none;}');
+    . ' background-color:transparent; box-shadow: none;}'
+    . ' #onlyoffice-modal .modal-dialog {max-width: 98%;}');
 ?>
 
 <?php Modal::beginDialog([
