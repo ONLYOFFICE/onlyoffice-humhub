@@ -29,7 +29,7 @@ if ($documentType === Module::DOCUMENT_TYPE_SPREADSHEET) {
 
 <?= Html::beginTag('div', $options) ?>
 <div style="height:50px;
-    border-radius: 8px 8px 0px 0px;
+    border-radius: 5px 5px 0px 0px;
     background-color:<?= $headerBackgroundColor; ?>;
     padding-top:7px;
     padding-right:7px">
