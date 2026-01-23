@@ -22,12 +22,14 @@ if ($documentType === Module::DOCUMENT_TYPE_SPREADSHEET) {
     $headerBackgroundColor = '#DD682B';
 } elseif ($documentType === Module::DOCUMENT_TYPE_PDF) {
     $headerBackgroundColor = '#D45757';
+} elseif ($documentType === Module::DOCUMENT_TYPE_DIAGRAM) {
+    $headerBackgroundColor = '#444796';
 }
 ?>
 
 <?= Html::beginTag('div', $options) ?>
 <div style="height:50px;
-    border-radius: 8px 8px 0px 0px;
+    border-radius: 5px 5px 0px 0px;
     background-color:<?= $headerBackgroundColor; ?>;
     padding-top:7px;
     padding-right:7px">
