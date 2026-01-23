@@ -26,6 +26,10 @@ Assets::register($this);
                 'data-ui-widget' => 'onlyoffice.Convert',
             ],
     ),
+    'closeButton' => [
+        'data-action-click' => 'close',
+        'data-ui-widget' => 'onlyoffice.Convert',
+    ],
 ]) ?>
 
     <?= Html::beginTag('div', $options) ?>
