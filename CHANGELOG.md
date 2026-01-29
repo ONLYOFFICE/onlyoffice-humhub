@@ -3,6 +3,7 @@
 ## 4.0.0
 ## Changed
 - compatible with HumHub 1.18
+- open modal in full screen instead of extra large
 
 ## 3.3.0
 ## Added
