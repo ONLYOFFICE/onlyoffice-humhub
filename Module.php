@@ -56,6 +56,7 @@ class Module extends \humhub\components\Module
     public const DOCUMENT_TYPE_PRESENTATION = 'slide';
     public const DOCUMENT_TYPE_SPREADSHEET = 'cell';
     public const DOCUMENT_TYPE_PDF = 'pdf';
+    public const DOCUMENT_TYPE_DIAGRAM = 'diagram';
 
     public $demoparam = [
         'trial' => 30,
@@ -78,6 +79,7 @@ class Module extends \humhub\components\Module
         $this->formats->presentationExtensions = [];
         $this->formats->textExtensions = [];
         $this->formats->pdfExtensions = [];
+        $this->formats->diagramExtensions = [];
         $this->formats->editableExtensions = [];
         $this->formats->convertableExtensions = [];
         $this->formats->forceEditableExtensions = [];
@@ -96,6 +98,9 @@ class Module extends \humhub\components\Module
             }
             if ($formatJson->type === self::DOCUMENT_TYPE_PDF) {
                 array_push($this->formats->pdfExtensions, $formatJson->name);
+            }
+            if ($formatJson->type === self::DOCUMENT_TYPE_DIAGRAM) {
+                array_push($this->formats->diagramExtensions, $formatJson->name);
             }
 
             if (in_array('edit', $formatJson->actions)) {
@@ -295,6 +300,8 @@ class Module extends \humhub\components\Module
             return self::DOCUMENT_TYPE_TEXT;
         } elseif (in_array($fileExtension, $this->formats()->pdfExtensions)) {
             return self::DOCUMENT_TYPE_PDF;
+        } elseif (in_array($fileExtension, $this->formats()->diagramExtensions)) {
+            return self::DOCUMENT_TYPE_DIAGRAM;
         }
 
         return null;
@@ -343,7 +350,7 @@ class Module extends \humhub\components\Module
 
     public function commandService($data): array
     {
-        $url = $this->getInternalServerUrl() . '/coauthoring/CommandService.ashx';
+        $url = $this->getInternalServerUrl() . '/command';
 
         try {
             $headers = [];
