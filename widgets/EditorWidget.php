@@ -13,9 +13,9 @@
 
 namespace humhub\modules\onlyoffice\widgets;
 
-use humhub\libs\Html;
-use humhub\modules\content\permissions\ManageContent;
+use humhub\helpers\Html;
 use humhub\modules\content\models\ContentContainer;
+use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
 use humhub\modules\onlyoffice\Module;

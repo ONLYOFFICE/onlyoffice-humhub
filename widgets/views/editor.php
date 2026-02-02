@@ -5,9 +5,9 @@
  *  http://www.onlyoffice.com
  */
 
-use yii\helpers\Url;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\onlyoffice\Module;
+use yii\helpers\Url;
 
 \humhub\modules\onlyoffice\assets\Assets::register($this);
 
@@ -33,31 +33,32 @@ if ($documentType === Module::DOCUMENT_TYPE_SPREADSHEET) {
     background-color:<?= $headerBackgroundColor; ?>;
     padding-top:7px;
     padding-right:7px">
-    <div class = "pull-right">
+    <div class = "float-end">
         <?php if ($mode === Module::OPEN_MODE_EDIT && !Yii::$app->user->isGuest) : ?>
-            <?= humhub\libs\Html::a(
+            <?= humhub\helpers\Html::a(
                 Yii::t('OnlyofficeModule.base', 'Share'),
                 '#',
-                ['class' => 'btn btn btn-default',
+                [
+                    'class' => 'btn btn btn-light',
                     'data-action-click' => 'share',
                     'data-action-block' => 'sync',
                     'data-action-url' => Url::to([
                         '/onlyoffice/share',
                         'guid' => $file->guid,
-                        'mode' => $mode
-                    ])
-                ]
-            ); ?>
+                        'mode' => $mode,
+                    ]),
+                ],
+            ) ?>
         <?php endif; ?>
-        <?= humhub\libs\Html::a(
+        <?= humhub\helpers\Html::a(
             Yii::t('OnlyofficeModule.base', 'Close'),
             '#',
-            ['class' => 'btn btn btn-default',
+            [
+                'class' => 'btn btn btn-light',
                 'data-ui-loader' => '',
                 'data-action-click' => 'close',
-                'data-action-block' => 'manual'
-            ]
-        ); ?>
+            ],
+        ) ?>
     </div>
 </div>
 <div id="iframeContainer"></div>

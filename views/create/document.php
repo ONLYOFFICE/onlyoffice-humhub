@@ -5,44 +5,33 @@
  *  http://www.onlyoffice.com
  */
 
-use humhub\widgets\ActiveForm;
-use humhub\libs\Html;
+use humhub\helpers\Html;
+use humhub\modules\onlyoffice\assets\Assets;
+use humhub\widgets\modal\Modal;
 
-\humhub\modules\onlyoffice\assets\Assets::register($this);
-
-$modal = \humhub\widgets\ModalDialog::begin([
-            'header' => Yii::t('OnlyofficeModule.base', '<strong>Create</strong> document')
-        ])
+Assets::register($this);
 ?>
 
-<?php $form = ActiveForm::begin(); ?>
+<?php $form = Modal::beginFormDialog([
+    'title' => Yii::t('OnlyofficeModule.base', '<strong>Create</strong> document'),
+    'footer' => Html::submitButton(
+        Yii::t('OnlyofficeModule.base', 'Save'),
+        ['data-action-click' => 'onlyoffice.createSubmit',
+            'data-ui-loader' => '',
+            'class' => 'btn btn-primary',
+        ],
+    ),
+]) ?>
 
-<div class="modal-body">
     <?= $form->field(
         $model,
         'fileName',
-        ['template' => '{label}<div class="input-group">{input}<div class="input-group-addon">' .
-            $model->extension . '</div></div>{hint}{error}'
-        ]
-    ); ?>
-    <?= $form->field($model, 'openFlag')->checkbox(); ?>
+        ['template' => '{label}<div class="input-group">{input}<div class="input-group-text">' .
+            $model->extension . '</div></div>{hint}{error}',
+        ],
+    ) ?>
+    <?= $form->field($model, 'openFlag')->checkbox() ?>
 
-    <?= $form->field($model, 'fid')->hiddenInput()->label(false); ?>
-</div>
+    <?= $form->field($model, 'fid')->hiddenInput()->label(false) ?>
 
-<div class="modal-footer">
-    <?= Html::submitButton(
-        Yii::t(
-            'OnlyofficeModule.base',
-            'Save'
-        ),
-        ['data-action-click' => 'onlyoffice.createSubmit',
-            'data-ui-loader' => '',
-            'class' => 'btn btn-primary'
-        ]
-    ); ?>
-</div>
-
-<?php ActiveForm::end(); ?>
-
-<?php \humhub\widgets\ModalDialog::end(); ?>
+<?php Modal::endFormDialog();

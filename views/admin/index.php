@@ -5,7 +5,7 @@
  *  http://www.onlyoffice.com
  */
 
-use yii\bootstrap\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\View;
@@ -52,7 +52,7 @@ use yii\web\View;
                     'OnlyofficeModule.base',
                     '<strong>ONLYOFFICE Docs</strong> successfully connected! - Installed version: {version}',
                     ['version' => $model->instaledVersion]
-                ); ?> 
+                ); ?>
                 <p style = "color: #84be5e">
                     <?= Yii::t(
                         'OnlyofficeModule.base',
@@ -66,30 +66,30 @@ use yii\web\View;
         <div class="alert alert-danger invalid-server-url" role="alert" hidden></div>
 
         <?php $form = ActiveForm::begin(['id' => 'configure-form']); ?>
-        <div class="form-group">
+        <div class="mb-3">
             <?= $form->field($model, 'serverUrl'); ?>
             <?= $form->field($model, 'verifyPeerOff')->checkbox(); ?>
             <?= $form->field($model, 'forceSave')->checkbox(); ?>
             <?= $form->field($model, 'demoServer')->checkbox(); ?>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <?= $form->field($model, 'jwtSecret'); ?>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <?= $form->field($model, 'jwtHeader'); ?>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <?= $form->field($model, 'internalServerUrl'); ?>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <?= $form->field($model, 'storageUrl'); ?>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <?= Html::activeLabel($model, 'customLabel', ['class' => 'control-label']); ?>
             <?= $form->field($model, 'chat')->checkbox(); ?>
             <?= $form->field($model, 'compactHeader')->checkbox(); ?>
@@ -98,7 +98,7 @@ use yii\web\View;
             <?= $form->field($model, 'compactToolbar')->checkbox(); ?>
         </div>
 
-        <div id="forceEditTypes" class="form-group">
+        <div id="forceEditTypes" class="mb-3">
             <?= Html::activeLabel($model, 'editLabel', ['class' => 'control-label']); ?>
             <div class="row">
                 <?php foreach ($forceEditExt as $key => $ext) {
@@ -113,13 +113,13 @@ use yii\web\View;
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="mb-3">
             <?= Html::Button(
                 Yii::t(
                     'OnlyofficeModule.base',
                     'Submit'
                 ),
-                ['id' => 'saveBtn', 'class' => 'btn btn-primary', 'data-ui-loader' => '']
+                ['id' => 'saveBtn', 'class' => 'btn btn-primary', 'data-ui-loader' => ''],
             ) ?>
         </div>
         <?php ActiveForm::end(); ?>
@@ -204,7 +204,7 @@ use yii\web\View;
                     url: "' . Url::to(["/onlyoffice/admin/save"]) . '",
                     cache: false,
                     type: "POST",
-                    data: { 
+                    data: {
                         "ConfigureForm": {
                             serverUrl: serverUrl,
                             verifyPeerOff: verifyPeerOff,

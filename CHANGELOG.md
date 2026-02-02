@@ -1,5 +1,9 @@
 # Change Log
 
+## 4.0.0
+## Changed
+- compatible with HumHub 1.18
+
 ## 3.3.0
 ## Added
 - diagram documentType for vsdx, vssx, vstx, vsdm, vssm, vstm
