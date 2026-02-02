@@ -100,18 +100,27 @@ use yii\web\View;
 
         <div id="forceEditTypes" class="form-group">
             <?= Html::activeLabel($model, 'editLabel', ['class' => 'control-label']); ?>
-            <br/>
-            <?php foreach ($forceEditExt as $key => $ext) {
-                echo $form->field(
-                    $model,
-                    'forceEditTypes[' . $ext . ']',
-                    ['options' => ['class' => 'checkbox-inline']]
-                )->checkbox(['label' => $ext]);
-            } ?>
+            <div class="row">
+                <?php foreach ($forceEditExt as $key => $ext) {
+                    echo '<div class="col-md-2 col-sm-3 col-xs-4">';
+                    echo $form->field(
+                        $model,
+                        'forceEditTypes[' . $ext . ']',
+                        ['options' => ['class' => 'checkbox']]
+                    )->checkbox(['label' => $ext]);
+                    echo '</div>';
+                } ?>
+            </div>
         </div>
 
         <div class="form-group">
-            <?= Html::Button('Submit', ['id' => 'saveBtn', 'class' => 'btn btn-primary', 'data-ui-loader' => '']) ?>
+            <?= Html::Button(
+                Yii::t(
+                    'OnlyofficeModule.base',
+                    'Submit'
+                ),
+                ['id' => 'saveBtn', 'class' => 'btn btn-primary', 'data-ui-loader' => '']
+            ) ?>
         </div>
         <?php ActiveForm::end(); ?>
     </div>

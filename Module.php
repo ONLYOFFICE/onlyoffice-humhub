@@ -56,6 +56,7 @@ class Module extends \humhub\components\Module
     public const DOCUMENT_TYPE_PRESENTATION = 'slide';
     public const DOCUMENT_TYPE_SPREADSHEET = 'cell';
     public const DOCUMENT_TYPE_PDF = 'pdf';
+    public const DOCUMENT_TYPE_DIAGRAM = 'diagram';
 
     public $demoparam = [
         'trial' => 30,
@@ -78,6 +79,7 @@ class Module extends \humhub\components\Module
         $this->formats->presentationExtensions = [];
         $this->formats->textExtensions = [];
         $this->formats->pdfExtensions = [];
+        $this->formats->diagramExtensions = [];
         $this->formats->editableExtensions = [];
         $this->formats->convertableExtensions = [];
         $this->formats->forceEditableExtensions = [];
@@ -96,6 +98,9 @@ class Module extends \humhub\components\Module
             }
             if ($formatJson->type === self::DOCUMENT_TYPE_PDF) {
                 array_push($this->formats->pdfExtensions, $formatJson->name);
+            }
+            if ($formatJson->type === self::DOCUMENT_TYPE_DIAGRAM) {
+                array_push($this->formats->diagramExtensions, $formatJson->name);
             }
 
             if (in_array('edit', $formatJson->actions)) {
@@ -250,7 +255,8 @@ class Module extends \humhub\components\Module
 
     public function getforceEditTypes()
     {
-        return explode(",", $this->settings->get('forceEditTypes'));
+        $forceEditTypes = $this->settings->get('forceEditTypes');
+        return $forceEditTypes === null || $forceEditTypes === '' ? [] : explode(',', $forceEditTypes);
     }
 
     public function getServerApiUrl(): string
@@ -294,6 +300,8 @@ class Module extends \humhub\components\Module
             return self::DOCUMENT_TYPE_TEXT;
         } elseif (in_array($fileExtension, $this->formats()->pdfExtensions)) {
             return self::DOCUMENT_TYPE_PDF;
+        } elseif (in_array($fileExtension, $this->formats()->diagramExtensions)) {
+            return self::DOCUMENT_TYPE_DIAGRAM;
         }
 
         return null;
@@ -397,7 +405,7 @@ class Module extends \humhub\components\Module
 
     public function convertService($documentUrl, $fromExt, $toExt, $key, $async = true): array
     {
-        $url = $this->getInternalServerUrl() . '/ConvertService.ashx';
+        $url = $this->getInternalServerUrl() . '/converter' . '?shardKey=' . $key;
 
         $user = Yii::$app->user->getIdentity();
         $lang = ($user) && !empty($user->language) ? $user->language : Yii::$app->language;
@@ -514,7 +522,7 @@ class Module extends \humhub\components\Module
      */
     public function isOnlyofficeForm($file)
     {
-        if ($file === null) {
+        if (!$file instanceof File || !$file->store->has()) {
             return false;
         }
         if ($this->getDocumentType($file) !== self::DOCUMENT_TYPE_PDF) {
@@ -524,8 +532,7 @@ class Module extends \humhub\components\Module
         $limitDetect = 300;
         $onlyofficeFormMetaTag = 'ONLYOFFICEFORM';
 
-        $path = $file->getStoredFilePath() . 'file';
-        $content = file_get_contents($path, false, null, 0, $limitDetect);
+        $content = file_get_contents($file->store->get(), false, null, 0, $limitDetect);
 
         $indexFirst = strpos($content, "%\xCD\xCA\xD2\xA9\x0D");
         if ($indexFirst === false) {
@@ -631,7 +638,9 @@ class Module extends \humhub\components\Module
         "ar" => "ar-SA",
         "az" => "az-Latn-AZ",
         "bg" => "bg-BG",
+        "ca" => "ca-ES",
         "cs" => "cs-CZ",
+        "da" => "da-DK",
         "de" => "de-DE",
         "el" => "el-GR",
         "en_GB" => "en-GB",
@@ -640,6 +649,8 @@ class Module extends \humhub\components\Module
         "eu" => "eu-ES",
         "fi" => "fi-FI",
         "fr" => "fr-FR",
+        "hu" => "hu-HU",
+        "id" => "id-ID",
         "it" => "it-IT",
         "ja" => "ja-JP",
         "he" => "he-IL",
@@ -650,7 +661,9 @@ class Module extends \humhub\components\Module
         "pl" => "pl-PL",
         "pt_BR" => "pt-BR",
         "pt" => "pt-PT",
+        "ro" => "ro-RO",
         "ru" => "ru-RU",
+        "sq" => "sq-AL",
         "sk" => "sk-SK",
         "sl" => "sl-SI",
         "sr" => "sr-Cyrl-RS",

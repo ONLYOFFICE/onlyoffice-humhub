@@ -1,15 +1,15 @@
 {
     "id": "onlyoffice",
-    "name": "ONLYOFFICE Connector for HumHub",
-    "description": "ONLYOFFICE connector for HumHub allows you to edit and co-author office documents, spreadsheets, and presentations within HumHub using ONLYOFFICE online editors. With JWT protection from unauthorized access.",
+    "name": "ONLYOFFICE",
+    "description": "ONLYOFFICE module for HumHub allows you to edit and co-author office documents, spreadsheets, and presentations within HumHub using ONLYOFFICE online editors. With JWT protection from unauthorized access.",
     "keywords": [
         "office", "word", "excel", "presentation", "document collaboration", "online editors", "edit documents online", "edit word online", "edit presentation online"
     ],
-    "version": "3.2.0",
+    "version": "3.3.0",
     "humhub": {
-        "minVersion": "1.3"
+        "minVersion": "1.13"
     },
-    "homepage": "https://www.onlyoffice.com",
+    "homepage": "https://github.com/ONLYOFFICE/onlyoffice-humhub",
     "authors": [
         {
             "email": "support@onlyoffice.com",

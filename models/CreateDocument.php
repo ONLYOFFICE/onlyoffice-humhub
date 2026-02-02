@@ -16,8 +16,6 @@ namespace humhub\modules\onlyoffice\models;
 use Yii;
 use yii\base\Model;
 use humhub\modules\file\models\File;
-use humhub\modules\cfiles\models\Folder;
-use humhub\modules\cfiles\permissions\WriteAccess;
 
 /**
  * Description of CreateDocument
@@ -43,6 +41,7 @@ class CreateDocument extends Model
     public function attributeLabels()
     {
         return [
+            'fileName' => Yii::t('OnlyofficeModule.base', 'File Name'),
             'openFlag' => Yii::t('OnlyofficeModule.base', 'Open the new document in the next step')
         ];
     }
@@ -50,13 +49,7 @@ class CreateDocument extends Model
     public function save()
     {
         if (empty($this->extension)) {
-            throw new Exception("File extension cannot be empty");
-        }
-
-        $cfiles = Yii::$app->getModule('cfiles');
-        $folder = isset($cfiles) ? Folder::findOne($this->fid) : null;
-        if ($folder && !$folder->content->container->permissionManager->can(WriteAccess::class)) {
-            return false;
+            throw new \Exception("File extension cannot be empty");
         }
 
         if ($this->validate()) {

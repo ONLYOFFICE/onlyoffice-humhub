@@ -16,9 +16,11 @@ namespace humhub\modules\onlyoffice\controllers;
 use Yii;
 use yii\helpers\Url;
 use humhub\components\access\ControllerAccess;
+use humhub\modules\cfiles\models\Folder;
 use humhub\modules\onlyoffice\permissions\CanUseOnlyOffice;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\onlyoffice\Module;
+use yii\web\HttpException;
 
 class CreateController extends \humhub\components\Controller
 {
@@ -44,6 +46,8 @@ class CreateController extends \humhub\components\Controller
         $model->extension = Yii::$app->request->get('extension');
 
         if ($model->load(Yii::$app->request->post())) {
+            $this->cFilesGate($model->fid);
+
             $file = $model->save();
 
             if ($file !== false) {
@@ -73,5 +77,13 @@ class CreateController extends \humhub\components\Controller
         }
 
         return null;
+    }
+
+    private function cFilesGate($fid)
+    {
+        $folder = Yii::$app->hasModule('cfiles') && !empty($fid) ? Folder::findOne($fid) : null;
+        if ($folder && !$folder->canManage()) {
+            throw new HttpException(403);
+        }
     }
 }

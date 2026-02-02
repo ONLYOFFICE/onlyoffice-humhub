@@ -1,5 +1,20 @@
 # Change Log
 
+## 3.3.0
+## Added
+- diagram documentType for vsdx, vssx, vstx, vsdm, vssm, vstm
+- view odg, md
+- edit xlsb
+- support hwp, hwpx, pages, numbers, key formats
+- shardKey param to url for requests to Docs API and Conversion API
+- missing translations
+- pagination for users for mentions, including permission checks
+
+## Changed
+- URL for requests to Conversion API
+- fixed file creation in the cfiles folder with insufficient permissions
+- hide plugin file handlers from users without sufficient permissions in cfiles page
+
 ## 3.2.0
 ## Added
 - default empty templates

@@ -52,11 +52,17 @@ class OpenController extends BaseFileController
             return $this->redirectToModal();
         }
 
+        $serverApiUrl = Yii::$app->getModule('onlyoffice')->getServerApiUrl();
+        $module = Yii::$app->getModule('onlyoffice');
+        $key = $module->generateDocumentKey($this->file);
+        $serverApiUrl .= '?shardKey=' . $key;
+
         return $this->renderAjax('index', [
                     'file' => $this->file,
                     'mode' => $this->mode,
                     'restrict' => $this->restrict,
-                    'anchor' => $this->anchor
+                    'anchor' => $this->anchor,
+                    'serverApiUrl' => $serverApiUrl
         ]);
     }
 
