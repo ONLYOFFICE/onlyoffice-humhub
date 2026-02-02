@@ -1,4 +1,6 @@
 # Change Log
+## Changed
+- update Command service address
 
 ## 3.3.0
 ## Added

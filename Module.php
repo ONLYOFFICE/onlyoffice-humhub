@@ -350,7 +350,7 @@ class Module extends \humhub\components\Module
 
     public function commandService($data): array
     {
-        $url = $this->getInternalServerUrl() . '/coauthoring/CommandService.ashx';
+        $url = $this->getInternalServerUrl() . '/command';
 
         try {
             $headers = [];
