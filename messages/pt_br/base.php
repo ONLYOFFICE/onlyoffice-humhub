@@ -69,4 +69,5 @@ return [
     'Keep intermediate versions when editing (forcesave)' => 'Manter versões intermediárias ao editar (forçar salvar)',
     'Authorization header' => 'Cabeçalho de autorização',
     'Leave blank to use default header' => 'Deixe em branco para usar o cabeçalho padrão',
+    'To ensure the security of important parameters in ONLYOFFICE Docs requests, please set a Secret Key on the Settings page. To learn more, <a href="{url}" class="alert-link" style="text-decoration:underline;" target="_blank">click here</a>.' => 'Para garantir a segurança de parâmetros importantes nas solicitações do ONLYOFFICE Docs, defina uma Chave Secreta na página Configurações. Para saber mais, <a href="{url}" class="alert-link" style="text-decoration:underline;" target="_blank">clique aqui</a>.',
 ];

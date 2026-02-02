@@ -1,6 +1,13 @@
 # Change Log
+
+##
 ## Added
 - plugin description and useful links in admin settings
+
+## Changed
+- update Command service address
+- updated formats icons
+- display empty jwt warning if jwt secret is disabled
 
 ## 3.3.0
 ## Added
@@ -15,6 +22,7 @@
 ## Changed
 - URL for requests to Conversion API
 - fixed file creation in the cfiles folder with insufficient permissions
+- hide plugin file handlers from users without sufficient permissions in cfiles page
 
 ## 3.2.0
 ## Added
