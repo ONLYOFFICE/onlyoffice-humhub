@@ -63,6 +63,19 @@ use yii\web\View;
             </div>
         <?php endif; ?>
 
+        <?php if (!empty($model->serverUrl) && empty($model->settingError) && empty($model->jwtSecret)) : ?>
+            <div class="alert alert-warning" role="alert">
+                <?= Yii::t(
+                    'OnlyofficeModule.base',
+                    'To ensure the security of important parameters in ONLYOFFICE Docs requests, '
+                    . 'please set a Secret Key on the Settings page. To learn more, '
+                    . '<a href="{url}" class="alert-link" style="text-decoration:underline;" target="_blank">'
+                    . 'click here</a>.',
+                    ['url' => 'https://api.onlyoffice.com/docs/docs-api/get-started/how-it-works/security/'],
+                ); ?>
+            </div>
+        <?php endif ?>
+
         <div class="alert alert-danger invalid-server-url" role="alert" hidden></div>
 
         <?php $form = ActiveForm::begin(['id' => 'configure-form']); ?>

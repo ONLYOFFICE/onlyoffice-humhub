@@ -3,6 +3,7 @@
 ## Changed
 - update Command service address
 - updated formats icons
+- display empty jwt warning if jwt secret is disabled
 
 ## 3.3.0
 ## Added
