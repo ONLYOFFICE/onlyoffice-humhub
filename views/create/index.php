@@ -43,20 +43,24 @@ $modal = \humhub\widgets\ModalDialog::begin([
         font-size: 14px;
         font-weight: bold;
         height: 45px;
-        padding-top: 100px;
+        padding-top: 86px;
         text-align: center;
         text-decoration: none;
     }    
     .try-editor.document {
+        margin-top: 14px;
         background-image: url("<?= $this->context->module->getPublishedUrl('/file_docx.svg'); ?>");
     }
     .try-editor.spreadsheet {
+        margin-top: 14px;
         background-image: url("<?= $this->context->module->getPublishedUrl('/file_xlsx.svg'); ?>");
     }
     .try-editor.presentation {
+        margin-top: 14px;
         background-image: url("<?= $this->context->module->getPublishedUrl('/file_pptx.svg'); ?>");
     }
     .try-editor.form-template {
+        margin-top: 14px;
         background-image: url("<?= $this->context->module->getPublishedUrl('/file_pdf.svg'); ?>");
     }
 </style>
