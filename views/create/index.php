@@ -14,21 +14,31 @@ $modal = \humhub\widgets\ModalDialog::begin([
 <style>
 
     .modal-dialog {
-        width: 800px;
+        width: 750px;
+    }
+    .modal-body {
+        display: flex;
+        flex-direction: column;
+        row-gap: 20px;
+        padding: 20px 37px !important;
+    }
+    .try-descr {
+        font-size: 14px;
     }
     .try-editor-list {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
         list-style: none;
         margin: 0;
         padding: 0;
-        height: 180px;
     }
     .try-editor-list li {
         float: left;
         cursor: pointer;
         border:1px solid #EEE;
         height: 150px;
-        padding: 12px;
-        margin: 25px;
+        padding: 16px;
         width: 135px;
     }
     .try-editor-list li:hover {
@@ -63,14 +73,20 @@ $modal = \humhub\widgets\ModalDialog::begin([
         margin-top: 14px;
         background-image: url("<?= $this->context->module->getPublishedUrl('/file_pdf.svg'); ?>");
     }
+    .try-user-voice {
+        font-size: 12px;
+        color: #80848F;
+    }
+    .try-user-voice a {
+        color: #80848F;
+        text-decoration: underline;
+    }
 </style>
 <div class="modal-body">
-    <br />
     <span class="try-descr"><?= Yii::t(
         'OnlyofficeModule.base',
         'Please select a document type.'
     ); ?></span>
-    <br />
     <ul class="try-editor-list">
         <li>
             <a class="try-editor document" data-action-click="ui.modal.load" data-action-url="
@@ -121,5 +137,14 @@ $modal = \humhub\widgets\ModalDialog::begin([
             </a>
         </li>
     </ul>
+    <p class="try-user-voice" >
+        <?= Yii::t(
+            'OnlyofficeModule.base',
+            'Help us improve ONLYOFFICE connector - <a href="{url}" target="_blank">Share feedback</a>',
+            [
+                'url' => 'https://feedback.onlyoffice.com/forums/966080-your-voice-matters?category_id=519288'
+            ]
+        ); ?>
+    </p>
 </div>
 <?php \humhub\widgets\ModalDialog::end(); ?>

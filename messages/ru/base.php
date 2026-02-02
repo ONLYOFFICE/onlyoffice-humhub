@@ -79,4 +79,9 @@ return [
     'Submit' => '',
     'File Name' => '',
     'To ensure the security of important parameters in ONLYOFFICE Docs requests, please set a Secret Key on the Settings page. To learn more, <a href="{url}" class="alert-link" style="text-decoration:underline;" target="_blank">click here</a>.' => 'Для обеспечения безопасности важных параметров в запросах ONLYOFFICE Docs, пожалуйста, установите секретный ключ на странице настроек. Чтобы узнать больше, <a href="{url}" class="alert-link" style="text-decoration:underline;" target="_blank">перейдите по ссылке</a>.',
+    'Welcome to ONLYOFFICE!' => '',
+    'Collaboratively view and edit office documents in real time within HumHub using ONLYOFFICE Docs.' => '',
+    'Learn more' => '',
+    'Suggest a feature' => '',
+    'Help us improve ONLYOFFICE connector - <a href="{url}" target="_blank">Share feedback</a>' => '',
 ];

@@ -11,6 +11,50 @@ use yii\helpers\Url;
 use yii\web\View;
 
 ?>
+<style>
+    .onlyoffice-user-voice {
+        display: flex;
+        flex-direction: column;
+        row-gap: 11px;
+        margin-bottom: 29px;
+    }
+
+    .onlyoffice-user-voice h1 {
+        font-size: 15px;
+        font-weight: 700;
+        color: #555555;
+        margin-bottom: 0;
+        line-height: 18px;
+    }
+
+    .onlyoffice-user-voice p {
+        font-size: 14px;
+        font-weight: 400;
+        margin-bottom: 0;
+        color: #555555;
+        line-height: 17px;
+    }
+
+    .onlyoffice-user-voice .onlyoffice-useful-links {
+        display: flex;
+        column-gap: 24px;
+    }
+
+    .onlyoffice-user-voice .onlyoffice-useful-links a {
+        display: flex;
+        gap: 4px;
+        font-size: 14px;
+        font-weight: 700;
+        color: #555555;
+        line-height: 17px;
+    }
+
+    .onlyoffice-user-voice .onlyoffice-useful-links a::after {
+        content: url("<?= $this->context->module->getPublishedUrl('/top_right_arrow.svg'); ?>");
+        width: 12px;
+        height: 12px;
+    }
+</style>
 
 <div class="panel panel-default">
 
@@ -22,6 +66,35 @@ use yii\web\View;
     </div>
 
     <div class="panel-body">
+        <div class="onlyoffice-user-voice">
+            <h1>
+                <?= Yii::t(
+                    'OnlyofficeModule.base',
+                    'Welcome to ONLYOFFICE!'
+                ); ?>
+            </h1>
+            <p>
+                <?= Yii::t(
+                    'OnlyofficeModule.base',
+                    'Collaboratively view and edit office documents in real time within HumHub using ONLYOFFICE Docs.'
+                ); ?>
+            </p>
+            <div class="onlyoffice-useful-links">
+                <a href="https://helpcenter.onlyoffice.com/integration/humhub.aspx" target="_blank">
+                    <?= Yii::t(
+                        'OnlyofficeModule.base',
+                        'Learn more'
+                    ); ?>
+                </a>
+                <a href="https://feedback.onlyoffice.com/forums/966080-your-voice-matters?category_id=519288" 
+                    target="_blank">
+                    <?= Yii::t(
+                        'OnlyofficeModule.base',
+                        'Suggest a feature'
+                    ); ?>
+                </a>
+            </div>
+        </div>
 
         <?php if (empty($model->serverUrl) && empty($trial)) : ?>
             <div class="alert alert-warning" role="alert">

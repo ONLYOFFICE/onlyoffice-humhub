@@ -1,5 +1,9 @@
 # Change Log
 
+##
+## Added
+- plugin description and useful links in admin settings
+
 ## Changed
 - update Command service address
 - updated formats icons
