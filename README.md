@@ -27,7 +27,7 @@ This integration lets users create, edit, and collaborate on office documents di
 
 ## Installing ONLYOFFICE Docs
 
-You’ll need an instance of ONLYOFFICE Docs (Document Server) accessible from both HumHub and client side. ONLYOFFICE Docs must also be able to send POST requests directly to your HumHub instance.
+You'll need an instance of ONLYOFFICE Docs (Document Server) accessible from both HumHub and client side. ONLYOFFICE Docs must also be able to send POST requests directly to your HumHub instance.
 
 You can install the self-hosted editors or use the cloud version.
 
