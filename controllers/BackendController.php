@@ -96,7 +96,7 @@ class BackendController extends Controller
             }
         }
 
-        return Yii::$app->response->sendFile($this->file->store->get(), $this->file->file_name);
+        return Yii::$app->response->sendContentAsFile($this->file->store->getContent(), $this->file->file_name);
     }
 
     /**

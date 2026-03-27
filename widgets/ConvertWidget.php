@@ -45,9 +45,9 @@ class ConvertWidget extends JsWidget
 
         $module = Yii::$app->getModule('onlyoffice');
         $this->newName = substr(
-            $this->file->fileName,
+            $this->file->file_name,
             0,
-            strpos($this->file->fileName, '.') + 1
+            strpos($this->file->file_name, '.') + 1,
         ) . $module->formats()->convertsTo[strtolower(FileHelper::getExtension($this->file))];
     }
 
@@ -61,7 +61,7 @@ class ConvertWidget extends JsWidget
                 '/onlyoffice/convert/convert',
                 'guid' => $this->file->guid,
                 'ts' => time(),
-                'newName' => $this->newName
+                'newName' => $this->newName,
             ]),
             'file-info-url' => Url::to(['/onlyoffice/open/get-info', 'guid' => $this->file->guid]),
             'done-message' => Yii::t('OnlyofficeModule.base', 'Done!'),
@@ -75,9 +75,9 @@ class ConvertWidget extends JsWidget
     public function run()
     {
         return $this->render('convert', [
-                    'options' => $this->getOptions(),
-                    'file' => $this->file,
-                    'newName' => $this->newName,
+            'options' => $this->getOptions(),
+            'file' => $this->file,
+            'newName' => $this->newName,
         ]);
     }
 }

@@ -6,9 +6,13 @@
  */
 
 use humhub\helpers\Html;
+use humhub\modules\file\models\File;
 use humhub\modules\onlyoffice\assets\Assets;
 use humhub\widgets\modal\Modal;
-use humhub\widgets\modal\ModalButton;
+
+/* @var File $file */
+/* @var string $newName */
+/* @var array $options */
 
 Assets::register($this);
 ?>
@@ -19,12 +23,12 @@ Assets::register($this);
         Yii::t('OnlyofficeModule.base', 'Close'),
         '#',
         [
-                'class' => 'btn btn btn-light',
-                'data-ui-loader' => '',
-                'data-action-click' => 'close',
-                'data-modal-close' => '',
-                'data-ui-widget' => 'onlyoffice.Convert',
-            ],
+            'class' => 'btn btn btn-light',
+            'data-ui-loader' => '',
+            'data-action-click' => 'close',
+            'data-modal-close' => '',
+            'data-ui-widget' => 'onlyoffice.Convert',
+        ],
     ),
     'closeButton' => [
         'data-action-click' => 'close',
@@ -38,7 +42,7 @@ Assets::register($this);
             <?= Yii::t(
                 'OnlyofficeModule.base',
                 'Converting <strong>{oldFileName}</strong> to <strong>{newFileName}</strong>..',
-                ['oldFileName' => $file->fileName, 'newFileName' => $newName]
+                ['oldFileName' => $file->file_name, 'newFileName' => $newName],
             ); ?>
         </span>
         <br/>

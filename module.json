@@ -5,9 +5,9 @@
     "keywords": [
         "office", "word", "excel", "presentation", "document collaboration", "online editors", "edit documents online", "edit word online", "edit presentation online"
     ],
-    "version": "4.0.0",
+    "version": "4.1.0",
     "humhub": {
-        "minVersion": "1.18"
+        "minVersion": "1.19"
     },
     "homepage": "https://github.com/ONLYOFFICE/onlyoffice-humhub",
     "authors": [

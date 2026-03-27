@@ -1,5 +1,9 @@
 # Change Log
 
+## 4.1.0
+## Changed
+- compatible with HumHub 1.19
+
 ## 4.0.0
 ## Changed
 - compatible with HumHub 1.18
