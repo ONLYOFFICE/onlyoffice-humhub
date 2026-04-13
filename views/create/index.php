@@ -62,19 +62,19 @@ use yii\helpers\Url;
         }    
         .try-editor.document {
             margin-top: 14px;
-            background-image: url("<?= $this->context->module->getPublishedUrl('/file_docx.svg'); ?>");
+            background-image: url("<?= Url::to($this->context->module->getPublishedUrl('/file_docx.svg')) ?>");
         }
         .try-editor.spreadsheet {
             margin-top: 14px;
-            background-image: url("<?= $this->context->module->getPublishedUrl('/file_xlsx.svg'); ?>");
+            background-image: url("<?= Url::to($this->context->module->getPublishedUrl('/file_xlsx.svg')) ?>");
         }
         .try-editor.presentation {
             margin-top: 14px;
-            background-image: url("<?= $this->context->module->getPublishedUrl('/file_pptx.svg'); ?>");
+            background-image: url("<?= Url::to($this->context->module->getPublishedUrl('/file_pptx.svg')) ?>");
         }
         .try-editor.form-template {
             margin-top: 14px;
-            background-image: url("<?= $this->context->module->getPublishedUrl('/file_pdf.svg'); ?>");
+            background-image: url("<?= Url::to($this->context->module->getPublishedUrl('/file_pdf.svg')) ?>");
         }
         .try-user-voice {
             font-size: 12px;

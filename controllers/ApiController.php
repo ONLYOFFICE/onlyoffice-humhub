@@ -218,7 +218,7 @@ class ApiController extends Controller
 
         $filteredOffset = 0;
         foreach ($userQuery->batch(1000) as $userBatch) {
-            $filteredUsers = array_filter($userBatch, fn(User $user) => $file->canRead($user));
+            $filteredUsers = array_filter($userBatch, fn(User $user) => $file->canView($user));
             $filteredCount = count($filteredUsers);
             if ($filteredOffset + $filteredCount > $offset) {
                 $users = array_merge($users, array_slice($filteredUsers, $offset - $filteredOffset));

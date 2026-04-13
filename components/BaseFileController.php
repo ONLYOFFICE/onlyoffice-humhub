@@ -72,7 +72,7 @@ class BaseFileController extends Controller
                 throw new HttpException(404, Yii::t('OnlyofficeModule.base', 'Could not find requested file!'));
             }
 
-            if (!$this->file->canRead()) {
+            if (!$this->file->canView()) {
                 throw new HttpException(403, Yii::t('OnlyofficeModule.base', 'File read access denied!'));
             }
 

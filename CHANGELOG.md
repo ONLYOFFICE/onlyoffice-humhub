@@ -5,6 +5,7 @@
 - plugin description and useful links in admin settings
 
 ## Changed
+- compatible with HumHub 1.19
 - update Command service address
 - updated formats icons
 - display empty jwt warning if jwt secret is disabled

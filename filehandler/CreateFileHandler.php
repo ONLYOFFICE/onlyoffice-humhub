@@ -31,7 +31,7 @@ class CreateFileHandler extends BaseFileHandler
     {
         list (, $baseUrl) = Yii::$app->getAssetManager()->publish("@onlyoffice/resources/app-dark.svg");
         return [
-            'label' => '<img style="height: 14px; margin-right: 5px;" src="' . $baseUrl . '"/>'
+            'label' => '<img style="height: 14px; margin-right: 5px;" src="' . Url::to($baseUrl) . '"/>'
                 . Yii::t(
                     'OnlyofficeModule.base',
                     'Create file <small>(Text, Spreadsheet, Presentation, PDF form)</small>',

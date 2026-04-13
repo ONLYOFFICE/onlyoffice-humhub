@@ -177,12 +177,12 @@ class EditorWidget extends JsWidget
             'type' => 'desktop',
             'documentType' => $this->documentType,
             'document' => [
-                'title' => Html::encode($this->file->fileName),
+                'title' => Html::encode($this->file->file_name),
                 'url' => $url,
                 'fileType' => Html::encode(strtolower(FileHelper::getExtension($this->file))),
                 'key' => $key,
                 'info' => [
-                    'author' => Html::encode($this->file->createdBy->displayname),
+                    'author' => Html::encode($this->file->createdBy->displayName),
                     'created' => Html::encode(Yii::$app->formatter->asDatetime($this->file->created_at, 'short')),
                 ],
                 'permissions' => [
@@ -197,7 +197,7 @@ class EditorWidget extends JsWidget
                 'callbackUrl' => $callbackUrl,
                 'user' => [
                     'id' => ($user) ? Html::encode($user->guid) : '',
-                    'name' => ($user) ? Html::encode($user->displayname) : 'Anonymous User',
+                    'name' => ($user) ? Html::encode($user->displayName) : 'Anonymous User',
                 ],
                 'customization' => [
                     'forcesave' => $module->getForceSave(),

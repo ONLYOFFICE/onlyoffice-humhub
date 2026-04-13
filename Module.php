@@ -532,7 +532,12 @@ class Module extends \humhub\components\Module
         $limitDetect = 300;
         $onlyofficeFormMetaTag = 'ONLYOFFICEFORM';
 
-        $content = file_get_contents($file->store->get(), false, null, 0, $limitDetect);
+        $stream = $file->store->fs->readStream($file->store->get());
+        if (!$stream) {
+            return false;
+        }
+        $content = fread($stream, $limitDetect);
+        fclose($stream);
 
         $indexFirst = strpos($content, "%\xCD\xCA\xD2\xA9\x0D");
         if ($indexFirst === false) {
