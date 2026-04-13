@@ -7,8 +7,7 @@
     ],
     "version": "4.0.0",
     "humhub": {
-        "minVersion": "1.18",
-        "maxVersion": "1.18"
+        "minVersion": "1.19"
     },
     "homepage": "https://github.com/ONLYOFFICE/onlyoffice-humhub",
     "authors": [
