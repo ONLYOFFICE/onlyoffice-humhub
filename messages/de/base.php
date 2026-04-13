@@ -71,4 +71,5 @@ return [
     'Authorization header' => 'Authorization-Header',
     'Leave blank to use default header' => 'Leer lassen, um die standardmäßige Kopfzeile zu verwenden',
     'Please select a document type.' => 'Bitte wählen Sie einen Dokumenttyp aus.',
+    'To ensure the security of important parameters in ONLYOFFICE Docs requests, please set a Secret Key on the Settings page. To learn more, <a href="{url}" class="alert-link" style="text-decoration:underline;" target="_blank">click here</a>.' => 'Um die Sicherheit wichtiger Parameter in ONLYOFFICE Docs-Anfragen zu gewährleisten, legen Sie bitte einen geheimen Schlüssel auf der Einstellungsseite fest. Weitere Informationen finden Sie <a href="{url}" class="alert-link" style="text-decoration:underline;" target="_blank">hier</a>.',
 ];

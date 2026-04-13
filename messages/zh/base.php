@@ -69,4 +69,5 @@ return [
     'Keep intermediate versions when editing (forcesave)' => '编辑时保留中间版本 (强制保存)',
     'Authorization header' => '授权标头',
     'Leave blank to use default header' => '留空以使用默认的标头',
+    'To ensure the security of important parameters in ONLYOFFICE Docs requests, please set a Secret Key on the Settings page. To learn more, <a href="{url}" class="alert-link" style="text-decoration:underline;" target="_blank">click here</a>.' => '为确保 ONLYOFFICE 文档请求中重要参数的安全，请在“设置”页面设置密钥。要了解更多信息，请<a href="{url}" class="alert-link" style="text-decoration:underline;" target="_blank">点击此处</a>。',
 ];

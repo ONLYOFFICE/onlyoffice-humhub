@@ -16,19 +16,32 @@ use yii\helpers\Url;
 ]) ?>
 
     <style>
+        .modal-dialog {
+            width: 750px;
+        }
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+            row-gap: 20px;
+            padding: 20px 37px !important;
+        }
+        .try-descr {
+            font-size: 14px;
+        }
         .try-editor-list {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
             list-style: none;
             margin: 0;
             padding: 0;
-            height: 180px;
         }
         .try-editor-list li {
             float: left;
             cursor: pointer;
             border:1px solid #EEE;
             height: 150px;
-            padding: 12px;
-            margin: 25px;
+            padding: 16px;
             width: 135px;
         }
         .try-editor-list li:hover {
@@ -43,21 +56,33 @@ use yii\helpers\Url;
             font-size: 14px;
             font-weight: bold;
             height: 45px;
-            padding-top: 100px;
+            padding-top: 86px;
             text-align: center;
             text-decoration: none;
-        }
+        }    
         .try-editor.document {
+            margin-top: 14px;
             background-image: url("<?= $this->context->module->getPublishedUrl('/file_docx.svg'); ?>");
         }
         .try-editor.spreadsheet {
+            margin-top: 14px;
             background-image: url("<?= $this->context->module->getPublishedUrl('/file_xlsx.svg'); ?>");
         }
         .try-editor.presentation {
+            margin-top: 14px;
             background-image: url("<?= $this->context->module->getPublishedUrl('/file_pptx.svg'); ?>");
         }
         .try-editor.form-template {
+            margin-top: 14px;
             background-image: url("<?= $this->context->module->getPublishedUrl('/file_pdf.svg'); ?>");
+        }
+        .try-user-voice {
+            font-size: 12px;
+            color: #80848F;
+        }
+        .try-user-voice a {
+            color: #80848F;
+            text-decoration: underline;
         }
     </style>
 
@@ -113,5 +138,15 @@ use yii\helpers\Url;
             </a>
         </li>
     </ul>
+
+    <p class="try-user-voice" >
+        <?= Yii::t(
+            'OnlyofficeModule.base',
+            'Help us improve ONLYOFFICE connector - <a href="{url}" target="_blank">Share feedback</a>',
+            [
+                'url' => 'https://feedback.onlyoffice.com/forums/966080-your-voice-matters?category_id=519288'
+            ]
+        ); ?>
+    </p>
 
 <?php Modal::endDialog() ?>
