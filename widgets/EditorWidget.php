@@ -60,6 +60,11 @@ class EditorWidget extends JsWidget
     public $anchor;
 
     /**
+     * @var string mode (edit or view)
+     */
+    public $openInNewTab;
+
+    /**
      * @inheritdoc
      */
     protected $documentType = null;
@@ -151,6 +156,7 @@ class EditorWidget extends JsWidget
                     'file' => $this->file,
                     'mode' => $this->mode,
                     'options' => $this->getOptions(),
+                    'openInNewTab' => $this->openInNewTab,
         ]);
     }
 
