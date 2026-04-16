@@ -14,6 +14,7 @@
 namespace humhub\modules\onlyoffice\widgets;
 
 use humhub\libs\Html;
+use humhub\modules\content\models\Content;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\file\libs\FileHelper;
@@ -175,6 +176,13 @@ class EditorWidget extends JsWidget
 
         $url = Url::to(['/onlyoffice/backend/download', 'doc' => $docHash], true);
         $callbackUrl = Url::to(['/onlyoffice/backend/track', 'doc' => $docHash], true);
+        $gobackUrl = null;
+        if (!empty($this->file->content_id)) {
+            $content = Content::findOne($this->file->content_id);
+            if ($content !== null) {
+                $gobackUrl = Url::to($content->getUrl(), true);
+            }
+        }
         if (!empty($module->getStorageUrl())) {
             $url = $module->getStorageUrl() . Url::to(['/onlyoffice/backend/download', 'doc' => $docHash], false);
             $callbackUrl = $module->getStorageUrl() . Url::to(['/onlyoffice/backend/track', 'doc' => $docHash], false);
@@ -235,6 +243,13 @@ class EditorWidget extends JsWidget
                 'permissions' => 'Full Access',
                 'user' => 'Me',
             ]];
+        }
+
+        if ($module->getOpenInNewTab() && $gobackUrl) {
+            $config['editorConfig']['customization']['goback'] = [
+                'text' => Yii::t('OnlyofficeModule.base', 'Open file location'),
+                'url' => $gobackUrl,
+            ];
         }
 
         return $config;
