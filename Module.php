@@ -36,6 +36,14 @@ class Module extends \humhub\components\Module
 
     public $resourcesPath = 'resources';
 
+    public function init()
+    {
+        parent::init();
+        Yii::$app->view->registerJsConfig('onlyoffice', [
+            'openInNewTab' => $this->getOpenInNewTab(),
+        ]);
+    }
+
     public int $jwtExpiration = 300;
 
     /**
