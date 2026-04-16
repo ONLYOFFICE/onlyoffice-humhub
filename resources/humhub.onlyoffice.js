@@ -129,7 +129,9 @@ humhub.module('onlyoffice', function (module, require, $) {
                 module.log.info(infoMsg, true);
             }
         }
-        config.events.onRequestSharingSettings = onRequestSharingSettings;
+        if (this.options.canShare) {
+            config.events.onRequestSharingSettings = onRequestSharingSettings;
+        }
 
         this.docEditor = new DocsAPI.DocEditor('iframeContainer', config);
 

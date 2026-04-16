@@ -132,7 +132,8 @@ class EditorWidget extends JsWidget
             'file-info-url' => Url::to(['/onlyoffice/open/get-info', 'guid' => $this->file->guid]),
             'module-configured' => (empty($module->getServerUrl()) ? '0' : '1'),
             'api' => $api,
-            'info-msg' => $infoMsg
+            'info-msg' => $infoMsg,
+            'can-share' => $this->mode === Module::OPEN_MODE_EDIT && !Yii::$app->user->isGuest
         ];
     }
 
@@ -225,7 +226,11 @@ class EditorWidget extends JsWidget
             $config['token'] = $module->jwtEncode($config);
         }
 
-        if ($module->getOpenInNewTab()) {
+        if (
+            $module->getOpenInNewTab()
+            && $this->mode === Module::OPEN_MODE_EDIT
+            && !Yii::$app->user->isGuest
+        ) {
             $config['document']['info']['sharingSettings'] = [[
                 'permissions' => 'Full Access',
                 'user' => 'Me',
