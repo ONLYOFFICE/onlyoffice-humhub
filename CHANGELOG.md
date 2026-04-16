@@ -2,6 +2,7 @@
 
 ##
 ## Added
+- openInNewTab admin setting to open the editor in a new tab instead of a modal
 - plugin description and useful links in admin settings
 
 ## Changed
