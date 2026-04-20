@@ -405,7 +405,7 @@ class Module extends \humhub\components\Module
 
     public function convertService($documentUrl, $fromExt, $toExt, $key, $async = true): array
     {
-        $url = $this->getInternalServerUrl() . '/converter' . '?shardKey=' . $key;
+        $url = $this->getInternalServerUrl() . '/converter' . '?shardkey=' . $key;
 
         $user = Yii::$app->user->getIdentity();
         $lang = ($user) && !empty($user->language) ? $user->language : Yii::$app->language;
