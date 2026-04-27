@@ -1,5 +1,9 @@
 # Change Log
 
+## Upcoming
+## Changed
+- removed inline javascript due to csp script-src nonce-restrictions
+
 ## 4.0.0
 ## Changed
 - compatible with HumHub 1.18
