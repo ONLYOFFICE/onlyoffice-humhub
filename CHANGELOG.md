@@ -20,7 +20,7 @@
 - view odg, md
 - edit xlsb
 - support hwp, hwpx, pages, numbers, key formats
-- shardKey param to url for requests to Docs API and Conversion API
+- shardkey param to url for requests to Docs API and Conversion API
 - missing translations
 - pagination for users for mentions, including permission checks
 
