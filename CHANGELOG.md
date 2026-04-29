@@ -8,6 +8,7 @@
 - update Command service address
 - updated formats icons
 - display empty jwt warning if jwt secret is disabled
+- removed inline javascript due to csp script-src nonce-restrictions
 
 ## 4.0.0
 ## Changed

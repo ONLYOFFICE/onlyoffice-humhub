@@ -38,7 +38,7 @@ if (class_exists('humhub\assets\ClipboardJsAsset')) {
         <div class="mb-3 viewLinkInput" style="margin-top:6px">
             <input type="text" class="form-control" value="<?= $viewLink; ?>">
             <p class="form-text float-end">
-                <a href="#" onClick="clipboard.writeText($('.viewLinkInput').find('input').val())">
+                <a href="#" class="js-copy-link" data-target="viewLinkInput">
                     <i class="fa fa-clipboard" aria-hidden="true"></i>
                     <?= Yii::t('OnlyofficeModule.base', 'Copy to clipboard'); ?>
                 </a>
@@ -54,7 +54,7 @@ if (class_exists('humhub\assets\ClipboardJsAsset')) {
         <div class="mb-3 editLinkInput"  style="margin-top:6px">
             <input type="text" class="form-control" value="<?= $editLink; ?>">
             <p class="form-text  float-end">
-                <a href="#" onClick="clipboard.writeText($('.editLinkInput').find('input').val())">
+                <a href="#" class="js-copy-link" data-target="editLinkInput">
                     <i class="fa fa-clipboard" aria-hidden="true"></i>
                     <?= Yii::t('OnlyofficeModule.base', 'Copy to clipboard'); ?>
                 </a>

@@ -323,6 +323,12 @@ humhub.module('onlyoffice', function (module, require, $) {
             $('.viewLinkInput').hide();
         }
 
+        that.$.on('click', '.js-copy-link', function (e) {
+            e.preventDefault();
+            var target = $(this).data('target');
+            navigator.clipboard.writeText($('.' + target).find('input').val());
+        });
+
         $('.viewLinkCheckbox').change(function () {
             if ($('.viewLinkCheckbox:checked').length) {
                 loader.set(that.$.find('.modal-footer'));
