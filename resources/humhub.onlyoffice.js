@@ -1,5 +1,5 @@
 /**
- *  Copyright (c) Ascensio System SIA 2022. All rights reserved.
+ *  Copyright (c) Ascensio System SIA 2026. All rights reserved.
  *  http://www.onlyoffice.com
  */
 
@@ -322,6 +322,12 @@ humhub.module('onlyoffice', function (module, require, $) {
             $('.viewLinkCheckbox').attr('checked', false);
             $('.viewLinkInput').hide();
         }
+
+        that.$.on('click', '.js-copy-link', function (e) {
+            e.preventDefault();
+            var target = $(this).data('target');
+            navigator.clipboard.writeText($('.' + target).find('input').val());
+        });
 
         $('.viewLinkCheckbox').change(function () {
             if ($('.viewLinkCheckbox:checked').length) {

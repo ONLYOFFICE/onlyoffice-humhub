@@ -9,6 +9,7 @@
 - update Command service address
 - updated formats icons
 - display empty jwt warning if jwt secret is disabled
+- removed inline javascript due to csp script-src nonce-restrictions
 
 ## 4.0.0
 ## Changed
@@ -20,7 +21,7 @@
 - view odg, md
 - edit xlsb
 - support hwp, hwpx, pages, numbers, key formats
-- shardKey param to url for requests to Docs API and Conversion API
+- shardkey param to url for requests to Docs API and Conversion API
 - missing translations
 - pagination for users for mentions, including permission checks
 

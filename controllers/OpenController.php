@@ -7,7 +7,7 @@
  */
 
 /**
- *  Copyright (c) Ascensio System SIA 2024. All rights reserved.
+ *  Copyright (c) Ascensio System SIA 2026. All rights reserved.
  *  http://www.onlyoffice.com
  */
 
@@ -55,7 +55,7 @@ class OpenController extends BaseFileController
         $serverApiUrl = Yii::$app->getModule('onlyoffice')->getServerApiUrl();
         $module = Yii::$app->getModule('onlyoffice');
         $key = $module->generateDocumentKey($this->file);
-        $serverApiUrl .= '?shardKey=' . $key;
+        $serverApiUrl .= '?shardkey=' . $key;
 
         return $this->renderAjax('index', [
                     'file' => $this->file,

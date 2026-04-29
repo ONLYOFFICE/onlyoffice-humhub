@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  Copyright (c) Ascensio System SIA 2024. All rights reserved.
+ *  Copyright (c) Ascensio System SIA 2026. All rights reserved.
  *  http://www.onlyoffice.com
  */
 
@@ -47,6 +47,8 @@ use yii\web\View;
         font-weight: 700;
         color: #555555;
         line-height: 17px;
+        text-decoration: underline;
+        text-underline-offset: 2px;
     }
 
     .onlyoffice-user-voice .onlyoffice-useful-links a::after {
