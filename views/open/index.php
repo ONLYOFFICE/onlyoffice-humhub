@@ -12,6 +12,9 @@ use yii\web\View;
     .onlyoffice-modal-fullscreen {
         width: 100% !important;
         margin: 0;
+        z-index: 1050;
+        position: absolute;
+        top: 0;
     }
 
     .onlyoffice-modal-content-fullscreen {

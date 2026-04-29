@@ -69,7 +69,7 @@ class OpenController extends BaseFileController
         ];
 
         if ($openInNewTab) {
-            $this->render('index', $params);
+            return $this->render('index', $params);
         }
 
         return $this->renderAjax('index', $params);
