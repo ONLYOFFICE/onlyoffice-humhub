@@ -129,6 +129,9 @@ humhub.module('onlyoffice', function (module, require, $) {
                 module.log.info(infoMsg, true);
             }
         }
+        if (this.options.canShare) {
+            config.events.onRequestSharingSettings = onRequestSharingSettings;
+        }
 
         this.docEditor = new DocsAPI.DocEditor('iframeContainer', config);
 
@@ -276,6 +279,11 @@ humhub.module('onlyoffice', function (module, require, $) {
         refreshFileInfo(onRequestCloseObj.that, onRequestCloseObj.evt);
     };
 
+    function onRequestSharingSettings() {
+        const shareLink = document.getElementById('onlyoffice-share-link');
+        shareLink.click();
+    }
+
     function refreshFileInfo(that, evt) {
         client.post({ url: that.options.fileInfoUrl }).then(function (response) {
             event.trigger('humhub:file:modified', [response.file]);
@@ -415,7 +423,10 @@ humhub.module('onlyoffice', function (module, require, $) {
             event.trigger('humhub:file:created', [response.file]);
 
             m = modal.get('#onlyoffice-modal');
-            if (response.openFlag) {
+            if (response.openFlag && module.config.openInNewTab) {
+                window.open(response.openUrl);
+                m.close();
+            } else if (response.openFlag) {
                 m.load(response.openUrl);
                 m.show();
             } else {

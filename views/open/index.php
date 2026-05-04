@@ -20,14 +20,22 @@ if (!empty($serverApiUrl)) {
         'position' => \yii\web\View::POS_HEAD,
     ]);
 }
-// Force modal full height
-$this->registerCss('#onlyoffice-modal .modal-content {height: calc(100vh - 90px);'
-    . ' background-color:transparent; box-shadow: none;}'
-    . ' #onlyoffice-modal .modal-dialog {max-width: 98%;}');
+if (!$openInNewTab) {
+    // Force modal full height
+    $this->registerCss('#onlyoffice-modal .modal-content {height: calc(100vh - 90px);'
+        . ' background-color:transparent; box-shadow: none;}'
+        . ' #onlyoffice-modal .modal-dialog {max-width: 98%;}');
+} else {
+    // Force modal full screen
+    $this->registerCss('#onlyoffice-editor-modal {width: 100% !important;'
+        . ' margin: 0; z-index: 1050; position: absolute; top: 0;}'
+        . '#onlyoffice-editor-modal .modal-content {height: 100vh;');
+}
 ?>
 
 <?php Modal::beginDialog([
-    'size' => Modal::SIZE_EXTRA_LARGE,
+    'id' => 'onlyoffice-editor-modal',
+    'size' => $openInNewTab ? Modal::SIZE_FULL_SCREEN : Modal::SIZE_EXTRA_LARGE,
     'closeButton' => false,
 ]) ?>
     <?= EditorWidget::widget([
@@ -35,5 +43,6 @@ $this->registerCss('#onlyoffice-modal .modal-content {height: calc(100vh - 90px)
         'mode' => $mode,
         'restrict' => $restrict,
         'anchor' => $anchor,
+        'openInNewTab' => $openInNewTab,
     ]) ?>
 <?php Modal::endDialog();

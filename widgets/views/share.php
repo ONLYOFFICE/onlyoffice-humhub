@@ -14,6 +14,12 @@ if (class_exists('humhub\assets\ClipboardJsAsset')) {
 }
 ?>
 
+<style>
+    [id="#onlyoffice-share-modal"] {
+        z-index: 1060 !important;
+    }
+</style>
+
 <?php Modal::beginDialog([
     'title' => Yii::t('OnlyofficeModule.base', '<strong>Share</strong> document'),
     'footer' => ModalButton::cancel(Yii::t('base', 'Close')),

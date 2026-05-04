@@ -28,8 +28,11 @@ if ($documentType === Module::DOCUMENT_TYPE_SPREADSHEET) {
 ?>
 
 <?= Html::beginTag('div', $options) ?>
-<div style="height:50px;
-    border-radius: 5px 5px 0px 0px;
+<div style="<?php if ($openInNewTab) :
+    ?>display:none;<?php
+            endif; ?>
+    height:50px;
+    border-radius:5px 5px 0px 0px;
     background-color:<?= $headerBackgroundColor; ?>;
     padding-top:7px;
     padding-right:7px">
@@ -39,6 +42,7 @@ if ($documentType === Module::DOCUMENT_TYPE_SPREADSHEET) {
                 Yii::t('OnlyofficeModule.base', 'Share'),
                 '#',
                 [
+                    'id' => 'onlyoffice-share-link',
                     'class' => 'btn btn btn-light',
                     'data-action-click' => 'share',
                     'data-action-block' => 'sync',
