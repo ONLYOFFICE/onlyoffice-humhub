@@ -14,6 +14,7 @@
 namespace humhub\modules\onlyoffice\widgets;
 
 use humhub\helpers\Html;
+use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\file\libs\FileHelper;
@@ -58,6 +59,11 @@ class EditorWidget extends JsWidget
     public $init = true;
 
     public $anchor;
+
+    /**
+     * @var string mode (edit or view)
+     */
+    public $openInNewTab;
 
     /**
      * @inheritdoc
@@ -127,7 +133,8 @@ class EditorWidget extends JsWidget
             'file-info-url' => Url::to(['/onlyoffice/open/get-info', 'guid' => $this->file->guid]),
             'module-configured' => (empty($module->getServerUrl()) ? '0' : '1'),
             'api' => $api,
-            'info-msg' => $infoMsg
+            'info-msg' => $infoMsg,
+            'can-share' => $this->mode === Module::OPEN_MODE_EDIT && !Yii::$app->user->isGuest
         ];
     }
 
@@ -151,6 +158,7 @@ class EditorWidget extends JsWidget
                     'file' => $this->file,
                     'mode' => $this->mode,
                     'options' => $this->getOptions(),
+                    'openInNewTab' => $this->openInNewTab,
         ]);
     }
 
@@ -168,6 +176,13 @@ class EditorWidget extends JsWidget
 
         $url = Url::to(['/onlyoffice/backend/download', 'doc' => $docHash], true);
         $callbackUrl = Url::to(['/onlyoffice/backend/track', 'doc' => $docHash], true);
+        $gobackUrl = null;
+        if (!empty($this->file->content_id)) {
+            $content = Content::findOne($this->file->content_id);
+            if ($content !== null) {
+                $gobackUrl = Url::to($content->getUrl(), true);
+            }
+        }
         if (!empty($module->getStorageUrl())) {
             $url = $module->getStorageUrl() . Url::to(['/onlyoffice/backend/download', 'doc' => $docHash], false);
             $callbackUrl = $module->getStorageUrl() . Url::to(['/onlyoffice/backend/track', 'doc' => $docHash], false);
@@ -217,6 +232,24 @@ class EditorWidget extends JsWidget
 
         if ($module->isJwtEnabled()) {
             $config['token'] = $module->jwtEncode($config);
+        }
+
+        if (
+            $module->getOpenInNewTab()
+            && $this->mode === Module::OPEN_MODE_EDIT
+            && !Yii::$app->user->isGuest
+        ) {
+            $config['document']['info']['sharingSettings'] = [[
+                'permissions' => 'Full Access',
+                'user' => 'Me',
+            ]];
+        }
+
+        if ($module->getOpenInNewTab() && $gobackUrl) {
+            $config['editorConfig']['customization']['goback'] = [
+                'text' => Yii::t('OnlyofficeModule.base', 'Open file location'),
+                'url' => $gobackUrl,
+            ];
         }
 
         return $config;
