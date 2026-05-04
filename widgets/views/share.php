@@ -13,6 +13,12 @@ if (class_exists('humhub\assets\ClipboardJsAsset')) {
 }
 ?>
 
+<style>
+    [id="#onlyoffice-share-modal"] {
+        z-index: 1060 !important;
+    }
+</style>
+
 <?php $modal = ModalDialog::begin() ?>
 <?= Html::beginTag('div', $options) ?>
 

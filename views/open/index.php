@@ -8,15 +8,33 @@
 use yii\web\View;
 
 ?>
+<style>
+    .onlyoffice-modal-fullscreen {
+        width: 100% !important;
+        margin: 0;
+        z-index: 1050;
+        position: absolute;
+        top: 0;
+    }
 
-<div class="modal-dialog animated fadeIn" style="width:96%">
-    <div class="modal-content onlyofficeModal" style="background-color:transparent;">
+    .onlyoffice-modal-content-fullscreen {
+        height: 100vh;
+    }
+</style>
+
+<div class="modal-dialog animated fadeIn <?php if ($openInNewTab) :
+    ?>onlyoffice-modal-fullscreen<?php
+                                         endif; ?>" style="width:96%;">
+    <div class="modal-content <?php if ($openInNewTab) :
+        ?>onlyoffice-modal-content-fullscreen<?php
+                              endif; ?> onlyofficeModal" style="background-color:transparent;">
         <?=
         \humhub\modules\onlyoffice\widgets\EditorWidget::widget([
             'file' => $file,
             'mode' => $mode,
             'restrict' => $restrict,
-            'anchor' => $anchor
+            'anchor' => $anchor,
+            'openInNewTab' => $openInNewTab,
         ]);
         ?>
     </div>
@@ -28,7 +46,8 @@ if (!empty($serverApiUrl)) {
         'position' => \yii\web\View::POS_HEAD,
     ]);
 }
-    View::registerJs('
+if (!$openInNewTab) {
+    $this->registerJs('
         window.onload = function (evt) {
             setSize();
         };
@@ -40,4 +59,5 @@ if (!empty($serverApiUrl)) {
         function setSize() {
             $(".onlyofficeModal").css("height", window.innerHeight - 110 + "px");
         }
-    '); ?>
+    ');
+}; ?>
