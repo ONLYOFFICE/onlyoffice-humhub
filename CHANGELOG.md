@@ -11,6 +11,7 @@
 - updated formats icons
 - display empty jwt warning if jwt secret is disabled
 - removed inline javascript due to csp script-src nonce-restrictions
+- always open editor in new tab on mobile
 
 ## 3.3.0
 ## Added
