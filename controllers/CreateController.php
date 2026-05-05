@@ -49,12 +49,14 @@ class CreateController extends \humhub\components\Controller
             $this->cFilesGate($model->fid);
 
             $file = $model->save();
+            $openInNewTab = Yii::$app->getModule('onlyoffice')->shouldOpenInNewTab();
 
             if ($file !== false) {
                 return $this->asJson([
                     'success' => true,
                     'file' => FileHelper::getFileInfos($file),
                     'openFlag' => (bool) $model->openFlag,
+                    'openInNewTab' => $openInNewTab,
                     'openUrl' => Url::to(['/onlyoffice/open', 'guid' => $file->guid, 'mode' => Module::OPEN_MODE_EDIT])
                 ]);
             } else {

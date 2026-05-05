@@ -39,9 +39,6 @@ class Module extends \humhub\components\Module
     public function init()
     {
         parent::init();
-        Yii::$app->view->registerJsConfig('onlyoffice', [
-            'openInNewTab' => $this->getOpenInNewTab(),
-        ]);
     }
 
     public int $jwtExpiration = 300;
@@ -278,6 +275,11 @@ class Module extends \humhub\components\Module
     {
         $userAgent = Yii::$app->request->getUserAgent();
         return $userAgent && (bool) preg_match(self::USER_AGENT_MOBILE, $userAgent);
+    }
+
+    public function shouldOpenInNewTab(): bool
+    {
+        return $this->getOpenInNewTab() || $this->isMobileUserAgent();
     }
 
     public function getforceEditTypes()

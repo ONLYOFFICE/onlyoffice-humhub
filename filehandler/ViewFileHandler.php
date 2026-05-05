@@ -30,7 +30,7 @@ class ViewFileHandler extends BaseFileHandler
      */
     public function getLinkAttributes()
     {
-        $openInNewTab = Yii::$app->getModule('onlyoffice')->getOpenInNewTab();
+        $openInNewTab = Yii::$app->getModule('onlyoffice')->shouldOpenInNewTab();
         $label = Yii::t('OnlyofficeModule.base', 'View document');
         $url = Url::to([
             '/onlyoffice/open',

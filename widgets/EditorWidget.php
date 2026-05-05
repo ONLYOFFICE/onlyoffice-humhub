@@ -225,8 +225,10 @@ class EditorWidget extends JsWidget
             $config['token'] = $module->jwtEncode($config);
         }
 
+        $openInNewTab = $module->shouldOpenInNewTab();
+
         if (
-            $module->getOpenInNewTab()
+            $openInNewTab
             && $this->mode === Module::OPEN_MODE_EDIT
             && !Yii::$app->user->isGuest
         ) {
@@ -236,7 +238,7 @@ class EditorWidget extends JsWidget
             ]];
         }
 
-        if ($module->getOpenInNewTab() && $gobackUrl) {
+        if ($openInNewTab && $gobackUrl) {
             $config['editorConfig']['customization']['goback'] = [
                 'text' => Yii::t('OnlyofficeModule.base', 'Open file location'),
                 'url' => $gobackUrl,
