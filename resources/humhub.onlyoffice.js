@@ -423,7 +423,7 @@ humhub.module('onlyoffice', function (module, require, $) {
             event.trigger('humhub:file:created', [response.file]);
 
             m = modal.get('#onlyoffice-modal');
-            if (response.openFlag && module.config.openInNewTab) {
+            if (response.openFlag && response.openInNewTab) {
                 window.open(response.openUrl);
                 m.close();
             } else if (response.openFlag) {

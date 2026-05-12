@@ -71,14 +71,6 @@ class EditorWidget extends JsWidget
     protected $documentType = null;
 
     /**
-     * Mobile regex from
-     * https://github.com/ONLYOFFICE/CommunityServer/blob/v9.1.1/web/studio/ASC.Web.Studio/web.appsettings.config#L35
-     */
-    protected const USER_AGENT_MOBILE = "/android|avantgo|playbook|blackberry|blazer|compal|elaine|fennec|hiptop|" .
-        "iemobile|ip(hone|od|ad)|iris|kindle|lge |maemo|midp|mmp|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\\/|" .
-        "plucker|pocket|psp|symbian|treo|up\\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i";
-
-    /**
      * @inheritdoc
      */
     public function init()
@@ -225,8 +217,7 @@ class EditorWidget extends JsWidget
             ]
         ];
 
-        $userAgent = Yii::$app->request->getUserAgent();
-        if (preg_match($this::USER_AGENT_MOBILE, $userAgent)) {
+        if ($module->isMobileUserAgent()) {
             $config['type'] = 'mobile';
         }
 
@@ -234,8 +225,10 @@ class EditorWidget extends JsWidget
             $config['token'] = $module->jwtEncode($config);
         }
 
+        $openInNewTab = $module->shouldOpenInNewTab();
+
         if (
-            $module->getOpenInNewTab()
+            $openInNewTab
             && $this->mode === Module::OPEN_MODE_EDIT
             && !Yii::$app->user->isGuest
         ) {
@@ -245,7 +238,7 @@ class EditorWidget extends JsWidget
             ]];
         }
 
-        if ($module->getOpenInNewTab() && $gobackUrl) {
+        if ($openInNewTab && $gobackUrl) {
             $config['editorConfig']['customization']['goback'] = [
                 'text' => Yii::t('OnlyofficeModule.base', 'Open file location'),
                 'url' => $gobackUrl,

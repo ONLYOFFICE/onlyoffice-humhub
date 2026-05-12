@@ -39,9 +39,6 @@ class Module extends \humhub\components\Module
     public function init()
     {
         parent::init();
-        Yii::$app->view->registerJsConfig('onlyoffice', [
-            'openInNewTab' => $this->getOpenInNewTab(),
-        ]);
     }
 
     public int $jwtExpiration = 300;
@@ -65,6 +62,14 @@ class Module extends \humhub\components\Module
     public const DOCUMENT_TYPE_SPREADSHEET = 'cell';
     public const DOCUMENT_TYPE_PDF = 'pdf';
     public const DOCUMENT_TYPE_DIAGRAM = 'diagram';
+
+    /**
+     * Mobile regex from
+     * https://github.com/ONLYOFFICE/CommunityServer/blob/v9.1.1/web/studio/ASC.Web.Studio/web.appsettings.config#L35
+     */
+    public const USER_AGENT_MOBILE = "/android|avantgo|playbook|blackberry|blazer|compal|elaine|fennec|hiptop|" .
+        "iemobile|ip(hone|od|ad)|iris|kindle|lge |maemo|midp|mmp|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\\/|" .
+        "plucker|pocket|psp|symbian|treo|up\\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i";
 
     public $demoparam = [
         'trial' => 30,
@@ -264,6 +269,17 @@ class Module extends \humhub\components\Module
     public function getOpenInNewTab()
     {
         return boolval($this->settings->get('openInNewTab'));
+    }
+
+    public function isMobileUserAgent(): bool
+    {
+        $userAgent = Yii::$app->request->getUserAgent();
+        return $userAgent && (bool) preg_match(self::USER_AGENT_MOBILE, $userAgent);
+    }
+
+    public function shouldOpenInNewTab(): bool
+    {
+        return $this->getOpenInNewTab() || $this->isMobileUserAgent();
     }
 
     public function getforceEditTypes()

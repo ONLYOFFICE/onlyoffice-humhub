@@ -48,7 +48,7 @@ class OpenController extends BaseFileController
             Notification::findOne($_GET['notify'])->getBaseModel()->markAsSeen();
         }
 
-        $openInNewTab = Yii::$app->getModule('onlyoffice')->getOpenInNewTab();
+        $openInNewTab = Yii::$app->getModule('onlyoffice')->shouldOpenInNewTab();
 
         if (!Yii::$app->request->isAjax && !$openInNewTab || isset($_GET['notify'])) {
             return $this->redirectToModal();
