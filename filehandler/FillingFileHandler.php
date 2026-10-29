@@ -30,7 +30,7 @@ class FillingFileHandler extends BaseFileHandler
      */
     public function getLinkAttributes()
     {
-        $openInNewTab = Yii::$app->getModule('onlyoffice')->getOpenInNewTab();
+        $openInNewTab = Yii::$app->getModule('onlyoffice')->shouldOpenInNewTab();
         $label = Yii::t('OnlyofficeModule.base', 'Fill in form in ONLYOFFICE');
         $url = Url::to([
             '/onlyoffice/open',
