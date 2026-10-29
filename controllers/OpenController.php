@@ -50,7 +50,10 @@ class OpenController extends BaseFileController
 
         $openInNewTab = Yii::$app->getModule('onlyoffice')->shouldOpenInNewTab();
 
-        if (!Yii::$app->request->isAjax && !$openInNewTab || isset($_GET['notify'])) {
+        // Pjax requests (e.g. a link posted in a stream entry) are ajax too, but must not get the modal fragment
+        $isModalRequest = Yii::$app->request->isAjax && !Yii::$app->request->isPjax;
+
+        if (!$isModalRequest && !$openInNewTab || isset($_GET['notify'])) {
             return $this->redirectToModal();
         }
 
