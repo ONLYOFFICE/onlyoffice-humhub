@@ -11,6 +11,7 @@ humhub.module('onlyoffice', function (module, require, $) {
     var Widget = require('ui.widget').Widget;
     var event = require('event');
     var loader = require('ui.loader');
+    var status = require('ui.status');
     var ooJSLoadRetries = 0;
 
     var config = null;
@@ -334,7 +335,11 @@ humhub.module('onlyoffice', function (module, require, $) {
         that.$.on('click', '.js-copy-link', function (e) {
             e.preventDefault();
             var target = $(this).data('target');
-            navigator.clipboard.writeText($('.' + target).find('input').val());
+            clipboard.writeText($('.' + target).find('input').val()).then(function () {
+                status.success(that.options.copySuccess);
+            }).catch(function () {
+                status.error(that.options.copyError, true);
+            });
         });
 
         $('.viewLinkCheckbox').change(function () {

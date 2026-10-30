@@ -13,6 +13,7 @@
 
 namespace humhub\modules\onlyoffice\widgets;
 
+use Yii;
 use yii\helpers\Url;
 use humhub\modules\file\models\File;
 use humhub\modules\onlyoffice\models\Share;
@@ -55,6 +56,8 @@ class ShareWidget extends JsWidget
         return [
             'share-remove-link' => Url::to(['/onlyoffice/share/remove', 'guid' => $this->file->guid, 'mode' => 'edit']),
             'share-get-link' => Url::to(['/onlyoffice/share/get', 'guid' => $this->file->guid, 'mode' => 'edit']),
+            'copy-success' => Yii::t('base', 'Text has been copied to clipboard'),
+            'copy-error' => Yii::t('base', 'Text could not be copied to clipboard'),
         ];
     }
 
