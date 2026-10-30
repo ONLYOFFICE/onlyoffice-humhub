@@ -15,6 +15,7 @@ namespace humhub\modules\onlyoffice\controllers;
 
 use Yii;
 use yii\web\HttpException;
+use yii\helpers\Json;
 use yii\helpers\Url;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\onlyoffice\components\BaseFileController;
@@ -54,7 +55,14 @@ class OpenController extends BaseFileController
 
         $openInNewTab = Yii::$app->getModule('onlyoffice')->shouldOpenInNewTab();
 
-        if (!Yii::$app->request->isAjax && !$openInNewTab || isset($_GET['notify'])) {
+        if ($openInNewTab && Yii::$app->request->isPjax) {
+            // Notification links are followed via pjax, reload as a full page to get the fullscreen editor
+            $url = Url::current(['seen' => null, 'notify' => null]);
+            $this->getView()->registerJs('window.location.replace(' . Json::htmlEncode($url) . ');');
+            return $this->renderAjaxContent('');
+        }
+
+        if (!$openInNewTab && (!Yii::$app->request->isAjax || isset($_GET['notify']))) {
             return $this->redirectToModal();
         }
 
