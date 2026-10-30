@@ -114,7 +114,7 @@ class EditorWidget extends JsWidget
         if ($module->isDemoServerEnabled()) {
             $infoMsg = Yii::t(
                 'OnlyofficeModule.base',
-                'This is a public test server, please do not use it for private sensitive data.' .
+                'This is a public test server, please do not use it for private sensitive data. ' .
                     'The server will be available during a 30-day period.'
             );
         }
