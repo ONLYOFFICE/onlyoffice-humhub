@@ -171,7 +171,7 @@ class EditorWidget extends JsWidget
         $gobackUrl = null;
         if (!empty($this->file->content_id)) {
             $content = Content::findOne($this->file->content_id);
-            if ($content !== null) {
+            if ($content !== null && $content->canView()) {
                 $gobackUrl = Url::to($content->getUrl(), true);
             }
         }
