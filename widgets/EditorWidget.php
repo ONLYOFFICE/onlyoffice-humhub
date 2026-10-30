@@ -221,10 +221,6 @@ class EditorWidget extends JsWidget
             $config['type'] = 'mobile';
         }
 
-        if ($module->isJwtEnabled()) {
-            $config['token'] = $module->jwtEncode($config);
-        }
-
         $openInNewTab = $module->shouldOpenInNewTab();
 
         if (
@@ -243,6 +239,10 @@ class EditorWidget extends JsWidget
                 'text' => Yii::t('OnlyofficeModule.base', 'Open file location'),
                 'url' => $gobackUrl,
             ];
+        }
+
+        if ($module->isJwtEnabled()) {
+            $config['token'] = $module->jwtEncode($config);
         }
 
         return $config;
