@@ -36,11 +36,6 @@ class Module extends \humhub\components\Module
 
     public $resourcesPath = 'resources';
 
-    public function init()
-    {
-        parent::init();
-    }
-
     public int $jwtExpiration = 300;
 
     /**

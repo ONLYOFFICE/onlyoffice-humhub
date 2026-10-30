@@ -61,7 +61,7 @@ class EditorWidget extends JsWidget
     public $anchor;
 
     /**
-     * @var string mode (edit or view)
+     * @var bool open the editor in a new tab
      */
     public $openInNewTab;
 
