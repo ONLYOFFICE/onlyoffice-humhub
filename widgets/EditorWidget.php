@@ -126,6 +126,7 @@ class EditorWidget extends JsWidget
             'module-configured' => (empty($module->getServerUrl()) ? '0' : '1'),
             'api' => $api,
             'info-msg' => $infoMsg,
+            'title' => $this->openInNewTab ? $this->file->file_name : null,
             'can-share' => $this->mode === Module::OPEN_MODE_EDIT && !Yii::$app->user->isGuest
         ];
     }

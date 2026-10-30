@@ -81,6 +81,7 @@ class OpenController extends BaseFileController
         ];
 
         if ($openInNewTab) {
+            $this->getView()->setPageTitle($this->file->file_name);
             return $this->render('index', $params);
         }
 

@@ -17,6 +17,7 @@ humhub.module('onlyoffice', function (module, require, $) {
     var config = null;
     var api = null;
     var infoMsg = null;
+    var title = null;
     var docEditor = null;
 
     var Editor = function (node, options) {
@@ -89,6 +90,7 @@ humhub.module('onlyoffice', function (module, require, $) {
         api = this.options.api;
         config = this.options.config;
         infoMsg = this.options.infoMsg;
+        title = this.options.title;
 
         var docsVersion = DocsAPI.DocEditor.version().split(".");
         if (docsVersion[0] < 6
@@ -215,6 +217,11 @@ humhub.module('onlyoffice', function (module, require, $) {
 
         client.post(api.renameUrl, {data: renameData, dataType: 'json'}).then((response) => {
             event.trigger('humhub:file:modified', [response.file]);
+
+            if (title && document.title.indexOf(title) === 0) {
+                document.title = response.file.name + document.title.substring(title.length);
+                title = response.file.name;
+            }
         }).catch(function(e) {
             module.log.error(e, true);
         });
