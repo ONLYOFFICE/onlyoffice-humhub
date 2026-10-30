@@ -13,6 +13,7 @@ rm -rf ./.github
 rm -rf ./.git/
 rm .gitignore
 rm .gitmodules
+rm -rf ./resources/formats/.git
 rm -rf ./resources/templates/.git
 rm ./pack.sh
 
