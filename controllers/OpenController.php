@@ -44,8 +44,12 @@ class OpenController extends BaseFileController
             $this->anchor = json_decode(urldecode($this->actionDataUrl), true);
         }
 
-        if (!empty($_GET['seen'])) {
-            Notification::findOne($_GET['notify'])->getBaseModel()->markAsSeen();
+        if (!empty($_GET['seen']) && !empty($_GET['notify'])) {
+            $notification = Notification::findOne(['id' => $_GET['notify'], 'user_id' => Yii::$app->user->id]);
+            $baseNotification = $notification !== null ? $notification->getBaseModel() : null;
+            if ($baseNotification !== null) {
+                $baseNotification->markAsSeen();
+            }
         }
 
         $openInNewTab = Yii::$app->getModule('onlyoffice')->shouldOpenInNewTab();
