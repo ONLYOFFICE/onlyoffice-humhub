@@ -17,8 +17,6 @@ jobs:
         with:
           submodules: recursive
           persist-credentials: false
-      - name: Install Zip
-        run: sudo apt-get install zip
       - name: Build Artifact
         uses: ./.github/actions/pack
         id: pack
