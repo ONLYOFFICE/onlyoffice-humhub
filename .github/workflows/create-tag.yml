@@ -9,6 +9,9 @@ on:
       - '**/LICENSE'
       - '**/README.md'
 
+permissions:
+  contents: write
+
 jobs:
   create-tag:
     runs-on: ubuntu-latest
