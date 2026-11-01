@@ -29,9 +29,8 @@ jobs:
         run: |
           awk '/## [0-9]/{p++} p; /## [0-9]/{if (p > 1) exit}' CHANGELOG.md | awk 'NR>2 {print last} {last=$0}' > RELEASE.md
       - name: Release Artifact
-        uses: ncipollo/release-action@v1
-        id: create_release
-        with:
-          artifacts: "${{ steps.pack.outputs.id }}.zip"
-          bodyFile: "RELEASE.md"
-          tag: v${{ steps.pack.outputs.version }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ID: ${{ steps.pack.outputs.id }}
+          TAG: v${{ steps.pack.outputs.version }}
+        run: gh release create "$TAG" "$ID.zip" --title "$TAG" --notes-file RELEASE.md --verify-tag
