@@ -6,28 +6,20 @@ on:
     branches: [master]
   pull_request:
     branches: [master]
-  
+
 jobs:
   artifact:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Install Node
-        uses: actions/setup-node@v4
         with:
-          node-version: '16'
-      - name: Get Info 
-        run: | 
-          echo "id=$(jq -r '.id' module.json)" >> $GITHUB_OUTPUT
-        id: info
+          submodules: recursive
       - name: Build Artifact
-        run: |
-          cd ${{ github.workspace }}
-          chmod +x ./pack.sh
-          ./pack.sh
+        uses: ./.github/actions/pack
+        id: pack
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ steps.info.outputs.id }}
+          name: ${{ steps.pack.outputs.id }}
           path: deploy

@@ -11,29 +11,24 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Install Node
-        uses: actions/setup-node@v4
         with:
-          node-version: '16'
+          submodules: recursive
       - name: Install Zip
         run: sudo apt-get install zip
-      - name: Get Info 
-        run: |
-          echo "version=$(jq -r '.version' module.json)" >> $GITHUB_OUTPUT
-          echo "id=$(jq -r '.id' module.json)" >> $GITHUB_OUTPUT
-        id: info
       - name: Build Artifact
-        run: |
-          cd ${{ github.workspace }}
-          chmod +x ./pack.sh
-          ./pack.sh
-          mv deploy/onlyoffice ${{ github.workspace }}/onlyoffice
+        uses: ./.github/actions/pack
+        id: pack
       - name: Pack Artifact
-        run: zip -r ${{ steps.info.outputs.id }}.zip onlyoffice
+        run: |
+          cd deploy
+          zip -r ../${{ steps.pack.outputs.id }}.zip onlyoffice
+      - name: Get Release Notes
+        run: |
+          awk '/## [0-9]/{p++} p; /## [0-9]/{if (p > 1) exit}' CHANGELOG.md | awk 'NR>2 {print last} {last=$0}' > RELEASE.md
       - name: Release Artifact
         uses: ncipollo/release-action@v1
         id: create_release
         with:
-          artifacts: "${{ steps.info.outputs.id }}.zip"
+          artifacts: "${{ steps.pack.outputs.id }}.zip"
           bodyFile: "RELEASE.md"
-          tag: v${{ steps.info.outputs.version }}
+          tag: v${{ steps.pack.outputs.version }}
