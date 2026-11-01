@@ -23,9 +23,11 @@ jobs:
         uses: ./.github/actions/pack
         id: pack
       - name: Pack Artifact
+        env:
+          ID: ${{ steps.pack.outputs.id }}
         run: |
           cd deploy
-          zip -r ../${{ steps.pack.outputs.id }}.zip onlyoffice
+          zip -r "../$ID.zip" onlyoffice
       - name: Get Release Notes
         run: |
           awk '/## [0-9]/{p++} p; /## [0-9]/{if (p > 1) exit}' CHANGELOG.md | awk 'NR>2 {print last} {last=$0}' > RELEASE.md
