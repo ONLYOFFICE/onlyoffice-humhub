@@ -26,4 +26,4 @@ jobs:
           tools: phpcs
 
       - name: Run phpcs
-        run: phpcs --standard=PSR1,PSR12 --extensions=php,module,inc,install,test,profile,theme,css,info --ignore=node_modules,bower_components,vendor,md,yml,txt,messages,migrations ./
+        run: phpcs --standard=PSR1,PSR12 --extensions=php --ignore='*/messages/*,*/migrations/*' .
