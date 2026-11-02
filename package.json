@@ -1,0 +1,13 @@
+{
+  "name": "onlyoffice",
+  "private": true,
+  "scripts": {
+    "lint": "eslint"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "eslint": "^10.14.0",
+    "globals": "^17.14.0"
+  }
+}

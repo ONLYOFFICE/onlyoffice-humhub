@@ -61,7 +61,7 @@ class EditorWidget extends JsWidget
     public $anchor;
 
     /**
-     * @var string mode (edit or view)
+     * @var bool open the editor in a new tab
      */
     public $openInNewTab;
 
@@ -114,7 +114,7 @@ class EditorWidget extends JsWidget
         if ($module->isDemoServerEnabled()) {
             $infoMsg = Yii::t(
                 'OnlyofficeModule.base',
-                'This is a public test server, please do not use it for private sensitive data.' .
+                'This is a public test server, please do not use it for private sensitive data. ' .
                     'The server will be available during a 30-day period.'
             );
         }
@@ -126,6 +126,7 @@ class EditorWidget extends JsWidget
             'module-configured' => (empty($module->getServerUrl()) ? '0' : '1'),
             'api' => $api,
             'info-msg' => $infoMsg,
+            'title' => $this->openInNewTab ? $this->file->file_name : null,
             'can-share' => $this->mode === Module::OPEN_MODE_EDIT && !Yii::$app->user->isGuest
         ];
     }
@@ -171,7 +172,7 @@ class EditorWidget extends JsWidget
         $gobackUrl = null;
         if (!empty($this->file->content_id)) {
             $content = Content::findOne($this->file->content_id);
-            if ($content !== null) {
+            if ($content !== null && $content->canView()) {
                 $gobackUrl = Url::to($content->getUrl(), true);
             }
         }
@@ -221,10 +222,6 @@ class EditorWidget extends JsWidget
             $config['type'] = 'mobile';
         }
 
-        if ($module->isJwtEnabled()) {
-            $config['token'] = $module->jwtEncode($config);
-        }
-
         $openInNewTab = $module->shouldOpenInNewTab();
 
         if (
@@ -243,6 +240,10 @@ class EditorWidget extends JsWidget
                 'text' => Yii::t('OnlyofficeModule.base', 'Open file location'),
                 'url' => $gobackUrl,
             ];
+        }
+
+        if ($module->isJwtEnabled()) {
+            $config['token'] = $module->jwtEncode($config);
         }
 
         return $config;
