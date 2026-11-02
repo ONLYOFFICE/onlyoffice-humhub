@@ -7,15 +7,17 @@ humhub.module('onlyoffice', function (module, require, $) {
 
     const client = require('client');
     const modal = require('ui.modal');
+    const view = require('ui.view');
     const object = require('util').object;
     const Widget = require('ui.widget').Widget;
     const event = require('event');
     const loader = require('ui.loader');
-    let ooJSLoadRetries = 0;
+    const status = require('ui.status');
 
     let config = null;
     let api = null;
     let infoMsg = null;
+    let title = null;
     let docEditor = null;
     let onRequestCloseObj = null;
 
@@ -39,10 +41,11 @@ humhub.module('onlyoffice', function (module, require, $) {
             return;
         }
 
+        this.loadRetries = 0;
         this.initEditor();
 
         const that = this;
-        this.modal.$.on('hidden.bs.modal', function () {
+        this.modal.$.off('hidden.bs.modal.onlyoffice').on('hidden.bs.modal.onlyoffice', function () {
             that.modal.clear();
         });
 
@@ -76,12 +79,16 @@ humhub.module('onlyoffice', function (module, require, $) {
 
     Editor.prototype.initEditor = function () {
         if (!window.DocsAPI) {
-            ooJSLoadRetries++;
-            if (ooJSLoadRetries < 100) {
+            if (!document.body.contains(this.$[0])) {
+                return;
+            }
+
+            this.loadRetries++;
+            if (this.loadRetries < 100) {
                 setTimeout($.proxy(this.initEditor, this), 100);
                 return;
             } else {
-                module.log.error('Could not onlyoffice document editor.', true);
+                module.log.error('Could not load onlyoffice document editor.', true);
                 return;
             }
         }
@@ -89,6 +96,7 @@ humhub.module('onlyoffice', function (module, require, $) {
         api = this.options.api;
         config = this.options.config;
         infoMsg = this.options.infoMsg;
+        title = this.options.title;
 
         const docsVersion = DocsAPI.DocEditor.version().split(".");
         if (docsVersion[0] < 6
@@ -177,7 +185,9 @@ humhub.module('onlyoffice', function (module, require, $) {
                         loader.reset(that.$.find('.modal-footer'));
                     }
                 },
-                error: _onError
+                error: function (xhr, textStatus, errorThrown) {
+                    _onError(errorThrown || textStatus);
+                }
             });
         }
 
@@ -215,9 +225,34 @@ humhub.module('onlyoffice', function (module, require, $) {
 
         client.post(api.renameUrl, {data: renameData, dataType: 'json'}).then((response) => {
             event.trigger('humhub:file:modified', [response.file]);
+
+            if (title) {
+                renameTitle(response.file.name);
+            }
         }).catch(function(e) {
             module.log.error(e, true);
         });
+    }
+
+    function renameTitle(fileName) {
+        // document.title collapses whitespace, so compare the names the same way
+        const oldName = title.replace(/\s+/g, ' ').trim();
+        const newName = fileName.replace(/\s+/g, ' ').trim();
+
+        // ui.view keeps the title without the notification count, which the notification module puts in front of it
+        const state = view.getState();
+        const baseTitle = state.title || document.title;
+        if (baseTitle.indexOf(oldName) !== 0) {
+            return;
+        }
+
+        document.title = newName + baseTitle.substring(oldName.length);
+        title = fileName;
+
+        if (state.title) {
+            view.setState(state.moduleId, state.controllerId, state.action);
+            event.trigger('humhub:modules:notification:UpdateTitleNotificationCount');
+        }
     }
 
     function onRequestUsers(event) {
@@ -275,7 +310,11 @@ humhub.module('onlyoffice', function (module, require, $) {
     };
 
     function onRequestClose() {
-        refreshFileInfo(onRequestCloseObj.that, onRequestCloseObj.evt);
+        if (onRequestCloseObj) {
+            const pendingClose = onRequestCloseObj;
+            onRequestCloseObj = null;
+            refreshFileInfo(pendingClose.that, pendingClose.evt);
+        }
     };
 
     function onRequestSharingSettings() {
@@ -333,8 +372,20 @@ humhub.module('onlyoffice', function (module, require, $) {
         that.$.on('click', '.js-copy-link', function (e) {
             e.preventDefault();
             const target = $(this).data('target');
-            navigator.clipboard.writeText($('.' + target).find('input').val());
+            clipboard.writeText($('.' + target).find('input').val()).then(function () {
+                status.success(that.options.copySuccess);
+            }).catch(function () {
+                status.error(that.options.copyError, true);
+            });
         });
+
+        const onShareError = function ($checkbox) {
+            return function (xhr) {
+                $checkbox.prop('checked', !$checkbox.prop('checked'));
+                loader.reset(that.$.find('.modal-footer'));
+                module.log.error(xhr, true);
+            };
+        };
 
         $('.viewLinkCheckbox').change(function () {
             if ($('.viewLinkCheckbox:checked').length) {
@@ -349,7 +400,8 @@ humhub.module('onlyoffice', function (module, require, $) {
                         $('.viewLinkInput').show();
                         $('.viewLinkInput').find('input').val(json.url);
                         loader.reset(that.$.find('.modal-footer'));
-                    }
+                    },
+                    error: onShareError($(this))
                 });
             } else {
                 loader.set(that.$.find('.modal-footer'));
@@ -362,7 +414,8 @@ humhub.module('onlyoffice', function (module, require, $) {
                     success: function () {
                         $('.viewLinkInput').hide();
                         loader.reset(that.$.find('.modal-footer'));
-                    }
+                    },
+                    error: onShareError($(this))
                 });
             }
         });
@@ -380,7 +433,8 @@ humhub.module('onlyoffice', function (module, require, $) {
                         $('.editLinkInput').show();
                         $('.editLinkInput').find('input').val(json.url);
                         loader.reset(that.$.find('.modal-footer'));
-                    }
+                    },
+                    error: onShareError($(this))
                 });
             } else {
                 loader.set(that.$.find('.modal-footer'));
@@ -393,7 +447,8 @@ humhub.module('onlyoffice', function (module, require, $) {
                     success: function () {
                         $('.editLinkInput').hide();
                         loader.reset(that.$.find('.modal-footer'));
-                    }
+                    },
+                    error: onShareError($(this))
                 });
             }
         });

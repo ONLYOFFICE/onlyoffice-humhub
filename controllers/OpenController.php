@@ -15,6 +15,7 @@ namespace humhub\modules\onlyoffice\controllers;
 
 use Yii;
 use yii\web\HttpException;
+use yii\helpers\Json;
 use yii\helpers\Url;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\onlyoffice\components\BaseFileController;
@@ -44,13 +45,27 @@ class OpenController extends BaseFileController
             $this->anchor = json_decode(urldecode($this->actionDataUrl), true);
         }
 
-        if (!empty($_GET['seen'])) {
-            Notification::findOne($_GET['notify'])->getBaseModel()->markAsSeen();
+        if (!empty($_GET['seen']) && !empty($_GET['notify'])) {
+            $notification = Notification::findOne(['id' => $_GET['notify'], 'user_id' => Yii::$app->user->id]);
+            $baseNotification = $notification !== null ? $notification->getBaseModel() : null;
+            if ($baseNotification !== null) {
+                $baseNotification->markAsSeen();
+            }
         }
 
         $openInNewTab = Yii::$app->getModule('onlyoffice')->shouldOpenInNewTab();
 
-        if (!Yii::$app->request->isAjax && !$openInNewTab || isset($_GET['notify'])) {
+        if ($openInNewTab && Yii::$app->request->isPjax) {
+            // Notification links are followed via pjax, reload as a full page to get the fullscreen editor
+            $url = Url::current(['seen' => null, 'notify' => null, '_pjax' => null, '_' => null]);
+            $this->getView()->registerJs('window.location.replace(' . Json::htmlEncode($url) . ');');
+            return $this->renderAjaxContent('');
+        }
+
+        // Pjax requests (e.g. a link posted in a stream entry) are ajax too, but must not get the modal fragment
+        $isModalRequest = Yii::$app->request->isAjax && !Yii::$app->request->isPjax;
+
+        if (!$openInNewTab && (!$isModalRequest || isset($_GET['notify']))) {
             return $this->redirectToModal();
         }
 
@@ -69,6 +84,7 @@ class OpenController extends BaseFileController
         ];
 
         if ($openInNewTab) {
+            $this->getView()->setPageTitle($this->file->file_name);
             return $this->render('index', $params);
         }
 

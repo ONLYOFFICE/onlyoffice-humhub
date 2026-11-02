@@ -17,6 +17,7 @@ export default [
                 ...globals.jquery,
                 humhub: "readonly",
                 DocsAPI: "readonly",
+                clipboard: "readonly",
             },
         },
         plugins: {
