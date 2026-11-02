@@ -13,7 +13,6 @@ humhub.module('onlyoffice', function (module, require, $) {
     var event = require('event');
     var loader = require('ui.loader');
     var status = require('ui.status');
-    var ooJSLoadRetries = 0;
 
     var config = null;
     var api = null;
@@ -41,6 +40,7 @@ humhub.module('onlyoffice', function (module, require, $) {
             return
         }
 
+        this.loadRetries = 0;
         this.initEditor();
 
         var that = this;
@@ -78,12 +78,16 @@ humhub.module('onlyoffice', function (module, require, $) {
 
     Editor.prototype.initEditor = function () {
         if (!window.DocsAPI) {
-            ooJSLoadRetries++;
-            if (ooJSLoadRetries < 100) {
+            if (!document.body.contains(this.$[0])) {
+                return;
+            }
+
+            this.loadRetries++;
+            if (this.loadRetries < 100) {
                 setTimeout($.proxy(this.initEditor, this), 100);
                 return;
             } else {
-                module.log.error('Could not onlyoffice document editor.', true);
+                module.log.error('Could not load onlyoffice document editor.', true);
                 return;
             }
         }
