@@ -35,7 +35,7 @@ humhub.module('onlyoffice', function (module, require, $) {
 
         if (this.options.moduleConfigured != 1) {
             module.log.error('No OnlyOffice server configured! - Check onlyoffice module configuration!', true);
-            return
+            return;
         }
 
         this.initEditor();
@@ -52,7 +52,7 @@ humhub.module('onlyoffice', function (module, require, $) {
         var m = modal.get('#onlyoffice-share-modal');
         m.load(evt.url);
         m.show();
-    }
+    };
 
 
     Editor.prototype.close = function (evt) {
@@ -71,7 +71,7 @@ humhub.module('onlyoffice', function (module, require, $) {
         } else {
             closeModal(this, evt);
         }
-    }
+    };
 
     Editor.prototype.initEditor = function () {
         if (!window.DocsAPI) {
@@ -127,7 +127,7 @@ humhub.module('onlyoffice', function (module, require, $) {
         if (infoMsg) {
             config.events.onAppReady = function () {
                 module.log.info(infoMsg, true);
-            }
+            };
         }
         if (this.options.canShare) {
             config.events.onRequestSharingSettings = onRequestSharingSettings;
@@ -136,7 +136,7 @@ humhub.module('onlyoffice', function (module, require, $) {
         this.docEditor = new DocsAPI.DocEditor('iframeContainer', config);
 
         docEditor = this.docEditor;
-    }
+    };
 
     var Convert = function (node, options) {
         Widget.call(this, node, options);
@@ -348,7 +348,7 @@ humhub.module('onlyoffice', function (module, require, $) {
                     dataType: 'json',
                     success: function (json) {
                         $('.viewLinkInput').show();
-                        $('.viewLinkInput').find('input').val(json.url)
+                        $('.viewLinkInput').find('input').val(json.url);
                         loader.reset(that.$.find('.modal-footer'));
                     }
                 });
@@ -379,7 +379,7 @@ humhub.module('onlyoffice', function (module, require, $) {
                     dataType: 'json',
                     success: function (json) {
                         $('.editLinkInput').show();
-                        $('.editLinkInput').find('input').val(json.url)
+                        $('.editLinkInput').find('input').val(json.url);
                         loader.reset(that.$.find('.modal-footer'));
                     }
                 });
@@ -408,7 +408,7 @@ humhub.module('onlyoffice', function (module, require, $) {
     Share.prototype.clickv = function (evt) {
         var that = this;
         //evt.$trigger
-    }
+    };
 
 
 
