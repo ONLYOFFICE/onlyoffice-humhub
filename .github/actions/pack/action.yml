@@ -34,6 +34,10 @@ runs:
           --exclude='.gitignore' \
           --exclude='.gitmodules' \
           --exclude='.gitattributes' \
+          --exclude='/node_modules' \
+          --exclude='/package.json' \
+          --exclude='/package-lock.json' \
+          --exclude='/eslint.config.mjs' \
           --exclude='/README.md' \
           --exclude='/LICENCE.md' \
           --exclude='/AUTHORS.md' \
