@@ -44,7 +44,7 @@ humhub.module('onlyoffice', function (module, require, $) {
         this.initEditor();
 
         var that = this;
-        this.modal.$.on('hidden.bs.modal', function (evt) {
+        this.modal.$.off('hidden.bs.modal.onlyoffice').on('hidden.bs.modal.onlyoffice', function (evt) {
             that.modal.clear();
         });
 
