@@ -8,6 +8,7 @@
 use humhub\modules\file\handler\FileHandlerCollection;
 use humhub\modules\file\models\File;
 use humhub\modules\onlyoffice\Events;
+use humhub\widgets\LayoutAddons;
 
 $config = [
     'id' => 'onlyoffice',
@@ -19,6 +20,7 @@ $config = [
             FileHandlerCollection::EVENT_INIT,
             ['humhub\modules\onlyoffice\Events', 'onFileHandlerCollection']
         ],
+        [LayoutAddons::class, LayoutAddons::EVENT_BEFORE_RUN, [Events::class, 'onLayoutAddons']],
     ]
 ];
 

@@ -5,20 +5,23 @@
 
 humhub.module('onlyoffice', function (module, require, $) {
 
-    var client = require('client');
-    var modal = require('ui.modal');
-    var object = require('util').object;
-    var Widget = require('ui.widget').Widget;
-    var event = require('event');
-    var loader = require('ui.loader');
-    var ooJSLoadRetries = 0;
+    const client = require('client');
+    const modal = require('ui.modal');
+    const view = require('ui.view');
+    const object = require('util').object;
+    const Widget = require('ui.widget').Widget;
+    const event = require('event');
+    const loader = require('ui.loader');
+    const status = require('ui.status');
 
-    var config = null;
-    var api = null;
-    var infoMsg = null;
-    var docEditor = null;
+    let config = null;
+    let api = null;
+    let infoMsg = null;
+    let title = null;
+    let docEditor = null;
+    let onRequestCloseObj = null;
 
-    var Editor = function (node, options) {
+    const Editor = function (node, options) {
         Widget.call(this, node, options);
     };
 
@@ -35,13 +38,14 @@ humhub.module('onlyoffice', function (module, require, $) {
 
         if (this.options.moduleConfigured != 1) {
             module.log.error('No OnlyOffice server configured! - Check onlyoffice module configuration!', true);
-            return
+            return;
         }
 
+        this.loadRetries = 0;
         this.initEditor();
 
-        var that = this;
-        this.modal.$.on('hidden.bs.modal', function (evt) {
+        const that = this;
+        this.modal.$.off('hidden.bs.modal.onlyoffice').on('hidden.bs.modal.onlyoffice', function () {
             that.modal.clear();
         });
 
@@ -49,10 +53,10 @@ humhub.module('onlyoffice', function (module, require, $) {
 
 
     Editor.prototype.share = function (evt) {
-        m = modal.get('#onlyoffice-share-modal');
+        const m = modal.get('#onlyoffice-share-modal');
         m.load(evt.url);
         m.show();
-    }
+    };
 
 
     Editor.prototype.close = function (evt) {
@@ -71,16 +75,20 @@ humhub.module('onlyoffice', function (module, require, $) {
         } else {
             closeModal(this, evt);
         }
-    }
+    };
 
     Editor.prototype.initEditor = function () {
         if (!window.DocsAPI) {
-            ooJSLoadRetries++;
-            if (ooJSLoadRetries < 100) {
+            if (!document.body.contains(this.$[0])) {
+                return;
+            }
+
+            this.loadRetries++;
+            if (this.loadRetries < 100) {
                 setTimeout($.proxy(this.initEditor, this), 100);
                 return;
             } else {
-                module.log.error('Could not onlyoffice document editor.', true);
+                module.log.error('Could not load onlyoffice document editor.', true);
                 return;
             }
         }
@@ -88,8 +96,9 @@ humhub.module('onlyoffice', function (module, require, $) {
         api = this.options.api;
         config = this.options.config;
         infoMsg = this.options.infoMsg;
+        title = this.options.title;
 
-        var docsVersion = DocsAPI.DocEditor.version().split(".");
+        const docsVersion = DocsAPI.DocEditor.version().split(".");
         if (docsVersion[0] < 6
             || docsVersion[0] == 6 && docsVersion[1] == 0) {
             module.log.error('Not supported version', true);
@@ -127,7 +136,7 @@ humhub.module('onlyoffice', function (module, require, $) {
         if (infoMsg) {
             config.events.onAppReady = function () {
                 module.log.info(infoMsg, true);
-            }
+            };
         }
         if (this.options.canShare) {
             config.events.onRequestSharingSettings = onRequestSharingSettings;
@@ -136,9 +145,9 @@ humhub.module('onlyoffice', function (module, require, $) {
         this.docEditor = new DocsAPI.DocEditor('iframeContainer', config);
 
         docEditor = this.docEditor;
-    }
+    };
 
-    var Convert = function (node, options) {
+    const Convert = function (node, options) {
         Widget.call(this, node, options);
     };
 
@@ -146,8 +155,8 @@ humhub.module('onlyoffice', function (module, require, $) {
 
     Convert.prototype.init = function () {
 
-        var that = this;
-        var msg = that.$.find('#oConvertMessage');
+        const that = this;
+        const msg = that.$.find('#oConvertMessage');
 
         function _onError(error) {
             msg.text(that.options.errorMessage + ' ' + error);
@@ -176,7 +185,9 @@ humhub.module('onlyoffice', function (module, require, $) {
                         loader.reset(that.$.find('.modal-footer'));
                     }
                 },
-                error: _onError
+                error: function (xhr, textStatus, errorThrown) {
+                    _onError(errorThrown || textStatus);
+                }
             });
         }
 
@@ -193,7 +204,7 @@ humhub.module('onlyoffice', function (module, require, $) {
     };
 
     function onRequestSaveAs(evt) {
-        var saveData = {
+        const saveData = {
             name: evt.data.title,
             url: evt.data.url
         };
@@ -206,7 +217,7 @@ humhub.module('onlyoffice', function (module, require, $) {
     }
 
     function onRequestRename(evt) {
-        var renameData = {
+        const renameData = {
             newFileName: evt.data,
             key: config.document.key,
             ext: config.document.fileType
@@ -214,9 +225,34 @@ humhub.module('onlyoffice', function (module, require, $) {
 
         client.post(api.renameUrl, {data: renameData, dataType: 'json'}).then((response) => {
             event.trigger('humhub:file:modified', [response.file]);
+
+            if (title) {
+                renameTitle(response.file.name);
+            }
         }).catch(function(e) {
             module.log.error(e, true);
         });
+    }
+
+    function renameTitle(fileName) {
+        // document.title collapses whitespace, so compare the names the same way
+        const oldName = title.replace(/\s+/g, ' ').trim();
+        const newName = fileName.replace(/\s+/g, ' ').trim();
+
+        // ui.view keeps the title without the notification count, which the notification module puts in front of it
+        const state = view.getState();
+        const baseTitle = state.title || document.title;
+        if (baseTitle.indexOf(oldName) !== 0) {
+            return;
+        }
+
+        document.title = newName + baseTitle.substring(oldName.length);
+        title = fileName;
+
+        if (state.title) {
+            view.setState(state.moduleId, state.controllerId, state.action);
+            event.trigger('humhub:modules:notification:UpdateTitleNotificationCount');
+        }
     }
 
     function onRequestUsers(event) {
@@ -244,28 +280,27 @@ humhub.module('onlyoffice', function (module, require, $) {
 
     function onRequestSendNotify(evt) {
 
-        var notifyData = {
+        const notifyData = {
             ACTION_DATA: JSON.stringify(evt.data.actionLink),
             comment: evt.data.message,
             emails: evt.data.emails,
             doc_key: config.document.key
         };
 
-        client.post(api.sendNotifyUrl, {data: notifyData, dataType: 'json'}).then((response) => {
-        }).catch(function(e) {
+        client.post(api.sendNotifyUrl, {data: notifyData, dataType: 'json'}).catch(function(e) {
             module.log.error(e, true);
         });
 
     }
 
     function onMakeActionLink(evt){
-        var ACTION_DATA = evt.data;
-        var anchorData = {
+        const ACTION_DATA = evt.data;
+        const anchorData = {
             doc_key: config.document.key
         };
 
         client.post(api.makeAnchorUrl, {data: anchorData, dataType: 'json'}).then((response) => {
-            var link = location.origin + response.url + "&anchor=" + encodeURIComponent(JSON.stringify(ACTION_DATA));
+            const link = location.origin + response.url + "&anchor=" + encodeURIComponent(JSON.stringify(ACTION_DATA));
             docEditor.setActionLink(link);
         }).catch(function(e) {
             module.log.error(e, true);
@@ -274,9 +309,12 @@ humhub.module('onlyoffice', function (module, require, $) {
         
     };
 
-    var onRequestCloseObj = null;
     function onRequestClose() {
-        refreshFileInfo(onRequestCloseObj.that, onRequestCloseObj.evt);
+        if (onRequestCloseObj) {
+            const pendingClose = onRequestCloseObj;
+            onRequestCloseObj = null;
+            refreshFileInfo(pendingClose.that, pendingClose.evt);
+        }
     };
 
     function onRequestSharingSettings() {
@@ -307,7 +345,7 @@ humhub.module('onlyoffice', function (module, require, $) {
         }
     }
 
-    var Share = function (node, options) {
+    const Share = function (node, options) {
         Widget.call(this, node, options);
     };
 
@@ -315,7 +353,7 @@ humhub.module('onlyoffice', function (module, require, $) {
 
     Share.prototype.init = function () {
 
-        var that = this;
+        const that = this;
 
         if ($('.editLinkInput').find('input').val() != '') {
             $('.editLinkCheckbox').prop('checked', true);
@@ -333,9 +371,21 @@ humhub.module('onlyoffice', function (module, require, $) {
 
         that.$.on('click', '.js-copy-link', function (e) {
             e.preventDefault();
-            var target = $(this).data('target');
-            navigator.clipboard.writeText($('.' + target).find('input').val());
+            const target = $(this).data('target');
+            clipboard.writeText($('.' + target).find('input').val()).then(function () {
+                status.success(that.options.copySuccess);
+            }).catch(function () {
+                status.error(that.options.copyError, true);
+            });
         });
+
+        const onShareError = function ($checkbox) {
+            return function (xhr) {
+                $checkbox.prop('checked', !$checkbox.prop('checked'));
+                loader.reset(that.$.find('.modal-footer'));
+                module.log.error(xhr, true);
+            };
+        };
 
         $('.viewLinkCheckbox').change(function () {
             if ($('.viewLinkCheckbox:checked').length) {
@@ -348,9 +398,10 @@ humhub.module('onlyoffice', function (module, require, $) {
                     dataType: 'json',
                     success: function (json) {
                         $('.viewLinkInput').show();
-                        $('.viewLinkInput').find('input').val(json.url)
+                        $('.viewLinkInput').find('input').val(json.url);
                         loader.reset(that.$.find('.modal-footer'));
-                    }
+                    },
+                    error: onShareError($(this))
                 });
             } else {
                 loader.set(that.$.find('.modal-footer'));
@@ -360,10 +411,11 @@ humhub.module('onlyoffice', function (module, require, $) {
                     type: 'POST',
                     data: { 'shareMode': 'view' },
                     dataType: 'json',
-                    success: function (jsoin) {
+                    success: function () {
                         $('.viewLinkInput').hide();
                         loader.reset(that.$.find('.modal-footer'));
-                    }
+                    },
+                    error: onShareError($(this))
                 });
             }
         });
@@ -379,9 +431,10 @@ humhub.module('onlyoffice', function (module, require, $) {
                     dataType: 'json',
                     success: function (json) {
                         $('.editLinkInput').show();
-                        $('.editLinkInput').find('input').val(json.url)
+                        $('.editLinkInput').find('input').val(json.url);
                         loader.reset(that.$.find('.modal-footer'));
-                    }
+                    },
+                    error: onShareError($(this))
                 });
             } else {
                 loader.set(that.$.find('.modal-footer'));
@@ -391,10 +444,11 @@ humhub.module('onlyoffice', function (module, require, $) {
                     type: 'POST',
                     data: { 'shareMode': 'edit' },
                     dataType: 'json',
-                    success: function (jsoin) {
+                    success: function () {
                         $('.editLinkInput').hide();
                         loader.reset(that.$.find('.modal-footer'));
-                    }
+                    },
+                    error: onShareError($(this))
                 });
             }
         });
@@ -405,16 +459,9 @@ humhub.module('onlyoffice', function (module, require, $) {
         return {};
     };
 
-    Share.prototype.clickv = function (evt) {
-        var that = this;
-        //evt.$trigger
-    }
+    const init = function () { };
 
-
-
-    var init = function (pjax) { };
-
-    var createSubmit = function (evt) {
+    const createSubmit = function (evt) {
         if ($('#cfiles-folderView').length > 0) {
             $('input#createdocument-fid').val($('#cfiles-folderView').attr('data-fid'));
         }
@@ -422,7 +469,7 @@ humhub.module('onlyoffice', function (module, require, $) {
         client.submit(evt).then(function (response) {
             event.trigger('humhub:file:created', [response.file]);
 
-            m = modal.get('#onlyoffice-modal');
+            const m = modal.get('#onlyoffice-modal');
             if (response.openFlag && response.openInNewTab) {
                 window.open(response.openUrl);
                 m.close();

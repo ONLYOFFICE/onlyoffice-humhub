@@ -17,6 +17,7 @@ use Yii;
 use yii\db\Expression;
 use humhub\modules\file\handler\FileHandlerCollection;
 use humhub\modules\file\models\File;
+use humhub\modules\onlyoffice\assets\NewTabAssets;
 use humhub\modules\onlyoffice\permissions\CanUseOnlyOffice;
 use humhub\modules\cfiles\permissions\ManageFiles;
 use humhub\modules\content\models\ContentContainer;
@@ -83,6 +84,15 @@ class Events
                 $file->updateAttributes(['onlyoffice_key' => new Expression('NULL')]);
             }
         }
+    }
+
+    public static function onLayoutAddons($event)
+    {
+        if (Yii::$app->request->isPjax || !Yii::$app->getModule('onlyoffice')->shouldOpenInNewTab()) {
+            return;
+        }
+
+        NewTabAssets::register($event->sender->getView());
     }
 
     private static function checkCFilesPermission(): bool
