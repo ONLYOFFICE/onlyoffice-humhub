@@ -6,7 +6,7 @@ on:
     paths-ignore:
       - '.github/**'
       - '**/AUTHORS.md'
-      - '**/LICENSE'
+      - '**/LICENCE.md'
       - '**/README.md'
 
 permissions:
