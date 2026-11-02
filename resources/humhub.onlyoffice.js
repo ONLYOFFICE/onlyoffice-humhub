@@ -41,7 +41,7 @@ humhub.module('onlyoffice', function (module, require, $) {
         this.initEditor();
 
         var that = this;
-        this.modal.$.on('hidden.bs.modal', function (evt) {
+        this.modal.$.on('hidden.bs.modal', function () {
             that.modal.clear();
         });
 
@@ -360,7 +360,7 @@ humhub.module('onlyoffice', function (module, require, $) {
                     type: 'POST',
                     data: { 'shareMode': 'view' },
                     dataType: 'json',
-                    success: function (jsoin) {
+                    success: function () {
                         $('.viewLinkInput').hide();
                         loader.reset(that.$.find('.modal-footer'));
                     }
@@ -391,7 +391,7 @@ humhub.module('onlyoffice', function (module, require, $) {
                     type: 'POST',
                     data: { 'shareMode': 'edit' },
                     dataType: 'json',
-                    success: function (jsoin) {
+                    success: function () {
                         $('.editLinkInput').hide();
                         loader.reset(that.$.find('.modal-footer'));
                     }
@@ -405,7 +405,7 @@ humhub.module('onlyoffice', function (module, require, $) {
         return {};
     };
 
-    var init = function (pjax) { };
+    var init = function () { };
 
     var createSubmit = function (evt) {
         if ($('#cfiles-folderView').length > 0) {
