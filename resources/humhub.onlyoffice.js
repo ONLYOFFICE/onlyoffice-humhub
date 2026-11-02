@@ -311,7 +311,11 @@ humhub.module('onlyoffice', function (module, require, $) {
 
     var onRequestCloseObj = null;
     function onRequestClose() {
-        refreshFileInfo(onRequestCloseObj.that, onRequestCloseObj.evt);
+        if (onRequestCloseObj) {
+            const pendingClose = onRequestCloseObj;
+            onRequestCloseObj = null;
+            refreshFileInfo(pendingClose.that, pendingClose.evt);
+        }
     };
 
     function onRequestSharingSettings() {
