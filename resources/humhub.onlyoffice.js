@@ -7,6 +7,7 @@ humhub.module('onlyoffice', function (module, require, $) {
 
     var client = require('client');
     var modal = require('ui.modal');
+    var view = require('ui.view');
     var object = require('util').object;
     var Widget = require('ui.widget').Widget;
     var event = require('event');
@@ -218,13 +219,33 @@ humhub.module('onlyoffice', function (module, require, $) {
         client.post(api.renameUrl, {data: renameData, dataType: 'json'}).then((response) => {
             event.trigger('humhub:file:modified', [response.file]);
 
-            if (title && document.title.indexOf(title) === 0) {
-                document.title = response.file.name + document.title.substring(title.length);
-                title = response.file.name;
+            if (title) {
+                renameTitle(response.file.name);
             }
         }).catch(function(e) {
             module.log.error(e, true);
         });
+    }
+
+    function renameTitle(fileName) {
+        // document.title collapses whitespace, so compare the names the same way
+        const oldName = title.replace(/\s+/g, ' ').trim();
+        const newName = fileName.replace(/\s+/g, ' ').trim();
+
+        // ui.view keeps the title without the notification count, which the notification module puts in front of it
+        const state = view.getState();
+        const baseTitle = state.title || document.title;
+        if (baseTitle.indexOf(oldName) !== 0) {
+            return;
+        }
+
+        document.title = newName + baseTitle.substring(oldName.length);
+        title = fileName;
+
+        if (state.title) {
+            view.setState(state.moduleId, state.controllerId, state.action);
+            event.trigger('humhub:modules:notification:UpdateTitleNotificationCount');
+        }
     }
 
     function onRequestUsers(event) {
