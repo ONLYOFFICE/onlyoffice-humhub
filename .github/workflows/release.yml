@@ -20,6 +20,12 @@ jobs:
       - name: Build Artifact
         uses: ./.github/actions/pack
         id: pack
+      - name: Check Version
+        env:
+          TAG: ${{ github.ref_name }}
+          VERSION: ${{ steps.pack.outputs.version }}
+        run: |
+          [ "$TAG" = "v$VERSION" ] || { echo "::error::Tag $TAG does not match module.json version $VERSION"; exit 1; }
       - name: Pack Artifact
         env:
           ID: ${{ steps.pack.outputs.id }}
@@ -33,5 +39,5 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           ID: ${{ steps.pack.outputs.id }}
-          TAG: v${{ steps.pack.outputs.version }}
+          TAG: ${{ github.ref_name }}
         run: gh release create "$TAG" "$ID.zip" --title "$TAG" --notes-file RELEASE.md --verify-tag
