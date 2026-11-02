@@ -405,13 +405,6 @@ humhub.module('onlyoffice', function (module, require, $) {
         return {};
     };
 
-    Share.prototype.clickv = function (evt) {
-        var that = this;
-        //evt.$trigger
-    };
-
-
-
     var init = function (pjax) { };
 
     var createSubmit = function (evt) {
