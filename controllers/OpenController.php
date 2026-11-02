@@ -62,7 +62,10 @@ class OpenController extends BaseFileController
             return $this->renderAjaxContent('');
         }
 
-        if (!$openInNewTab && (!Yii::$app->request->isAjax || isset($_GET['notify']))) {
+        // Pjax requests (e.g. a link posted in a stream entry) are ajax too, but must not get the modal fragment
+        $isModalRequest = Yii::$app->request->isAjax && !Yii::$app->request->isPjax;
+
+        if (!$openInNewTab && (!$isModalRequest || isset($_GET['notify']))) {
             return $this->redirectToModal();
         }
 
