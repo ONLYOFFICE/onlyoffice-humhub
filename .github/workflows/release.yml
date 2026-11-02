@@ -5,35 +5,39 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
-      - name: Install Node
-        uses: actions/setup-node@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          node-version: '16'
-      - name: Install Zip
-        run: sudo apt-get install zip
-      - name: Get Info 
-        run: |
-          echo "version=$(jq -r '.version' module.json)" >> $GITHUB_OUTPUT
-          echo "id=$(jq -r '.id' module.json)" >> $GITHUB_OUTPUT
-        id: info
+          submodules: recursive
+          persist-credentials: false
       - name: Build Artifact
+        uses: ./.github/actions/pack
+        id: pack
+      - name: Check Version
+        env:
+          TAG: ${{ github.ref_name }}
+          VERSION: ${{ steps.pack.outputs.version }}
         run: |
-          cd ${{ github.workspace }}
-          chmod +x ./pack.sh
-          ./pack.sh
-          mv deploy/onlyoffice ${{ github.workspace }}/onlyoffice
+          [ "$TAG" = "v$VERSION" ] || { echo "::error::Tag $TAG does not match module.json version $VERSION"; exit 1; }
       - name: Pack Artifact
-        run: zip -r ${{ steps.info.outputs.id }}.zip onlyoffice
+        env:
+          ID: ${{ steps.pack.outputs.id }}
+        run: |
+          cd deploy
+          zip -r "../$ID.zip" onlyoffice
+      - name: Get Release Notes
+        run: |
+          awk '/## [0-9]/{p++} p; /## [0-9]/{if (p > 1) exit}' CHANGELOG.md | awk 'NR>2 {print last} {last=$0}' > RELEASE.md
       - name: Release Artifact
-        uses: ncipollo/release-action@v1
-        id: create_release
-        with:
-          artifacts: "${{ steps.info.outputs.id }}.zip"
-          bodyFile: "RELEASE.md"
-          tag: v${{ steps.info.outputs.version }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ID: ${{ steps.pack.outputs.id }}
+          TAG: ${{ github.ref_name }}
+        run: gh release create "$TAG" "$ID.zip" --title "$TAG" --notes-file RELEASE.md --verify-tag

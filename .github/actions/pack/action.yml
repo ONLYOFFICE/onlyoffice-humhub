@@ -1,0 +1,58 @@
+name: Pack
+description: Build the HumHub module package into deploy/onlyoffice
+
+outputs:
+  id:
+    description: Module id from module.json
+    value: ${{ steps.info.outputs.id }}
+  version:
+    description: Module version from module.json
+    value: ${{ steps.info.outputs.version }}
+
+runs:
+  using: composite
+  steps:
+    - name: Get Info
+      id: info
+      shell: bash
+      run: |
+        id=$(jq -r '.id // empty' module.json)
+        version=$(jq -r '.version // empty' module.json)
+        [[ $id =~ ^[a-z0-9_-]+$ ]] || { echo "::error::module.json id must match ^[a-z0-9_-]+$"; exit 1; }
+        [[ $version =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]] || { echo "::error::module.json version must be semver, e.g. 1.2.3 or 1.2.3-beta"; exit 1; }
+        echo "id=$id" >> "$GITHUB_OUTPUT"
+        echo "version=$version" >> "$GITHUB_OUTPUT"
+    - name: Copy Files
+      shell: bash
+      run: |
+        rm -rf deploy
+        mkdir -p deploy/onlyoffice/docs
+        rsync -a \
+          --exclude='/deploy' \
+          --exclude='/.github' \
+          --exclude='.git' \
+          --exclude='.gitignore' \
+          --exclude='.gitmodules' \
+          --exclude='.gitattributes' \
+          --exclude='/README.md' \
+          --exclude='/LICENCE.md' \
+          --exclude='/AUTHORS.md' \
+          --exclude='/CHANGELOG.md' \
+          ./ deploy/onlyoffice
+        cp LICENCE.md AUTHORS.md CHANGELOG.md deploy/onlyoffice/docs
+    - name: Split README
+      shell: bash
+      run: |
+        docs=deploy/onlyoffice/docs
+        awk -v docs="$docs" '
+          /^##? / {
+            out = ""
+            if (/^# ONLYOFFICE module for HumHub/ || /^## Features/) out = docs "/README.md"
+            else if (/^## Installing ONLYOFFICE/ || /^## Configuring ONLYOFFICE/) out = docs "/INSTALLATION.md"
+            else if (/^## How it works/) out = docs "/DEVELOPER.md"
+          }
+          out { print > out }
+        ' README.md
+        for f in README INSTALLATION DEVELOPER; do
+          [ -s "$docs/$f.md" ] || { echo "::error::$docs/$f.md is empty, check README.md headings"; exit 1; }
+        done
