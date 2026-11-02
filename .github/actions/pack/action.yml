@@ -38,6 +38,7 @@ runs:
           --exclude='/package.json' \
           --exclude='/package-lock.json' \
           --exclude='/eslint.config.mjs' \
+          --exclude='/CLAUDE.md' \
           --exclude='/README.md' \
           --exclude='/LICENCE.md' \
           --exclude='/AUTHORS.md' \
