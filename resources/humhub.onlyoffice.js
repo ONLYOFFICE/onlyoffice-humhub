@@ -180,7 +180,9 @@ humhub.module('onlyoffice', function (module, require, $) {
                         loader.reset(that.$.find('.modal-footer'));
                     }
                 },
-                error: _onError
+                error: function (xhr, textStatus, errorThrown) {
+                    _onError(errorThrown || textStatus);
+                }
             });
         }
 
