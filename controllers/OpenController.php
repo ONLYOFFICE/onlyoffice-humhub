@@ -57,7 +57,7 @@ class OpenController extends BaseFileController
 
         if ($openInNewTab && Yii::$app->request->isPjax) {
             // Notification links are followed via pjax, reload as a full page to get the fullscreen editor
-            $url = Url::current(['seen' => null, 'notify' => null]);
+            $url = Url::current(['seen' => null, 'notify' => null, '_pjax' => null, '_' => null]);
             $this->getView()->registerJs('window.location.replace(' . Json::htmlEncode($url) . ');');
             return $this->renderAjaxContent('');
         }
