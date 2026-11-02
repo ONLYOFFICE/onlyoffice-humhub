@@ -49,7 +49,7 @@ humhub.module('onlyoffice', function (module, require, $) {
 
 
     Editor.prototype.share = function (evt) {
-        m = modal.get('#onlyoffice-share-modal');
+        var m = modal.get('#onlyoffice-share-modal');
         m.load(evt.url);
         m.show();
     }
@@ -422,7 +422,7 @@ humhub.module('onlyoffice', function (module, require, $) {
         client.submit(evt).then(function (response) {
             event.trigger('humhub:file:created', [response.file]);
 
-            m = modal.get('#onlyoffice-modal');
+            var m = modal.get('#onlyoffice-modal');
             if (response.openFlag && response.openInNewTab) {
                 window.open(response.openUrl);
                 m.close();
