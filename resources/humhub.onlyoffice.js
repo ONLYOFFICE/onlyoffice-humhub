@@ -5,20 +5,21 @@
 
 humhub.module('onlyoffice', function (module, require, $) {
 
-    var client = require('client');
-    var modal = require('ui.modal');
-    var object = require('util').object;
-    var Widget = require('ui.widget').Widget;
-    var event = require('event');
-    var loader = require('ui.loader');
-    var ooJSLoadRetries = 0;
+    const client = require('client');
+    const modal = require('ui.modal');
+    const object = require('util').object;
+    const Widget = require('ui.widget').Widget;
+    const event = require('event');
+    const loader = require('ui.loader');
+    let ooJSLoadRetries = 0;
 
-    var config = null;
-    var api = null;
-    var infoMsg = null;
-    var docEditor = null;
+    let config = null;
+    let api = null;
+    let infoMsg = null;
+    let docEditor = null;
+    let onRequestCloseObj = null;
 
-    var Editor = function (node, options) {
+    const Editor = function (node, options) {
         Widget.call(this, node, options);
     };
 
@@ -40,7 +41,7 @@ humhub.module('onlyoffice', function (module, require, $) {
 
         this.initEditor();
 
-        var that = this;
+        const that = this;
         this.modal.$.on('hidden.bs.modal', function () {
             that.modal.clear();
         });
@@ -49,7 +50,7 @@ humhub.module('onlyoffice', function (module, require, $) {
 
 
     Editor.prototype.share = function (evt) {
-        var m = modal.get('#onlyoffice-share-modal');
+        const m = modal.get('#onlyoffice-share-modal');
         m.load(evt.url);
         m.show();
     };
@@ -89,7 +90,7 @@ humhub.module('onlyoffice', function (module, require, $) {
         config = this.options.config;
         infoMsg = this.options.infoMsg;
 
-        var docsVersion = DocsAPI.DocEditor.version().split(".");
+        const docsVersion = DocsAPI.DocEditor.version().split(".");
         if (docsVersion[0] < 6
             || docsVersion[0] == 6 && docsVersion[1] == 0) {
             module.log.error('Not supported version', true);
@@ -138,7 +139,7 @@ humhub.module('onlyoffice', function (module, require, $) {
         docEditor = this.docEditor;
     };
 
-    var Convert = function (node, options) {
+    const Convert = function (node, options) {
         Widget.call(this, node, options);
     };
 
@@ -146,8 +147,8 @@ humhub.module('onlyoffice', function (module, require, $) {
 
     Convert.prototype.init = function () {
 
-        var that = this;
-        var msg = that.$.find('#oConvertMessage');
+        const that = this;
+        const msg = that.$.find('#oConvertMessage');
 
         function _onError(error) {
             msg.text(that.options.errorMessage + ' ' + error);
@@ -193,7 +194,7 @@ humhub.module('onlyoffice', function (module, require, $) {
     };
 
     function onRequestSaveAs(evt) {
-        var saveData = {
+        const saveData = {
             name: evt.data.title,
             url: evt.data.url
         };
@@ -206,7 +207,7 @@ humhub.module('onlyoffice', function (module, require, $) {
     }
 
     function onRequestRename(evt) {
-        var renameData = {
+        const renameData = {
             newFileName: evt.data,
             key: config.document.key,
             ext: config.document.fileType
@@ -244,7 +245,7 @@ humhub.module('onlyoffice', function (module, require, $) {
 
     function onRequestSendNotify(evt) {
 
-        var notifyData = {
+        const notifyData = {
             ACTION_DATA: JSON.stringify(evt.data.actionLink),
             comment: evt.data.message,
             emails: evt.data.emails,
@@ -258,13 +259,13 @@ humhub.module('onlyoffice', function (module, require, $) {
     }
 
     function onMakeActionLink(evt){
-        var ACTION_DATA = evt.data;
-        var anchorData = {
+        const ACTION_DATA = evt.data;
+        const anchorData = {
             doc_key: config.document.key
         };
 
         client.post(api.makeAnchorUrl, {data: anchorData, dataType: 'json'}).then((response) => {
-            var link = location.origin + response.url + "&anchor=" + encodeURIComponent(JSON.stringify(ACTION_DATA));
+            const link = location.origin + response.url + "&anchor=" + encodeURIComponent(JSON.stringify(ACTION_DATA));
             docEditor.setActionLink(link);
         }).catch(function(e) {
             module.log.error(e, true);
@@ -273,7 +274,6 @@ humhub.module('onlyoffice', function (module, require, $) {
         
     };
 
-    var onRequestCloseObj = null;
     function onRequestClose() {
         refreshFileInfo(onRequestCloseObj.that, onRequestCloseObj.evt);
     };
@@ -306,7 +306,7 @@ humhub.module('onlyoffice', function (module, require, $) {
         }
     }
 
-    var Share = function (node, options) {
+    const Share = function (node, options) {
         Widget.call(this, node, options);
     };
 
@@ -314,7 +314,7 @@ humhub.module('onlyoffice', function (module, require, $) {
 
     Share.prototype.init = function () {
 
-        var that = this;
+        const that = this;
 
         if ($('.editLinkInput').find('input').val() != '') {
             $('.editLinkCheckbox').prop('checked', true);
@@ -332,7 +332,7 @@ humhub.module('onlyoffice', function (module, require, $) {
 
         that.$.on('click', '.js-copy-link', function (e) {
             e.preventDefault();
-            var target = $(this).data('target');
+            const target = $(this).data('target');
             navigator.clipboard.writeText($('.' + target).find('input').val());
         });
 
@@ -404,9 +404,9 @@ humhub.module('onlyoffice', function (module, require, $) {
         return {};
     };
 
-    var init = function () { };
+    const init = function () { };
 
-    var createSubmit = function (evt) {
+    const createSubmit = function (evt) {
         if ($('#cfiles-folderView').length > 0) {
             $('input#createdocument-fid').val($('#cfiles-folderView').attr('data-fid'));
         }
@@ -414,7 +414,7 @@ humhub.module('onlyoffice', function (module, require, $) {
         client.submit(evt).then(function (response) {
             event.trigger('humhub:file:created', [response.file]);
 
-            var m = modal.get('#onlyoffice-modal');
+            const m = modal.get('#onlyoffice-modal');
             if (response.openFlag && response.openInNewTab) {
                 window.open(response.openUrl);
                 m.close();
