@@ -251,8 +251,7 @@ humhub.module('onlyoffice', function (module, require, $) {
             doc_key: config.document.key
         };
 
-        client.post(api.sendNotifyUrl, {data: notifyData, dataType: 'json'}).then((response) => {
-        }).catch(function(e) {
+        client.post(api.sendNotifyUrl, {data: notifyData, dataType: 'json'}).catch(function(e) {
             module.log.error(e, true);
         });
 
