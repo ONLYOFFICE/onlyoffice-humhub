@@ -20,11 +20,15 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Get Info
         run: |
-          echo "version=$(grep -Eo '[0-9]+(\.[0-9]+)+' CHANGELOG.md | head -n 1)" >> $GITHUB_OUTPUT
+          version=$(jq -r '.version // empty' module.json)
+          [[ $version =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]] || { echo "::error::module.json version must be semver, e.g. 1.2.3 or 1.2.3-beta"; exit 1; }
+          echo "version=$version" >> "$GITHUB_OUTPUT"
         id: info
       - name: Create Tag
+        env:
+          TAG: v${{ steps.info.outputs.version }}
         run: |
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-          git tag -a 'v${{ steps.info.outputs.version }}' -m 'Release/v${{ steps.info.outputs.version }}'
-          git push origin 'v${{ steps.info.outputs.version }}'
+          git tag -a "$TAG" -m "Release/$TAG"
+          git push origin "$TAG"
