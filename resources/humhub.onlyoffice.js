@@ -370,6 +370,14 @@ humhub.module('onlyoffice', function (module, require, $) {
             });
         });
 
+        const onShareError = function ($checkbox) {
+            return function (xhr) {
+                $checkbox.prop('checked', !$checkbox.prop('checked'));
+                loader.reset(that.$.find('.modal-footer'));
+                module.log.error(xhr, true);
+            };
+        };
+
         $('.viewLinkCheckbox').change(function () {
             if ($('.viewLinkCheckbox:checked').length) {
                 loader.set(that.$.find('.modal-footer'));
@@ -383,7 +391,8 @@ humhub.module('onlyoffice', function (module, require, $) {
                         $('.viewLinkInput').show();
                         $('.viewLinkInput').find('input').val(json.url)
                         loader.reset(that.$.find('.modal-footer'));
-                    }
+                    },
+                    error: onShareError($(this))
                 });
             } else {
                 loader.set(that.$.find('.modal-footer'));
@@ -396,7 +405,8 @@ humhub.module('onlyoffice', function (module, require, $) {
                     success: function (jsoin) {
                         $('.viewLinkInput').hide();
                         loader.reset(that.$.find('.modal-footer'));
-                    }
+                    },
+                    error: onShareError($(this))
                 });
             }
         });
@@ -414,7 +424,8 @@ humhub.module('onlyoffice', function (module, require, $) {
                         $('.editLinkInput').show();
                         $('.editLinkInput').find('input').val(json.url)
                         loader.reset(that.$.find('.modal-footer'));
-                    }
+                    },
+                    error: onShareError($(this))
                 });
             } else {
                 loader.set(that.$.find('.modal-footer'));
@@ -427,7 +438,8 @@ humhub.module('onlyoffice', function (module, require, $) {
                     success: function (jsoin) {
                         $('.editLinkInput').hide();
                         loader.reset(that.$.find('.modal-footer'));
-                    }
+                    },
+                    error: onShareError($(this))
                 });
             }
         });
