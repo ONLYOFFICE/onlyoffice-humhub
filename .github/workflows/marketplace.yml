@@ -1,0 +1,50 @@
+name: Publish to HumHub Marketplace
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to publish (e.g. v3.3.0)'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: marketplace
+    timeout-minutes: 10
+    steps:
+      - name: Checkout Tag
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: refs/tags/${{ inputs.tag }}
+          persist-credentials: false
+      - name: Get Info
+        env:
+          TAG: ${{ inputs.tag }}
+        run: |
+          id=$(jq -r '.id // empty' module.json)
+          version=$(jq -r '.version // empty' module.json)
+          [ "$TAG" = "v$version" ] || { echo "::error::Tag $TAG does not match module.json version $version"; exit 1; }
+          echo "id=$id" >> "$GITHUB_OUTPUT"
+        id: info
+      - name: Download Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ID: ${{ steps.info.outputs.id }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          gh release download "$TAG" --pattern "$ID.zip" || { echo "::error::Release $TAG with $ID.zip not found"; exit 1; }
+      - name: Upload to Marketplace
+        env:
+          ID: ${{ steps.info.outputs.id }}
+          KEY: ${{ secrets.HUMHUB_MARKETPLACE_API_KEY }}
+        run: |
+          [ -n "$KEY" ] || { echo "::error::HUMHUB_MARKETPLACE_API_KEY secret is not set"; exit 1; }
+          printf '%s' "$KEY" | curl -sS --fail-with-body \
+            -F 'key=<-' \
+            -F "ModuleVersionUpload[zipFile]=@$ID.zip" \
+            "https://api.humhub.com/v1/marketplace/upload?moduleId=$ID"
