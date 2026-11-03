@@ -13,6 +13,7 @@
 - removed inline javascript due to csp script-src nonce-restrictions
 - always open editor in new tab on mobile
 - fixed editor rendered inline without modal when an open link is followed via pjax, e.g. a link posted in a stream entry
+- prevent page reload on opening the editor when the content security policy blocks eval
 
 ## 4.0.0
 ## Changed

@@ -18,6 +18,7 @@ use humhub\widgets\modal\Modal;
 if (!empty($serverApiUrl)) {
     $this->registerJsFile($serverApiUrl, [
         'position' => \yii\web\View::POS_HEAD,
+        'depends' => [\humhub\modules\onlyoffice\assets\CspViolationAssets::class],
     ]);
 }
 if (!$openInNewTab) {
