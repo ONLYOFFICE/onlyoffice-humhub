@@ -44,6 +44,7 @@ use yii\web\View;
 if (!empty($serverApiUrl)) {
     $this->registerJsFile($serverApiUrl, [
         'position' => \yii\web\View::POS_HEAD,
+        'depends' => [\humhub\modules\onlyoffice\assets\CspViolationAssets::class],
     ]);
 }
 if (!$openInNewTab) {
