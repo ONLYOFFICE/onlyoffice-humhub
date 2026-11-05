@@ -7,12 +7,13 @@
 
 namespace humhub\modules\onlyoffice\notifications;
 
-use Yii;
-use yii\helpers\Url;
-use yii\helpers\ArrayHelper;
-use yii\bootstrap\Html;
-use humhub\modules\notification\components\BaseNotification;
 use humhub\components\SocialActivity;
+use humhub\helpers\Html;
+use humhub\modules\notification\components\BaseNotification;
+use Yii;
+use yii\db\Expression;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 
 class Mention extends BaseNotification
 {
@@ -29,9 +30,9 @@ class Mention extends BaseNotification
             '{displayName} mentioned you in {contentTitle}.',
             [
                 'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-                'contentTitle' => $this->source->file->file_name,
+                'contentTitle' => Html::encode($this->source->file->file_name),
             ]
-        ) . ' ' .  $this->source->message;
+        ) . ' ' . Html::encode($this->source->message);
     }
 
     public function getMailSubject()

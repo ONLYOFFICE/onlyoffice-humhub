@@ -9,8 +9,8 @@ namespace humhub\modules\onlyoffice\widgets;
 
 use Yii;
 use yii\helpers\Url;
-use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
+use humhub\modules\onlyoffice\services\FileService;
 use humhub\widgets\JsWidget;
 
 class ConvertWidget extends JsWidget
@@ -43,12 +43,7 @@ class ConvertWidget extends JsWidget
     {
         parent::init();
 
-        $module = Yii::$app->getModule('onlyoffice');
-        $this->newName = substr(
-            $this->file->fileName,
-            0,
-            strpos($this->file->fileName, '.') + 1
-        ) . $module->formats()->convertsTo[strtolower(FileHelper::getExtension($this->file))];
+        $this->newName = FileService::instance($this->file)->getConvertedName();
     }
 
     /**
@@ -61,7 +56,6 @@ class ConvertWidget extends JsWidget
                 '/onlyoffice/convert/convert',
                 'guid' => $this->file->guid,
                 'ts' => time(),
-                'newName' => $this->newName
             ]),
             'file-info-url' => Url::to(['/onlyoffice/open/get-info', 'guid' => $this->file->guid]),
             'done-message' => Yii::t('OnlyofficeModule.base', 'Done!'),

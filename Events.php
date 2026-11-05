@@ -18,6 +18,7 @@ use yii\db\Expression;
 use humhub\modules\file\handler\FileHandlerCollection;
 use humhub\modules\file\models\File;
 use humhub\modules\onlyoffice\permissions\CanUseOnlyOffice;
+use humhub\modules\onlyoffice\services\FileService;
 use humhub\modules\cfiles\permissions\ManageFiles;
 use humhub\modules\content\models\ContentContainer;
 
@@ -45,19 +46,22 @@ class Events
             return;
         }
 
-        /* @var $module \humhub\modules\onlyoffice\Module */
-        $module = Yii::$app->getModule('onlyoffice');
         $file = $event->sender->file;
-
-        if ($module->getDocumentType($file) === null) {
+        if (!$file instanceof File) {
             return;
         }
 
-        $isOnlyofficeForm = $module->isOnlyofficeForm($file);
+        $fileService = FileService::instance($file);
 
-        $canEdit = $collection->type == FileHandlerCollection::TYPE_EDIT && $module->canEdit($file);
-        $canConvert = $collection->type == FileHandlerCollection::TYPE_EDIT && $module->canConvert($file);
-        $canView = $collection->type == FileHandlerCollection::TYPE_VIEW && $module->canView($file);
+        if ($fileService->getDocumentType() === null) {
+            return;
+        }
+
+        $isOnlyofficeForm = $fileService->isOnlyofficeForm();
+
+        $canEdit = $collection->type == FileHandlerCollection::TYPE_EDIT && $fileService->canEdit();
+        $canConvert = $collection->type == FileHandlerCollection::TYPE_EDIT && $fileService->canConvert();
+        $canView = $collection->type == FileHandlerCollection::TYPE_VIEW && $fileService->canView();
 
         if ($canEdit) {
             $collection->register(new filehandler\EditFileHandler());

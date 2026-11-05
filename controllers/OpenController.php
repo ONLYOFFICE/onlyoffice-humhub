@@ -18,6 +18,7 @@ use yii\web\HttpException;
 use yii\helpers\Url;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\onlyoffice\components\BaseFileController;
+use humhub\modules\onlyoffice\services\FileService;
 use humhub\modules\notification\models\Notification;
 
 class OpenController extends BaseFileController
@@ -45,7 +46,10 @@ class OpenController extends BaseFileController
         }
 
         if (!empty($_GET['seen'])) {
-            Notification::findOne($_GET['notify'])->getBaseModel()->markAsSeen();
+            $notification = Notification::findOne(['id' => $_GET['notify'], 'user_id' => Yii::$app->user->id]);
+            if ($notification !== null) {
+                $notification->getBaseModel()->markAsSeen();
+            }
         }
 
         if (!Yii::$app->request->isAjax || isset($_GET['notify'])) {
@@ -53,8 +57,7 @@ class OpenController extends BaseFileController
         }
 
         $serverApiUrl = Yii::$app->getModule('onlyoffice')->getServerApiUrl();
-        $module = Yii::$app->getModule('onlyoffice');
-        $key = $module->generateDocumentKey($this->file);
+        $key = FileService::instance($this->file)->generateDocumentKey();
         $serverApiUrl .= '?shardKey=' . $key;
 
         return $this->renderAjax('index', [

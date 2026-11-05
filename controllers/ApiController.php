@@ -42,7 +42,7 @@ class ApiController extends Controller
     protected function getAccessRules()
     {
         return [
-            [ControllerAccess::RULE_LOGGED_IN_ONLY => ['users-for-mentions']],
+            [ControllerAccess::RULE_LOGGED_IN_ONLY => ['users-for-mentions', 'send-notify', 'rename', 'saveas']],
         ];
     }
 
@@ -128,7 +128,7 @@ class ApiController extends Controller
     {
         $doc_key = Yii::$app->request->post('doc_key');
 
-        $file = File::findOne(['onlyoffice_key' => $doc_key]);
+        $file = $this->findFileByKey($doc_key);
         $url = Url::to(['/onlyoffice/open', 'guid' => $file->guid, 'mode' => 'view']);
 
         return $this->asJson([
@@ -144,9 +144,16 @@ class ApiController extends Controller
         $doc_key = Yii::$app->request->post('doc_key');
 
         $originator = Yii::$app->user->getIdentity();
-        $users = User::find()->where(['email' => $emails])->all();
+        $file = $this->findFileByKey($doc_key);
 
-        $file = File::findOne(['onlyoffice_key' => $doc_key]);
+        if (!$file->canView($originator)) {
+            throw new HttpException(403);
+        }
+
+        $users = array_filter(
+            User::find()->where(['email' => $emails])->all(),
+            fn(User $user) => $file->canView($user),
+        );
 
         $mention = Mention::generateMention($file, $message, $anchor);
 
@@ -168,7 +175,11 @@ class ApiController extends Controller
         $newFileName = Yii::$app->request->post('newFileName');
         $ext = Yii::$app->request->post('ext');
 
-        $file = File::findOne(['onlyoffice_key' => $key]);
+        $file = $this->findFileByKey($key);
+
+        if (!$file->canView()) {
+            throw new HttpException(403);
+        }
 
         $owner = User::findOne($file->created_by);
         $containerRecord = ContentContainer::findOne(['id' => $owner->contentcontainer_id]);
@@ -205,6 +216,17 @@ class ApiController extends Controller
         ]);
     }
 
+    private function findFileByKey($key): File
+    {
+        $file = empty($key) || !is_string($key) ? null : File::findOne(['onlyoffice_key' => $key]);
+
+        if ($file === null) {
+            throw new HttpException(404, Yii::t('OnlyofficeModule.base', 'Could not find requested file!'));
+        }
+
+        return $file;
+    }
+
     private function getUsersForMentions($file, $offset = 0, $limit = 100, $search = '')
     {
         $curUser = Yii::$app->user->getIdentity();
@@ -218,7 +240,7 @@ class ApiController extends Controller
 
         $filteredOffset = 0;
         foreach ($userQuery->batch(1000) as $userBatch) {
-            $filteredUsers = array_filter($userBatch, fn(User $user) => $file->canRead($user));
+            $filteredUsers = array_filter($userBatch, fn(User $user) => $file->canView($user));
             $filteredCount = count($filteredUsers);
             if ($filteredOffset + $filteredCount > $offset) {
                 $users = array_merge($users, array_slice($filteredUsers, $offset - $filteredOffset));

@@ -44,7 +44,7 @@ class ShareController extends BaseFileController
     public function actionRemove()
     {
         Yii::$app->response->format = 'json';
-        Share::deleteAll(['file_id' => $this->file->id, 'mode' => Yii::$app->request->post('shareMode')]);
+        Share::deleteAll(['file_id' => $this->file->id, 'mode' => $this->getShareMode()]);
         return [
             'success' => true
         ];
@@ -53,9 +53,19 @@ class ShareController extends BaseFileController
     public function actionGet()
     {
         Yii::$app->response->format = 'json';
-        $url = Share::getShareLink($this->file, true, Yii::$app->request->post('shareMode'));
+        $url = Share::getShareLink($this->file, true, $this->getShareMode());
         return [
             'url' => $url
         ];
+    }
+
+    private function getShareMode(): string
+    {
+        $shareMode = Yii::$app->request->post('shareMode');
+        if (!in_array($shareMode, [Module::OPEN_MODE_VIEW, Module::OPEN_MODE_EDIT], true)) {
+            throw new HttpException(400, 'Invalid share mode!');
+        }
+
+        return $shareMode;
     }
 }
