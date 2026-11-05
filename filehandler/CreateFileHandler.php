@@ -29,7 +29,7 @@ class CreateFileHandler extends BaseFileHandler
      */
     public function getLinkAttributes()
     {
-        list (, $baseUrl) = Yii::$app->getAssetManager()->publish("@onlyoffice/resources/app-dark.svg");
+        $baseUrl = Yii::$app->getModule('onlyoffice')->getPublishedUrl('/app-dark.svg');
         return [
             'label' => '<img style="height: 14px; margin-right: 5px;" src="' . $baseUrl . '"/>'
                 . Yii::t(

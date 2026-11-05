@@ -17,6 +17,7 @@ use humhub\components\Controller;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
 use humhub\modules\onlyoffice\Module;
+use humhub\modules\onlyoffice\services\FileService;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\web\HttpException;
@@ -58,7 +59,7 @@ class BackendController extends Controller
         $userGuid = isset($hashData->userGuid) ? $hashData->userGuid : null;
         $isEmpty = isset($hashData->isEmpty) ? $hashData->isEmpty : false;
 
-        $this->file = File::findOne(['onlyoffice_key' => $key]);
+        $this->file = empty($key) ? null : File::findOne(['onlyoffice_key' => $key]);
 
         if (Yii::$app->settings->get('maintenanceMode')) {
             $user = User::findOne(['guid' => $userGuid]);
@@ -67,7 +68,7 @@ class BackendController extends Controller
             }
         }
 
-        if ($this->file == null && !$isEmpty) {
+        if ($this->file === null && !($isEmpty && $action->id === 'empty-file')) {
             throw new HttpException(404, Yii::t('OnlyofficeModule.base', 'Could not find requested file!'));
         }
 
@@ -96,7 +97,11 @@ class BackendController extends Controller
             }
         }
 
-        return Yii::$app->response->sendFile($this->file->store->get(), $this->file->file_name);
+        return Yii::$app->response->sendStreamAsFile(
+            FileService::instance($this->file)->getStream(),
+            $this->file->file_name,
+            ['mimeType' => $this->file->mime_type],
+        );
     }
 
     /**
@@ -193,7 +198,7 @@ class BackendController extends Controller
                             $data["url"],
                             $currentExt,
                             $originExt,
-                            $this->module->generateDocumentKey($this->file) . time(),
+                            FileService::instance($this->file)->generateDocumentKey() . time(),
                             false
                         );
                         $url = $convResult['fileUrl'];

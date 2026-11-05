@@ -5,10 +5,16 @@
  *  http://www.onlyoffice.com
  */
 
+use humhub\components\View;
 use humhub\helpers\Html;
+use humhub\modules\file\models\File;
 use humhub\modules\onlyoffice\assets\Assets;
 use humhub\widgets\modal\Modal;
-use humhub\widgets\modal\ModalButton;
+
+/* @var $this View */
+/* @var $options array */
+/* @var $file File */
+/* @var $newName string */
 
 Assets::register($this);
 ?>
@@ -38,7 +44,7 @@ Assets::register($this);
             <?= Yii::t(
                 'OnlyofficeModule.base',
                 'Converting <strong>{oldFileName}</strong> to <strong>{newFileName}</strong>..',
-                ['oldFileName' => $file->fileName, 'newFileName' => $newName]
+                ['oldFileName' => $file->file_name, 'newFileName' => $newName]
             ); ?>
         </span>
         <br/>

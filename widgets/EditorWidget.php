@@ -19,6 +19,7 @@ use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
 use humhub\modules\onlyoffice\Module;
+use humhub\modules\onlyoffice\services\FileService;
 use humhub\modules\user\models\User;
 use humhub\widgets\JsWidget;
 use Yii;
@@ -77,8 +78,7 @@ class EditorWidget extends JsWidget
      */
     public function init()
     {
-        $module = Yii::$app->getModule('onlyoffice');
-        $this->documentType = $module->getDocumentType($this->file);
+        $this->documentType = FileService::instance($this->file)->getDocumentType();
         if ($this->documentType === null) {
             throw new HttpException('400', 'Requested file type is not supported!');
         }
@@ -163,7 +163,7 @@ class EditorWidget extends JsWidget
         if (isset($user->guid)) {
             $userGuid = $user->guid;
         }
-        $key = $module->generateDocumentKey($this->file);
+        $key = FileService::instance($this->file)->generateDocumentKey();
         $docHash = $module->generateHash($key, $userGuid);
 
         $url = Url::to(['/onlyoffice/backend/download', 'doc' => $docHash], true);
@@ -177,7 +177,7 @@ class EditorWidget extends JsWidget
             'type' => 'desktop',
             'documentType' => $this->documentType,
             'document' => [
-                'title' => Html::encode($this->file->fileName),
+                'title' => Html::encode($this->file->file_name),
                 'url' => $url,
                 'fileType' => Html::encode(strtolower(FileHelper::getExtension($this->file))),
                 'key' => $key,

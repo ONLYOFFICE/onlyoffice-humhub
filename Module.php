@@ -16,8 +16,8 @@ namespace humhub\modules\onlyoffice;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use humhub\libs\CURLHelper;
-use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
+use humhub\modules\onlyoffice\services\FileService;
 use stdClass;
 use Yii;
 use yii\helpers\Url;
@@ -67,8 +67,8 @@ class Module extends \humhub\components\Module
 
     public function formats()
     {
-        if (isset($this->formatFields)) {
-            return $this->formatFields;
+        if ($this->formats !== null) {
+            return $this->formats;
         }
 
         $formatsJsonContent = file_get_contents($this->getAssetPath() . '/formats/onlyoffice-docs-formats.json');
@@ -288,40 +288,36 @@ class Module extends \humhub\components\Module
         return $this->demoparam['trial'] - round((time() - $trial) / (60 * 60 * 24));
     }
 
+    /**
+     * @deprecated since 4.0.1, use {@see FileService::getDocumentType()}
+     */
     public function getDocumentType($file)
     {
-        $fileExtension = strtolower(FileHelper::getExtension($file));
-
-        if (in_array($fileExtension, $this->formats()->spreadsheetExtensions)) {
-            return self::DOCUMENT_TYPE_SPREADSHEET;
-        } elseif (in_array($fileExtension, $this->formats()->presentationExtensions)) {
-            return self::DOCUMENT_TYPE_PRESENTATION;
-        } elseif (in_array($fileExtension, $this->formats()->textExtensions)) {
-            return self::DOCUMENT_TYPE_TEXT;
-        } elseif (in_array($fileExtension, $this->formats()->pdfExtensions)) {
-            return self::DOCUMENT_TYPE_PDF;
-        } elseif (in_array($fileExtension, $this->formats()->diagramExtensions)) {
-            return self::DOCUMENT_TYPE_DIAGRAM;
-        }
-
-        return null;
+        return FileService::instance($file)->getDocumentType();
     }
 
+    /**
+     * @deprecated since 4.0.1, use {@see FileService::canEdit()}
+     */
     public function canEdit($file)
     {
-        $fileExtension = strtolower(FileHelper::getExtension($file));
-        return in_array($fileExtension, array_merge($this->getforceEditTypes(), $this->formats()->editableExtensions));
+        return FileService::instance($file)->canEdit();
     }
 
+    /**
+     * @deprecated since 4.0.1, use {@see FileService::canConvert()}
+     */
     public function canConvert($file)
     {
-        $fileExtension = strtolower(FileHelper::getExtension($file));
-        return in_array($fileExtension, $this->formats()->convertableExtensions);
+        return FileService::instance($file)->canConvert();
     }
 
+    /**
+     * @deprecated since 4.0.1, use {@see FileService::canView()}
+     */
     public function canView($file)
     {
-        return !empty($this->getDocumentType($file));
+        return FileService::instance($file)->canView();
     }
 
     public function getConfigUrl()
@@ -334,18 +330,12 @@ class Module extends \humhub\components\Module
     /**
      * Generate unique document key
      *
+     * @deprecated since 4.0.1, use {@see FileService::generateDocumentKey()}
      * @return string
      */
     public function generateDocumentKey($file)
     {
-        if (!empty($file->onlyoffice_key)) {
-            return $file->onlyoffice_key;
-        }
-
-        $key = substr(strtolower(md5(Yii::$app->security->generateRandomString(20))), 0, 20);
-        $file->updateAttributes(['onlyoffice_key' => $key]);
-
-        return $key;
+        return FileService::instance($file)->generateDocumentKey();
     }
 
     public function commandService($data): array
@@ -377,30 +367,12 @@ class Module extends \humhub\components\Module
         }
     }
 
+    /**
+     * @deprecated since 4.0.1, use {@see FileService::convert()}
+     */
     public function fileToConversion($file, $ts, $toExt = null, $async = true)
     {
-        $key = $this->generateDocumentKey($file);
-
-        $user = Yii::$app->user->getIdentity();
-        $userGuid = null;
-        if (isset($user->guid)) {
-            $userGuid = $user->guid;
-        }
-
-        $docHash = $this->generateHash($key, $userGuid);
-
-        $fromExt = strtolower(FileHelper::getExtension($file));
-
-        $downloadUrl = Url::to(['/onlyoffice/backend/download', 'doc' => $docHash], true);
-        if (!empty($this->getStorageUrl())) {
-            $downloadUrl = $this->getStorageUrl() . Url::to(['/onlyoffice/backend/download', 'doc' => $docHash], false);
-        }
-
-        if (is_null($toExt)) {
-            $toExt = $this->formats()->convertsTo[$fromExt];
-        }
-
-        return $this->convertService($downloadUrl, $fromExt, $toExt, $key . $ts, $async);
+        return FileService::instance($file)->convert($ts, $toExt, $async);
     }
 
     public function convertService($documentUrl, $fromExt, $toExt, $key, $async = true): array
@@ -517,58 +489,13 @@ class Module extends \humhub\components\Module
     /**
      * Checking pdf onlyoffice form
      *
+     * @deprecated since 4.0.1, use {@see FileService::isOnlyofficeForm()}
      * @param File $file object
      * @return bool
      */
     public function isOnlyofficeForm($file)
     {
-        if (!$file instanceof File || !$file->store->has()) {
-            return false;
-        }
-        if ($this->getDocumentType($file) !== self::DOCUMENT_TYPE_PDF) {
-            return false;
-        }
-
-        $limitDetect = 300;
-        $onlyofficeFormMetaTag = 'ONLYOFFICEFORM';
-
-        $content = file_get_contents($file->store->get(), false, null, 0, $limitDetect);
-
-        $indexFirst = strpos($content, "%\xCD\xCA\xD2\xA9\x0D");
-        if ($indexFirst === false) {
-            return false;
-        }
-
-        $pFirst = substr($content, $indexFirst + 6);
-        if (!str_starts_with($pFirst, "1 0 obj\n<<\n")) {
-            return false;
-        }
-
-        $pFirst = substr($pFirst, 11);
-
-        $indexStream = strpos($pFirst, "stream\x0D\x0A");
-        $indexMeta = strpos($pFirst, $onlyofficeFormMetaTag);
-
-        if ($indexStream === false || $indexMeta === false || $indexStream < $indexMeta) {
-            return false;
-        }
-
-        $pMeta = substr($pFirst, $indexMeta);
-        $pMeta = substr($pMeta, strlen($onlyofficeFormMetaTag) + 3);
-
-        $indexMetaLast = strpos($pMeta, " ");
-        if ($indexMetaLast === false) {
-            return false;
-        }
-
-        $pMeta = substr($pMeta, $indexMetaLast + 1);
-
-        $indexMetaLast = strpos($pMeta, " ");
-        if ($indexMetaLast === false) {
-            return false;
-        }
-
-        return true;
+        return $file instanceof File && FileService::instance($file)->isOnlyofficeForm();
     }
 
     /**

@@ -1,5 +1,20 @@
 # Change Log
 
+## 4.0.1
+## Fixed
+- Document could not be opened in HumHub 1.19 (removed File::canRead() and File::fileName)
+- Document download and PDF form detection with the file storage of HumHub 1.19
+- File name and text of the mention notification are escaped
+- Mentions, rename, make anchor and notify API actions check the file and its access, missing files return 404
+- Convert requires write access to the file, the new name is built on the server and keeps dots of the file name
+- Opening a document from a notification marks only own notifications as seen
+- Backend actions with a hash without a document key no longer load a file
+- Share mode is limited to view and edit
+- Document formats are cached instead of being parsed on every call
+
+## Changed
+- Added FileService, file methods of the Module class are deprecated
+
 ## 4.0.0
 ## Changed
 - compatible with HumHub 1.18

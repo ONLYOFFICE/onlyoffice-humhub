@@ -11,6 +11,7 @@ use Yii;
 use yii\web\HttpException;
 use humhub\modules\onlyoffice\components\BaseFileController;
 use humhub\components\Module;
+use humhub\modules\onlyoffice\services\FileService;
 
 class ConvertController extends BaseFileController
 {
@@ -25,7 +26,11 @@ class ConvertController extends BaseFileController
 
         $this->module = Yii::$app->getModule('onlyoffice');
 
-        if (!$this->module->canConvert($this->file)) {
+        if (!$this->file->canDelete()) {
+            throw new HttpException(403, Yii::t('OnlyofficeModule.base', 'File write access denied!'));
+        }
+
+        if (!FileService::instance($this->file)->canConvert()) {
             throw new HttpException('400', 'Could not convert this file');
         }
     }
@@ -35,14 +40,14 @@ class ConvertController extends BaseFileController
         return $this->renderAjax('index', ['file' => $this->file]);
     }
 
-    public function actionConvert($guid, $ts, $newName)
+    public function actionConvert($guid, $ts)
     {
         Yii::$app->response->format = 'json';
 
-        $result = $this->module->fileToConversion($this->file, $ts);
+        $result = FileService::instance($this->file)->convert($ts);
 
         if (isset($result['endConvert']) && $result['endConvert']) {
-            $this->saveFileReplace($result['fileUrl'], $newName);
+            $this->saveFileReplace($result['fileUrl'], FileService::instance($this->file)->getConvertedName());
         }
 
         return $result;
