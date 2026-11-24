@@ -12,15 +12,18 @@ The module has no build step and no `composer.json`; its PHP dependencies (`fire
 
 ```bash
 npm ci && npm run lint     # eslint for resources/**/*.js
+phpcs --standard=PSR1,PSR12 --extensions=php --ignore='*/messages/*,*/migrations/*' .
 ```
 
-CI runs eslint and phpcs in `.github/workflows/lint.yml`; read it for the phpcs command, its standards and ignored paths, and the PHP and Node versions. Runtime behaviour needs a live ONLYOFFICE Docs instance that can reach HumHub; verify changes there.
+CI (`.github/workflows/lint.yml`) runs both only for `master` and `develop`; on a `feature/humhub-*` branch, run them locally before opening a PR. Runtime behaviour needs a live ONLYOFFICE Docs instance that can reach HumHub; verify changes there.
 
-## Branches and releases
+## Branches
 
-- `develop` holds the lowest supported HumHub line. Each `feature/humhub-X.Y` branch supports a newer HumHub core and receives the previous line by merging (`develop` → `feature/humhub-<lowest>` → … → `feature/humhub-<newest>`). The supported core range of a branch is `humhub.minVersion`/`humhub.maxVersion` in its `module.json`.
+- The module supports HumHub's two latest LTS lines (currently 1.18 and 1.19). Don't add compatibility work for older cores.
+- `develop` holds the lowest supported line and `master` holds its released code. Each `feature/humhub-X.Y` branch supports a newer core and receives the previous line by merging (`develop` → `feature/humhub-<next>` → … → `feature/humhub-<newest>`). The supported core range of a branch is `humhub.minVersion`/`humhub.maxVersion` in its `module.json`.
 - PRs target `develop` unless the change needs a newer core API; then it goes on the branch of the lowest core that has the API. Code that depends on a newer core API lives only on the branches that need it; diff the branches to see where they differ.
-- `master` holds released code. Merging into `master` tags `v<module.json version>` and builds the GitHub release (`create-tag.yml`, `release.yml`); `marketplace.yml` uploads a tagged release to the HumHub Marketplace.
+- The repository is on Gitea (`git.onlyoffice.com`); open PRs there, not with `gh`.
+- Releases are made by maintainers; see `MAINTAINING.md`.
 - Add user-visible changes to the top, unversioned `##` section of `CHANGELOG.md`, under `## Added` or `## Changed`. Don't bump `version` in `module.json` or fill in the header outside a release.
 - Commit messages follow Conventional Commits (`fix:`, `feat:`, `ci:`, `chore:`, `refactor:` …). Branch names are `<type>/<short-kebab-description>`.
 
@@ -52,7 +55,6 @@ CI runs eslint and phpcs in `.github/workflows/lint.yml`; read it for the phpcs 
 A single `humhub.module('onlyoffice')` with the widgets `Editor`, `Convert` and `Share`, plus `createSubmit`.
 
 - `Editor` waits for `window.DocsAPI` (`api.js` from the Docs server). The DocEditor config and instance are kept at module level and overwritten by each `initEditor`, so the editor event handlers act on the most recently opened editor.
-- Share's copy link uses HumHub core's clipboard polyfill when the core provides it (see `widgets/views/share.php`), because `navigator.clipboard` fails on non-HTTPS origins.
 - `resources/js/humhub.onlyoffice.cspViolation.js` is loaded before Docs' `api.js` and stops HumHub from reloading the page on the CSP violation that `api.js` triggers with its `eval` check.
 
 ## Rules
@@ -79,7 +81,7 @@ A single `humhub.module('onlyoffice')` with the widgets `Editor`, `Convert` and 
 ## Conventions
 
 - PHP and JS files, except `messages/` and `migrations/`, carry the Ascensio System SIA copyright header; files that came from HumHub also keep the HumHub header above it. Copy the header from an existing file onto any new one.
-- PHP follows the standards the phpcs step in `lint.yml` checks. JS follows `eslint.config.mjs`. Frontend code is jQuery with HumHub's JS module system (`humhub.module`, `require('client')`, `Widget`, `data-action-*` attributes).
+- Frontend code is jQuery with HumHub's JS module system (`humhub.module`, `require('client')`, `Widget`, `data-action-*` attributes).
 - Translatable strings use `Yii::t('OnlyofficeModule.base', …)`. Add each new string to every `messages/*/base.php` and translate it yourself; a human reviewer checks the translations. Strings that HumHub core already translates may use the core category. JS has no translations of its own: pass user-visible text to JS already translated, through the widget's `getData()`.
-- Read module settings through the `Module` getters; only `ConfigureForm` reads and writes `->settings` directly. Keep event handler logic in `Events.php`.
+- Outside `Module` and `ConfigureForm`, read settings only through the `Module` getters. Keep event handler logic in `Events.php`.
 - Comments are rare: one line, a formal impersonal sentence, only where the code can't show the intent. A workaround is described as "Stops X from Y by Z".
