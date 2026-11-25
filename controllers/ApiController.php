@@ -126,9 +126,24 @@ class ApiController extends Controller
 
     public function actionMakeAnchor()
     {
-        $doc_key = Yii::$app->request->post('doc_key');
+        $model = DynamicModel::validateData(
+            ['key' => Yii::$app->request->post('doc_key', '')],
+            [
+                ['key', 'required'],
+                ['key', 'string', 'max' => 255],
+            ]
+        );
 
-        $file = File::findOne(['onlyoffice_key' => $doc_key]);
+        if ($model->hasErrors()) {
+            throw new HttpException(400);
+        }
+
+        $file = File::findOne(['onlyoffice_key' => $model->key]);
+
+        if ($file === null || !$file->canRead()) {
+            throw new HttpException(403);
+        }
+
         $url = Url::to(['/onlyoffice/open', 'guid' => $file->guid, 'mode' => 'view']);
 
         return $this->asJson([
