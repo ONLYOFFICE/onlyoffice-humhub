@@ -42,7 +42,7 @@ class ApiController extends Controller
     protected function getAccessRules()
     {
         return [
-            [ControllerAccess::RULE_LOGGED_IN_ONLY => ['users-for-mentions']],
+            [ControllerAccess::RULE_LOGGED_IN_ONLY => ['users-for-mentions', 'send-notify']],
         ];
     }
 
@@ -138,17 +138,42 @@ class ApiController extends Controller
 
     public function actionSendNotify()
     {
-        $emails = Yii::$app->request->post('emails');
-        $message = Yii::$app->request->post('comment');
-        $anchor = Yii::$app->request->post('ACTION_DATA');
-        $doc_key = Yii::$app->request->post('doc_key');
+        $model = DynamicModel::validateData(
+            [
+                'key' => Yii::$app->request->post('doc_key', ''),
+                'emails' => Yii::$app->request->post('emails', []),
+                'message' => Yii::$app->request->post('comment', ''),
+                'anchor' => Yii::$app->request->post('ACTION_DATA', ''),
+            ],
+            [
+                [['key', 'emails', 'anchor'], 'required'],
+                [['key'], 'string', 'max' => 255],
+                [['message', 'anchor'], 'string'],
+                ['emails', 'each', 'rule' => ['string']],
+            ]
+        );
+
+        if ($model->hasErrors()) {
+            throw new HttpException(400);
+        }
+
+        $file = File::findOne(['onlyoffice_key' => $model->key]);
+
+        if ($file === null || !$file->canDelete()) {
+            throw new HttpException(403);
+        }
 
         $originator = Yii::$app->user->getIdentity();
-        $users = User::find()->where(['email' => $emails])->all();
+        $users = array_filter(
+            User::find()->where(['email' => $model->emails])->available()->all(),
+            fn(User $user) => $file->canRead($user)
+        );
 
-        $file = File::findOne(['onlyoffice_key' => $doc_key]);
+        if (empty($users)) {
+            return $this->asJson([]);
+        }
 
-        $mention = Mention::generateMention($file, $message, $anchor);
+        $mention = Mention::generateMention($file, $model->message, $model->anchor);
 
         try {
             Notify::instance()->from($originator)->about($mention)->sendBulk($users);
