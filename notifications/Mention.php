@@ -29,9 +29,9 @@ class Mention extends BaseNotification
             '{displayName} mentioned you in {contentTitle}.',
             [
                 'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-                'contentTitle' => $this->source->file->file_name,
+                'contentTitle' => Html::encode($this->source->file->file_name),
             ]
-        ) . ' ' .  $this->source->message;
+        ) . ' ' . Html::encode($this->source->message);
     }
 
     public function getMailSubject()
